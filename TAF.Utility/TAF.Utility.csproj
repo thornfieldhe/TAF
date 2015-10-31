@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6AB3C277-A165-4327-B0FD-2C131DFB9A9D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TAF.Utility</RootNamespace>
+    <AssemblyName>TAF.Utility</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\OrderByAttribute.cs" />
+    <Compile Include="CNDate.cs" />
+    <Compile Include="Const.cs" />
+    <Compile Include="Files\Image\ImageInfo.cs" />
+    <Compile Include="Random.cs" />
+    <Compile Include="Sys\Config.cs" />
+    <Compile Include="Encrypt.cs" />
+    <Compile Include="EnumExt.cs" />
+    <Compile Include="Extensions\Extensions.Array.cs" />
+    <Compile Include="Extensions\Extensions.Bool.cs" />
+    <Compile Include="Extensions\Extensions.Char.cs" />
+    <Compile Include="Extensions\Extensions.Converts.cs" />
+    <Compile Include="Extensions\Extensions.DateTime.cs" />
+    <Compile Include="Extensions\Extensions.Decimal.cs" />
+    <Compile Include="Extensions\Extensions.Double.cs" />
+    <Compile Include="Extensions\Extensions.Enum.cs" />
+    <Compile Include="Extensions\Extensions.Guid.cs" />
+    <Compile Include="Extensions\Extensions.Int.cs" />
+    <Compile Include="Extensions\Extensions.NullOrEmpty.cs" />
+    <Compile Include="Extensions\Extensions.Serialization.cs" />
+    <Compile Include="Extensions\Extensions.String.cs" />
+    <Compile Include="Files\DefaultUploadPathStrategy.cs" />
+    <Compile Include="Files\File.cs" />
+    <Compile Include="Files\File.FileInfo.cs" />
+    <Compile Include="Files\File.Path.cs" />
+    <Compile Include="Files\File.Stream.Convert.cs" />
+    <Compile Include="Files\File.Stream.cs" />
+    <Compile Include="Files\FileInfo.cs" />
+    <Compile Include="Files\FileManager.cs" />
+    <Compile Include="Files\FileSize.cs" />
+    <Compile Include="Files\FileUnit.cs" />
+    <Compile Include="Files\FileUpload.cs" />
+    <Compile Include="Files\IFileManager.cs" />
+    <Compile Include="Files\IFileUpload.cs" />
+    <Compile Include="Files\IUploadPathStrategy.cs" />
+    <Compile Include="Files\Image\ImageSize.cs" />
+    <Compile Include="Fluent\Fluent.cs" />
+    <Compile Include="Fluent\FluentInterface.cs" />
+    <Compile Include="Item.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sys\Reflection.cs" />
+    <Compile Include="Reg\IExpression.cs" />
+    <Compile Include="Reg\IRegExpression.cs" />
+    <Compile Include="Reg\RegexContex.cs" />
+    <Compile Include="Reg\RegexExpression.cs" />
+    <Compile Include="Reg\RegexOperator.cs" />
+    <Compile Include="Reg\StringReg.cs" />
+    <Compile Include="Files\Image\Image.cs" />
+    <Compile Include="Sys\Time.cs" />
+    <Compile Include="Sys\Web.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
