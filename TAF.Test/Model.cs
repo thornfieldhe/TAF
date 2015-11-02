@@ -128,6 +128,21 @@ namespace TAF.Test
         {
             this.AddDescription("Name:" + this.Name + ",");
         }
+
+        public override int Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int Save()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override int Delete()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     /// <summary>

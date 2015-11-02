@@ -112,7 +112,7 @@ namespace TAF.Mvc
         public ActionResult Pager(int pageIndex, int pageSize = 20)
         {
             var pager = new Pager<T> { PageIndex = pageIndex, PageSize = pageSize };
-            pager = EfBusiness<K>.Pages(pager, true);
+            pager = EfBusiness<K>.Pages(pager);
             return this.Json(pager, JsonRequestBehavior.AllowGet);
         }
 

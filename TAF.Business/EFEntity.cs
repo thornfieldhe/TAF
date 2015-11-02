@@ -14,7 +14,6 @@ namespace TAF
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
-    using AutoMapper;
     using Core;
     using EntityFramework.Caching;
     using EntityFramework.Extensions;
@@ -27,7 +26,7 @@ namespace TAF
     /// </summary>
     /// <typeparam name="K">
     /// </typeparam>
-    public abstract class EfBusiness<K> : BaseBusiness<K>, IDbAction where K : EfBusiness<K>, IBusinessBase, new()
+    public abstract class EfBusiness<K> : BaseBusiness<K> where K : EfBusiness<K>, IBusinessBase, new()
     {
         #region 构造函数
 
@@ -120,85 +119,31 @@ namespace TAF
         /// <param name="orderByFunc">
         /// The order by func.
         /// </param>
-        /// <param name="selector">
-        /// The selector.
-        /// </param>
         /// <param name="isAsc">
         /// The is asc.
         /// </param>
-        /// <typeparam name="T">
-        /// </typeparam>
         /// <typeparam name="R">
+        /// </typeparam>
+        /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
         /// The <see cref="pager"/>.
         /// </returns>
-        public static Pager<R> Pages<T, R>(
-            Pager<R> pager,
+        public static Pager<T> Pages<R, T>(
+            Pager<T> pager,
             Func<K, bool> whereFunc,
-            Func<K, T> orderByFunc,
-            Func<K, R> selector,
-            bool isAsc) where R : new()
+            Func<K, R> orderByFunc,
+            bool isAsc = true) where T : new()
         {
             var context = Ioc.Create<IContextWapper>().Context;
-            pager.Total = context.Set<K>().Where(whereFunc).Count();
-            List<R> result;
-            if (isAsc)
-            {
-                result =
-                    context.Set<K>()
-                        .Where(whereFunc)
-                        .OrderBy(orderByFunc)
-                        .Skip(pager.PageSize * (pager.PageIndex - 1))
-                        .Take(pager.PageSize)
-                        .Select(selector)
-                        .ToList();
-            }
-            else
-            {
-                result =
-                    context.Set<K>()
-                        .Where(whereFunc)
-                        .OrderByDescending(orderByFunc)
-                        .Skip(pager.PageSize * (pager.PageIndex - 1))
-                        .Take(pager.PageSize)
-                        .Select(selector)
-                        .ToList();
-            }
-
-            pager.Datas = result;
-            pager.GetShowIndex();
+            pager.Load(context.Set<K>().AsEnumerable(), whereFunc, orderByFunc, isAsc);
             return pager;
         }
 
-        public static Pager<R> Pages<R>(
-    Pager<R> pager,
-    bool isAsc) where R : new()
+        public static Pager<T> Pages<T>(Pager<T> pager, bool isAsc = true) where T : new()
         {
             var context = Ioc.Create<IContextWapper>().Context;
-            pager.Total = context.Set<K>().Count();
-            List<K> result;
-            if (isAsc)
-            {
-                result =
-                    context.Set<K>()
-                        .OrderBy(k => k.CreatedDate)
-                        .Skip(pager.PageSize * (pager.PageIndex - 1))
-                        .Take(pager.PageSize)
-                        .ToList();
-            }
-            else
-            {
-                result =
-                    context.Set<K>()
-                        .OrderByDescending(k => k.CreatedDate)
-                        .Skip(pager.PageSize * (pager.PageIndex - 1))
-                        .Take(pager.PageSize)
-                        .ToList();
-            }
-
-            pager.Datas = Mapper.Map<List<R>>(result);
-            pager.GetShowIndex();
+            pager.Load(context.Set<K>().AsEnumerable(), isAsc);
             return pager;
         }
 
@@ -257,7 +202,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Create()
+        public override int Create()
         {
             PreInsert();
             Validate();
@@ -272,7 +217,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Save()
+        public override int Save()
         {
             PreUpdate();
             Validate();
@@ -287,7 +232,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Delete()
+        public override int Delete()
         {
             PreRemove();
             Remove();
@@ -366,26 +311,10 @@ namespace TAF
 
 
         #region 继承方法
-
-        /// <summary>
-        /// The init.
-        /// </summary>
-        protected virtual void Init()
-        {
-        }
-
-        /// <summary>
-        /// The update.
-        /// </summary>
-        protected virtual void Update()
-        {
-            ChangedDate = DateTime.Now;
-        }
-
         /// <summary>
         /// The insert.
         /// </summary>
-        protected virtual void Insert()
+        protected override void Insert()
         {
             DbContex.Set<K>().Add(this as K);
         }
@@ -393,28 +322,13 @@ namespace TAF
         /// <summary>
         /// The remove.
         /// </summary>
-        protected virtual void Remove()
+        protected override void Remove()
         {
             //软删除
             //            this.Status = -1;
             //            DbContex.SaveChanges();
             //硬删除
             DbContex.Set<K>().Remove(this as K);
-        }
-
-        /// <summary>
-        /// The pre insert.
-        /// </summary>
-        protected virtual void PreInsert()
-        {
-        }
-
-        /// <summary>
-        /// The pre update.
-        /// </summary>
-        protected virtual void PreUpdate()
-        {
-            ChangedDate = DateTime.Now;
         }
 
         /// <summary>
@@ -429,71 +343,12 @@ namespace TAF
         /// <returns>
         /// The <see cref="List"/>.
         /// </returns>
-        protected virtual List<K> PreQuery(IQueryable<K> query, bool useCache = false)
+        protected override List<K> PreQuery(IQueryable<K> query, bool useCache = false)
         {
             var items = useCache
                             ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(60))).ToList()
                             : query.ToList();
             return PostQuery(items);
-        }
-
-        /// <summary>
-        /// The pre query single.
-        /// </summary>
-        /// <param name="query">
-        /// The query.
-        /// </param>
-        /// <returns>
-        /// The <see cref="K"/>.
-        /// </returns>
-        protected virtual K PreQuerySingle(IQueryable<K> query)
-        {
-            var item = query.FirstOrDefault();
-            return item;
-        }
-
-        /// <summary>
-        /// The pre remove.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        protected virtual int PreRemove()
-        {
-            return 0;
-        }
-
-        /// <summary>
-        /// The post update.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        protected virtual int PostUpdate()
-        {
-            return 0;
-        }
-
-        /// <summary>
-        /// The post remove.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        protected virtual int PostRemove()
-        {
-            return 0;
-        }
-
-        /// <summary>
-        /// The post insert.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        protected virtual int PostInsert()
-        {
-            return 0;
         }
 
         /// <summary>
@@ -505,7 +360,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="List"/>.
         /// </returns>
-        protected virtual List<K> PostQuery(List<K> items)
+        protected override List<K> PostQuery(List<K> items)
         {
             items.ForEach(i => i.DbContex = DbContex);
             return items;
@@ -520,7 +375,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        protected virtual K PostQuerySingle(K item)
+        protected override K PostQuerySingle(K item)
         {
             item.IfNotNull(i => i.DbContex = DbContex);
             return item;
@@ -529,134 +384,5 @@ namespace TAF
         #endregion
 
         #endregion
-
-
-    }
-
-    /// <summary>
-    /// The pager.
-    /// </summary>
-    /// <typeparam name="T">
-    /// </typeparam>
-    public class Pager<T>
-        where T : new()
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Pager{T}"/> class.
-        /// </summary>
-        public Pager()
-        {
-            PageSize = 20;
-        }
-
-        /// <summary>
-        /// Gets or sets the datas.
-        /// </summary>
-        public IList<T> Datas
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Gets or sets the page index.
-        /// </summary>
-        public int PageIndex
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Gets or sets the page size.
-        /// </summary>
-        public int PageSize
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Gets or sets the total.
-        /// </summary>
-        public int Total
-        {
-            get; set;
-        }
-
-        public bool IsFirst
-        {
-            get
-            {
-                return PageIndex == 1;
-            }
-        }
-
-        public bool IsLast
-        {
-            get
-            {
-                var temp0 = Total % PageSize;//总页数是否能够整出每页数
-                var temp1 = temp0 == 0 ? Total / PageSize : Total / PageSize + 1; //总分页数;
-                return temp1 == PageIndex;
-            }
-        }
-
-
-
-        /// <summary>
-        /// 表单页脚需要显示的页码
-        /// </summary>
-        public List<int> ShowIndex
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// The get show index.
-        /// </summary>
-        public void GetShowIndex()
-        {
-            var temp0 = Total % PageSize;//总页数是否能够整出每页数
-            var temp1 = temp0 == 0 ? Total / PageSize : Total / PageSize + 1; //总分页数;
-
-            ShowIndex = new List<int>();
-            for (var i = 0; i < temp1; i++)
-            {
-                if (i * PageSize < PageIndex && (i + 1) * PageSize >= PageIndex)
-                {
-                    for (var j = 1; j <= 5; j++)
-                    {
-                        if (temp1 >= i * PageSize + j)
-                        {
-                            ShowIndex.Add(i * PageSize + j);
-                        }
-                    }
-                }
-            }
-
-
-            if (temp1 > 5 && PageIndex % 5 == 0)
-            {
-                for (int i = 0; i < ShowIndex.Count; i++)
-                {
-                    ShowIndex[i] = ShowIndex[i] + 1;
-                }
-            }
-
-
-            else if (PageIndex >= 6 && PageIndex % 5 == 1)
-            {
-                if (ShowIndex.Count == 5)
-                {
-                    for (int i = 0; i < ShowIndex.Count; i++)
-                    {
-                        ShowIndex[i] = ShowIndex[i] - 1;
-                    }
-                }
-                else
-                {
-                    ShowIndex.Add(PageIndex - 1);
-                    ShowIndex.Sort();
-                }
-            }
-        }
     }
 }

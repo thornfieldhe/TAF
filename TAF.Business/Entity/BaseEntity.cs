@@ -23,17 +23,34 @@ namespace TAF.Entity
     [Serializable]
     public abstract partial class BaseBusiness<T> : IBusinessBase
     {
+
+        #region 构造函数
+
         /// <summary>
-        /// The add descriptions.
+        /// Initializes a new instance of the <see cref="BaseBusiness{T}"/> class.
         /// </summary>
-        protected override void AddDescriptions()
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        protected BaseBusiness(Guid id)
         {
-            AddDescription("Id:" + Id);
-            AddDescription("Status:" + Status);
-            AddDescription("Note:" + Note);
-            AddDescription("CreatedDate:" + CreatedDate);
-            AddDescription("ChangedDate:" + ChangedDate);
+            Id = id;
+            Status = 0;
+            CreatedDate = DateTime.Now;
+            ChangedDate = DateTime.Now;
+
+            rules = new List<IValidationRule>();
+            this.validateionHandler = Ioc.Create<IValidationHandler>();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseBusiness{T}"/> class.
+        /// </summary>
+        protected BaseBusiness() : this(Guid.NewGuid())
+        {
+        }
+
+        #endregion
 
         #region 基本属性
 
@@ -88,33 +105,16 @@ namespace TAF.Entity
 
         #endregion
 
-        #region 构造函数
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseBusiness{T}"/> class.
+        /// The add descriptions.
         /// </summary>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        protected BaseBusiness(Guid id)
+        protected override void AddDescriptions()
         {
-            Id = id;
-            Status = 0;
-            CreatedDate = DateTime.Now;
-            ChangedDate = DateTime.Now;
-
-            rules = new List<IValidationRule>();
-            _handler = Ioc.Create<IValidationHandler>();
+            AddDescription("Id:" + Id);
+            AddDescription("Status:" + Status);
+            AddDescription("Note:" + Note);
+            AddDescription("CreatedDate:" + CreatedDate);
+            AddDescription("ChangedDate:" + ChangedDate);
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseBusiness{T}"/> class.
-        /// </summary>
-        protected BaseBusiness()
-            : this(Guid.NewGuid())
-        {
-        }
-
-        #endregion
     }
 }

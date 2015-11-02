@@ -106,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity\Pager.cs" />
     <Compile Include="Web\ActionResultData.cs" />
     <Compile Include="Web\BaseController.cs" />
     <Compile Include="Entity\BaseEntity.Base.cs" />
