@@ -18,6 +18,7 @@ namespace TAF.BusinessEntity.Test
         public void TestInsert()
         {
             var user = new User() { Name = "n1" };
+            
             var result = user.Create();
             Assert.AreEqual(1, result);
         }

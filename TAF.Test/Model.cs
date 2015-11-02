@@ -218,4 +218,38 @@ namespace TAF.Test
         [Description("调试")]
         Debug = 5
     }
+
+    public class IcoTestModel1 : IModel
+    {
+        public string Name
+        {
+            get; set;
+        }
+
+        public IcoTestModel1()
+        {
+            this.Name = "Model1";
+        }
+    }
+
+    public class IcoTestModel2 : IModel
+    {
+        public string Name
+        {
+            get; set;
+        }
+
+        public IcoTestModel2()
+        {
+            this.Name = "Model2";
+        }
+    }
+
+    public interface IModel
+    {
+        string Name
+        {
+            get; set;
+        }
+    }
 }

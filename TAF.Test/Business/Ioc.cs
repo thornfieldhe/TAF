@@ -5,6 +5,7 @@ namespace CAF.Tests.Domains.Validations
     using Autofac;
 
     using TAF.Core;
+    using TAF.Test;
     using TAF.Validation;
 
     /// <summary>
@@ -21,6 +22,16 @@ namespace CAF.Tests.Domains.Validations
             base.Load(builder);
             builder.RegisterType<Validator2>().As<IValidator>();
             builder.RegisterType<ValidationHandler>().As<IValidationHandler>();
+            builder.Register<IModel>(
+                                 (c, p) =>
+                                 {
+                                     var type = p.Named<string>("type");
+                                     if (type == "model1")
+                                     {
+                                         return new IcoTestModel1();
+                                     }
+                                     return new IcoTestModel2();
+                                 }).As<IModel>();
         }
     }
 }

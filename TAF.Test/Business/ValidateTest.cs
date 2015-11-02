@@ -104,5 +104,17 @@ namespace TAF.Test
             this.user.SetValidationHandler(new NothingValidationHandler());
             this.user.Validate();
         }
+
+        /// <summary>
+        /// 继承同一个接口的多个类
+        /// </summary>
+        [TestMethod]
+        public void TestSetmultitudinous()
+        {
+            var mode1 = Ioc.Create<IModel>("model1");
+            Assert.AreEqual("Model1", mode1.Name);
+            var mode2 = Ioc.Create<IModel>("xx");
+            Assert.AreEqual("Model2", mode2.Name);
+        }
     }
 }

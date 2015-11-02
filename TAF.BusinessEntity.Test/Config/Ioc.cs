@@ -4,7 +4,7 @@ namespace TAF.BusinessEntity.Test
     using System.Data.Entity;
     using Autofac;
 
-    using EntityFramework.DynamicFilters;
+    using EntityFramework.Filters;
 
     using TAF.Core;
     using TAF.Validation;
@@ -34,7 +34,7 @@ namespace TAF.BusinessEntity.Test
             get
             {
                 var context = new TestDbContext();
-                context.EnableFilter("Status");
+                 context.EnableFilter("Status");
                 return context;
             }
         }

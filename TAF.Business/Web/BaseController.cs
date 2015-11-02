@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF
+namespace TAF.Mvc
 {
     using System;
     using System.Collections.Generic;
@@ -26,6 +26,7 @@ namespace TAF
     /// </typeparam>
     /// <typeparam name="T">
     /// </typeparam>
+    [Authorize]
     public class BaseController<K, T> : Controller
         where K : EfBusiness<K>, new() where T : IEntityBase, new()
     {

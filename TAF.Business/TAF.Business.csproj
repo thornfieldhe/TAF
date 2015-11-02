@@ -106,8 +106,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionResultData.cs" />
-    <Compile Include="BaseController.cs" />
+    <Compile Include="Web\ActionResultData.cs" />
+    <Compile Include="Web\BaseController.cs" />
     <Compile Include="Entity\BaseEntity.Base.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Core\IBusinessBase.cs" />

@@ -124,6 +124,17 @@ namespace TAF.Utility
         }
 
         /// <summary>
+        /// 创建对象,适用于基于同一个接口需要创建不同的对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static T Create<T>(string type)
+        {
+            return _container.Resolve<T>(new NamedParameter("type", type));
+        }
+
+        /// <summary>
         /// 初始化容器
         /// </summary>
         /// <param name="action">

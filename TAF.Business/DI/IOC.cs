@@ -63,6 +63,20 @@ namespace TAF
         }
 
         /// <summary>
+        /// 创建实例
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">
+        /// 对应映射接口的类型
+        /// </param>
+        /// <returns></returns>
+        public static T Create<T>(string type)
+        {
+            return Container.Create<T>(type);
+        }
+
+
+        /// <summary>
         /// 为测试环境注册依赖
         /// </summary>
         /// <param name="modules">
