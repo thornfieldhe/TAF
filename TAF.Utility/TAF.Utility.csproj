@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TAF.Utility</RootNamespace>
     <AssemblyName>TAF.Utility</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -52,6 +52,7 @@
     <Compile Include="Attributes\OrderByAttribute.cs" />
     <Compile Include="CNDate.cs" />
     <Compile Include="Const.cs" />
+    <Compile Include="Extensions\Ectensions.SwichCaseExtension.cs" />
     <Compile Include="Files\Image\ImageInfo.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Sys\Config.cs" />
@@ -101,9 +102,12 @@
     <Compile Include="Sys\Web.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Ectensions.Lambda.cs" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Lambdas\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

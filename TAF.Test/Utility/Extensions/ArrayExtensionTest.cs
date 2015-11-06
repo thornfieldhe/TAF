@@ -8,12 +8,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace TAF.Test
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Utility;
+    using TAF.Utility;
 
     /// <summary>
     /// The array test.
@@ -41,7 +40,10 @@ namespace TAF.Test
         {
             List<string> data = new List<string> { "A", "B", "C", "D" };
             var count = 0;
-            data.ForEach(item => { count++; });
+            data.ForEach(item =>
+            {
+                count++;
+            });
             Assert.AreEqual(count, 4);
         }
 

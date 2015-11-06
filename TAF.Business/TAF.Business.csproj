@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TAF.Business</RootNamespace>
     <AssemblyName>TAF.Business</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -120,7 +120,7 @@
     <Compile Include="DI\IOC.cs" />
     <Compile Include="EFEntity.cs" />
     <Compile Include="Entity\ContextWapper.cs" />
-    <Compile Include="Entity\EFDbContext.cs" />
+    <Compile Include="Entity\BaseDbContext.cs" />
     <Compile Include="Entity\BaseEntityTypeConfigurationMap.cs" />
     <Compile Include="Entity\GenericContex.cs" />
     <Compile Include="Entity\SingletonBase.cs" />

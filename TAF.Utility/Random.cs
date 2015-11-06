@@ -33,7 +33,9 @@ namespace TAF.Utility
             var random = new Random(Guid.NewGuid().GetHashCode());
             return random.NextDouble();
         }
+
         #endregion
+
 
         #region 对一个数组进行随机排序
         /// <summary>

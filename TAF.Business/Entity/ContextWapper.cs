@@ -10,6 +10,6 @@
     internal class ContextWapper : IContextWapper
     {
         private const string connection = "EFConnection";
-        public DbContext Context => connection.IsEmpty() ? new EFDbContext() : new EFDbContext(connection);
+        public DbContext Context => connection.IsEmpty() ? new BaseDbContext() : new BaseDbContext(connection);
     }
 }

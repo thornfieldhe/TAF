@@ -14,13 +14,13 @@ namespace TAF
     /// <summary>
     /// 基础ef上下文
     /// </summary>
-    public class EFDbContext : DbContext
+    public class BaseDbContext : DbContext
     {
-        public EFDbContext(string connectiion)
+        public BaseDbContext(string connectiion)
         {
         }
 
-        public EFDbContext() : this("DefaultConnection")
+        public BaseDbContext() : this("DefaultConnection")
         {
         }
     }

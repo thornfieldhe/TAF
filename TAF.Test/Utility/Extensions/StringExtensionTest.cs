@@ -13,7 +13,7 @@ namespace TAF.Test
     using System.Collections.Generic;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Utility;
+    using TAF.Utility;
 
     /// <summary>
     /// The string extension test.
@@ -439,10 +439,10 @@ namespace TAF.Test
         public void TestSplice_Guid()
         {
             Assert.AreEqual(
-                            "83B0233C-A24F-49FD-8083-1337209EBC9A,EAB523C6-2FE7-47BE-89D5-C6D440C3033A".ToLower(), 
+                            "83B0233C-A24F-49FD-8083-1337209EBC9A,EAB523C6-2FE7-47BE-89D5-C6D440C3033A".ToLower(),
                 (new List<Guid>
                      {
-                         new Guid("83B0233C-A24F-49FD-8083-1337209EBC9A"), 
+                         new Guid("83B0233C-A24F-49FD-8083-1337209EBC9A"),
                          new Guid("EAB523C6-2FE7-47BE-89D5-C6D440C3033A")
                      }).Splice(string.Empty));
         }
@@ -454,10 +454,10 @@ namespace TAF.Test
         public void TestSplice_Guid_SingleQuotes()
         {
             Assert.AreEqual(
-                            "'83B0233C-A24F-49FD-8083-1337209EBC9A','EAB523C6-2FE7-47BE-89D5-C6D440C3033A'".ToLower(), 
+                            "'83B0233C-A24F-49FD-8083-1337209EBC9A','EAB523C6-2FE7-47BE-89D5-C6D440C3033A'".ToLower(),
                 (new List<Guid>
                      {
-                         new Guid("83B0233C-A24F-49FD-8083-1337209EBC9A"), 
+                         new Guid("83B0233C-A24F-49FD-8083-1337209EBC9A"),
                          new Guid("EAB523C6-2FE7-47BE-89D5-C6D440C3033A")
                      }).Splice("'"));
         }

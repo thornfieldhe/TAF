@@ -484,6 +484,26 @@ namespace TAF.Utility
             return list.Any(t => t.Equals(str));
         }
 
+        /// <summary>
+        /// 重复字符串输出
+        /// </summary>
+        /// <param name="this">
+        /// The this.
+        /// </param>
+        /// <param name="times">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static string Repeat(this string @this, int times)
+        {
+            var repeat = @this;
+            for (var i = 0; i < times; i++)
+            {
+                @this += repeat;
+            }
+            return @this;
+        }
+
         #region 正则
 
         /// <summary>

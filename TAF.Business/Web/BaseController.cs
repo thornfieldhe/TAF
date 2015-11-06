@@ -25,10 +25,14 @@ namespace TAF.Mvc
     /// <typeparam name="K">
     /// </typeparam>
     /// <typeparam name="T">
+    /// 对象列表视图
+    /// </typeparam>
+    /// <typeparam name="L">
+    /// 对象视图
     /// </typeparam>
     [Authorize]
-    public class BaseController<K, T> : Controller
-        where K : EfBusiness<K>, new() where T : IEntityBase, new()
+    public class BaseController<K, T, L> : Controller
+        where K : EfBusiness<K>, new() where T : IEntityBase, new() where L : new()
     {
         /// <summary>
         /// The index.
@@ -93,27 +97,13 @@ namespace TAF.Mvc
         public virtual ActionResult GetViews()
         {
             var items = EfBusiness<K>.GetAll();
-            var result = Mapper.Map<List<T>>(items);
-            return this.Json(new ActionResultData<List<T>>(result), JsonRequestBehavior.AllowGet);
+            var result = Mapper.Map<List<L>>(items);
+            return this.Json(new ActionResultData<List<L>>(result), JsonRequestBehavior.AllowGet);
         }
 
-        /// <summary>
-        /// The pager.
-        /// </summary>
-        /// <param name="pageIndex">
-        /// The page index.
-        /// </param>
-        /// <param name="pageSize">
-        /// The page size.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ActionResult"/>.
-        /// </returns>
-        public ActionResult Pager(int pageIndex, int pageSize = 20)
+        public virtual ActionResult Edit(Guid? id)
         {
-            var pager = new Pager<T> { PageIndex = pageIndex, PageSize = pageSize };
-            pager = EfBusiness<K>.Pages(pager);
-            return this.Json(pager, JsonRequestBehavior.AllowGet);
+            return PartialView("_Edit", id.HasValue ? EfBusiness<K>.Get(id.Value) : new K());
         }
 
         /// <summary>
@@ -187,6 +177,33 @@ namespace TAF.Mvc
             {
                 return this.Json(new ActionResultStatus(ex), JsonRequestBehavior.AllowGet);
             }
+        }
+
+        /// <summary>
+        /// The pager.
+        /// </summary>
+        /// <typeparam name="R">
+        /// </typeparam>
+        /// <param name="pageIndex">
+        /// The page index.
+        /// </param>
+        /// <param name="pageSize">
+        /// The page size.
+        /// </param>
+        /// <param name="where">
+        /// The where.
+        /// </param>
+        /// <param name="orderBy">
+        /// The order By.
+        /// </param>
+        /// <param name="isAsc"></param>
+        /// <returns>
+        /// The <see cref="ActionResult"/>.
+        /// </returns>
+        protected ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc) where R : struct
+        {
+            var pager = EfBusiness<K>.Pages<R, L>(new Pager<L> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
+            return this.Json(pager, JsonRequestBehavior.AllowGet);
         }
     }
 }

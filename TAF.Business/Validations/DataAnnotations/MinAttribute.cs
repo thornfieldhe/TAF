@@ -34,6 +34,10 @@ namespace System.ComponentModel.DataAnnotations
             _min = min;
         }
 
+        public MinAttribute() : this(0)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MinAttribute"/> class.
         /// </summary>

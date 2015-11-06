@@ -13,7 +13,7 @@ namespace TAF.Test
     using System.ComponentModel.DataAnnotations;
     using Entity;
     using TAF.Core;
-    using Utility;
+    using TAF.Utility;
     using Validation;
 
     /// <summary>

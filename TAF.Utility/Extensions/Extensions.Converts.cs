@@ -15,10 +15,21 @@ namespace TAF.Utility
     using TAF.Utility;
 
     /// <summary>
-    /// 转换为整形
+    /// 类型判断和转换
     /// </summary>
     public partial class Extensions
     {
+        /// <summary>
+        /// 是否是int
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsInt(this string s)
+        {
+            int i;
+            return int.TryParse(s, out i);
+        }
+
         /// <summary>
         /// 转换成int值
         /// true:1
@@ -32,6 +43,17 @@ namespace TAF.Utility
         public static int ToInt(this bool obj)
         {
             return obj ? 1 : 0;
+        }
+
+        /// <summary>
+        /// 是否是bool
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsBool(this string s)
+        {
+            bool i;
+            return bool.TryParse(s, out i);
         }
 
         /// <summary>
@@ -165,6 +187,17 @@ namespace TAF.Utility
         }
 
         /// <summary>
+        /// 是否是double
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsDouble(this string s)
+        {
+            double i;
+            return double.TryParse(s, out i);
+        }
+
+        /// <summary>
         /// 转换为double
         /// </summary>
         /// <param name="this">
@@ -199,6 +232,17 @@ namespace TAF.Utility
 
             double x;
             return double.TryParse(@this, out x) ? x : defaultValue;
+        }
+
+        /// <summary>
+        /// 是否是decemal
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsDecemal(this string s)
+        {
+            decimal i;
+            return decimal.TryParse(s, out i);
         }
 
         /// <summary>
@@ -251,6 +295,17 @@ namespace TAF.Utility
         {
             float x;
             return float.TryParse(@this, out x) ? x : defaultValue;
+        }
+
+        /// <summary>
+        /// 是否是dateTime
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static bool IsDateTime(this string s)
+        {
+            DateTime i;
+            return DateTime.TryParse(s, out i);
         }
 
         /// <summary>
