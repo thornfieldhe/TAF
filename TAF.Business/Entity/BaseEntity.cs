@@ -13,6 +13,8 @@ namespace TAF.Entity
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using AutoMapper.Internal;
+
     using Core;
 
     /// <summary>
@@ -112,7 +114,7 @@ namespace TAF.Entity
         {
             AddDescription("Id:" + Id);
             AddDescription("Status:" + Status);
-            AddDescription("Note:" + Note);
+            AddDescription("Note:" + Note.ToNullSafeString());
             AddDescription("CreatedDate:" + CreatedDate);
             AddDescription("ChangedDate:" + ChangedDate);
         }
