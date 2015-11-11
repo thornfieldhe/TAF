@@ -20,7 +20,7 @@ namespace TAF.Mvc
     using TAF.Core;
 
     /// <summary>
-    /// The base controller.
+    /// 控制层基类
     /// </summary>
     /// <typeparam name="K">
     /// </typeparam>
@@ -35,7 +35,7 @@ namespace TAF.Mvc
         where K : EfBusiness<K>, new() where T : IEntityBase, new() where L : new()
     {
         /// <summary>
-        /// The index.
+        /// 首页
         /// </summary>
         /// <returns>
         /// The <see cref="ActionResult"/>.
@@ -46,7 +46,7 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// The get.
+        /// 获取单条数据
         /// </summary>
         /// <param name="id">
         /// The id.
@@ -61,7 +61,7 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// The get view.
+        /// 获取单条数据视图
         /// </summary>
         /// <param name="id">
         /// The id.
@@ -77,7 +77,7 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// The get all.
+        /// 获取所有数据
         /// </summary>
         /// <returns>
         /// The <see cref="ActionResult"/>.
@@ -89,7 +89,7 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// The get views.
+        /// 获取所有数据视图
         /// </summary>
         /// <returns>
         /// The <see cref="ActionResult"/>.
@@ -101,13 +101,18 @@ namespace TAF.Mvc
             return this.Json(new ActionResultData<List<L>>(result), JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 编辑页
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public virtual ActionResult Edit(Guid? id)
         {
             return PartialView("_Edit", id.HasValue ? EfBusiness<K>.Get(id.Value) : new K());
         }
 
         /// <summary>
-        /// The insert.
+        /// 新增一条数据
         /// </summary>
         /// <param name="value">
         /// The value.
@@ -131,7 +136,7 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// The update.
+        /// 更新一条数据
         /// </summary>
         /// <param name="value">
         /// The value.
@@ -156,7 +161,7 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// The delete.
+        /// 删除一条数据
         /// </summary>
         /// <param name="id">
         /// The id.
@@ -180,7 +185,7 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// The pager.
+        /// 分页获取数据视图
         /// </summary>
         /// <typeparam name="R">
         /// </typeparam>
@@ -200,7 +205,7 @@ namespace TAF.Mvc
         /// <returns>
         /// The <see cref="ActionResult"/>.
         /// </returns>
-        protected ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc) where R : struct
+        public ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc) where R : struct
         {
             var pager = EfBusiness<K>.Pages<R, L>(new Pager<L> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
             return this.Json(pager, JsonRequestBehavior.AllowGet);
