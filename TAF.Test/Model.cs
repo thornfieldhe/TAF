@@ -267,4 +267,19 @@ namespace TAF.Test
             get; set;
         }
     }
+
+    public class TestInfo
+    {
+        public string Name
+        {
+            get; set;
+        }
+
+        public Guid Id
+        {
+            get; set;
+        }
+
+
+    }
 }

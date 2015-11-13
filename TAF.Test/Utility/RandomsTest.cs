@@ -47,7 +47,7 @@ namespace TAF.Test
         {
             var a = new[] { 1, 2, 3, 4, 5, 6 };
             Randoms.GetRandomArray(a);
-            Assert.IsFalse(a[0] != 1);
+            Assert.IsTrue(a[0] != 1);
         }
 
         /// <summary>

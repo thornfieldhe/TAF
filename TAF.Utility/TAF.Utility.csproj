@@ -33,6 +33,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -51,10 +55,22 @@
   <ItemGroup>
     <Compile Include="Attributes\OrderByAttribute.cs" />
     <Compile Include="CNDate.cs" />
+    <Compile Include="Collections\ComparisonHelper.cs" />
+    <Compile Include="Collections\EqualityHelper.cs" />
     <Compile Include="Const.cs" />
+    <Compile Include="Data\AnyRadixConvert.cs" />
+    <Compile Include="Data\CombHelper.cs" />
     <Compile Include="Extensions\Ectensions.SwichCaseExtension.cs" />
+    <Compile Include="Extensions\Extensions.Type.cs" />
+    <Compile Include="Extensions\ParamterCheckExtensions.cs" />
+    <Compile Include="Extensions\PathFileSerializer.cs" />
     <Compile Include="Files\Image\ImageInfo.cs" />
     <Compile Include="Random.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Sys\Config.cs" />
     <Compile Include="Encrypt.cs" />
     <Compile Include="EnumExt.cs" />
@@ -103,10 +119,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\Ectensions.Lambda.cs" />
+    <Compile Include="Extensions\Extensions.Object.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lambdas\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

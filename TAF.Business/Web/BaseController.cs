@@ -23,6 +23,7 @@ namespace TAF.Mvc
     /// 控制层基类
     /// </summary>
     /// <typeparam name="K">
+    /// 实体对象
     /// </typeparam>
     /// <typeparam name="T">
     /// 对象列表视图

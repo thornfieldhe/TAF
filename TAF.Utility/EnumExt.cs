@@ -153,7 +153,7 @@ namespace TAF.Utility
 
         #endregion
 
-        #region GetDescription(获取描述)
+        #region GetMemberDescription(获取描述)
 
         /// <summary>
         /// 获取描述,使用System.ComponentModel.Description特性设置描述
@@ -169,7 +169,7 @@ namespace TAF.Utility
         /// </returns>
         public static string GetDescription<T>(object member)
         {
-            return Reflection.GetDescription<T>(GetName<T>(member));
+            return Reflection.GetFieldDescription<T>(GetName<T>(member));
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace TAF.Utility
         /// </returns>
         public static string GetDescription(Type type, object member)
         {
-            return Reflection.GetDescription(type, GetName(type, member));
+            return Reflection.GetFiledDescription(type, GetName(type, member));
         }
 
         #endregion
@@ -234,7 +234,7 @@ namespace TAF.Utility
             }
 
             var value = GetValue<T>(field, enumType);
-            var description = Reflection.GetDescription(enumType, field);
+            var description = Reflection.GetMemberDescription(enumType, field);
             var sortId = GetSortId(field);
             if (sortId == -1)
             {

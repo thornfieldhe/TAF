@@ -74,7 +74,7 @@ namespace System.ComponentModel.DataAnnotations
         {
             if (ErrorMessage == null && ErrorMessageResourceName == null)
             {
-                ErrorMessage = "属性 {0}应大于等于属性{1}";
+                ErrorMessage = "属性 {0}应大于等于{1}";
             }
 
             return string.Format(CultureInfo.CurrentCulture, ErrorMessageString, name, _min);

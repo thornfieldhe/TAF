@@ -43,7 +43,7 @@ namespace TAF.Utility
         #region 获取根目录下App_Data的路径
 
         /// <summary>
-        /// 获取系统路径
+        /// 获取根目录下App_Data的路径
         /// </summary>
         public static string AppData
         {

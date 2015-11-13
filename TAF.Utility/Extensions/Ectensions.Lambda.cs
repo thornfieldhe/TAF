@@ -84,7 +84,7 @@ namespace TAF.Utility
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="IEnumerable"/>.
+        /// IEnumerable<T>
         /// </returns>
         public static IEnumerable<T> WhereIf<T>(this IEnumerable<T> source, Func<T, bool> predicate, bool condition)
         {

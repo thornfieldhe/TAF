@@ -156,7 +156,7 @@ namespace TAF.Utility
             return attribute != null ? attribute.Name : String.Empty;
         }
 
-        #region GetDescription(获取描述)
+        #region GetMemberDescription(获取描述)
 
         /// <summary>
         /// 获取描述
@@ -170,9 +170,14 @@ namespace TAF.Utility
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string GetDescription<T>(string memberName)
+        public static string GetMemberDescription<T>(string memberName)
         {
-            return GetDescription(GetType<T>(), memberName);
+            return GetMemberDescription(GetType<T>(), memberName);
+        }
+
+        public static string GetFieldDescription<T>(string fieldName)
+        {
+            return GetFiledDescription(GetType<T>(), fieldName);
         }
 
         /// <summary>
@@ -187,7 +192,7 @@ namespace TAF.Utility
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string GetDescription(Type type, string memberName)
+        public static string GetMemberDescription(Type type, string memberName)
         {
             if (type == null)
             {
@@ -199,7 +204,34 @@ namespace TAF.Utility
                 return String.Empty;
             }
 
-            return GetDescription(type, type.GetField(memberName));
+            return GetMemberDescription(type, type.GetProperty(memberName));
+        }
+
+        /// <summary>
+        /// 获取描述
+        /// </summary>
+        /// <param name="type">
+        /// 类型
+        /// </param>
+        /// <param name="filedName">
+        /// 成员名称
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string GetFiledDescription(Type type, string filedName)
+        {
+            if (type == null)
+            {
+                return String.Empty;
+            }
+
+            if (String.IsNullOrWhiteSpace(filedName))
+            {
+                return String.Empty;
+            }
+
+            return GetMemberDescription(type, type.GetField(filedName));
         }
 
         /// <summary>
@@ -214,7 +246,7 @@ namespace TAF.Utility
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string GetDescription(Type type, FieldInfo field)
+        public static string GetMemberDescription(Type type, FieldInfo field)
         {
             if (type == null)
             {
@@ -236,7 +268,67 @@ namespace TAF.Utility
             return attribute.Description;
         }
 
+
+        /// <summary>
+        /// 获取描述
+        /// </summary>
+        /// <param name="type">
+        /// 类型
+        /// </param>
+        /// <param name="property">
+        /// 成员
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string GetMemberDescription(Type type, PropertyInfo property)
+        {
+            if (type == null)
+            {
+                return String.Empty;
+            }
+
+            if (property == null)
+            {
+                return String.Empty;
+            }
+
+            var attribute =
+                property.GetCustomAttributes(typeof(DescriptionAttribute), true).FirstOrDefault() as DescriptionAttribute;
+            if (attribute == null)
+            {
+                return property.Name;
+            }
+
+            return attribute.Description;
+        }
         #endregion
+
+        #endregion
+
+        #region 获取实例信息
+
+        /// <summary>
+        /// 获取实例的所有公开属性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IList<Tuple<string, string>> GetMembers<T>()
+        {
+            var result = new List<Tuple<string, string>>();
+            var type = typeof(T);
+            var members = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            members.IfNotNull(
+                              r =>
+                              {
+                                  r.ForEach(
+                                            i =>
+                                            {
+                                                result.Add(new Tuple<string, string>(i.Name, i.PropertyType.Name));
+                                            });
+                              });
+            return result;
+        }
 
         #endregion
     }

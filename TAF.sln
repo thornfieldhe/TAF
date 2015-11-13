@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAF.Business", "TAF.Busines
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAF.BusinessEntity.Test", "TAF.BusinessEntity.Test\TAF.BusinessEntity.Test.csproj", "{6F3C89F4-AD90-4E01-9C34-3ED56A19332A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5EBFD2A7-A903-4A4D-9478-87E2EC20FC22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{6DE7C0A0-2B88-420D-8281-812A9FB65DCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6AB3C277-A165-4327-B0FD-2C131DFB9A9D} = {5EBFD2A7-A903-4A4D-9478-87E2EC20FC22}
+		{6328FCBC-495B-413D-9F6C-DDADC0B97C14} = {6DE7C0A0-2B88-420D-8281-812A9FB65DCE}
+		{F264ABB3-3D0F-4D27-BC98-59D177BAEAFD} = {5EBFD2A7-A903-4A4D-9478-87E2EC20FC22}
+		{6F3C89F4-AD90-4E01-9C34-3ED56A19332A} = {6DE7C0A0-2B88-420D-8281-812A9FB65DCE}
 	EndGlobalSection
 EndGlobal

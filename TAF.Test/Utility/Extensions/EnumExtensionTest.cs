@@ -284,7 +284,7 @@ namespace CAF.Test
 
         #endregion
 
-        #region GetDescription(获取描述)
+        #region GetMemberDescription(获取描述)
 
         /// <summary>
         /// 1. 功能：获取描述,
