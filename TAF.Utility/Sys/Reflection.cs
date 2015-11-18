@@ -325,6 +325,7 @@ namespace TAF.Utility
                                             i =>
                                             {
                                                 result.Add(new Tuple<string, string>(i.Name, i.PropertyType.Name));
+                                                
                                             });
                               });
             return result;

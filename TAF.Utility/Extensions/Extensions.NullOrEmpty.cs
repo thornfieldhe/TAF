@@ -146,6 +146,11 @@ namespace TAF.Utility
             }
         }
 
+        /// <summary>
+        /// 如果对象为空返回string.Empty,否则返回value.ToString()
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string ToStr(this object value)
         {
             if (value == null)

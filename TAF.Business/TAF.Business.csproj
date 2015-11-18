@@ -144,6 +144,7 @@
     <Compile Include="Validations\Validator.cs" />
     <Compile Include="Validations\ValidationHandler.cs" />
     <Compile Include="Validations\ValidationResultCollection.cs" />
+    <Compile Include="Web\BaseTAFController.cs" />
     <Compile Include="Web\KeyValueEntity.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +157,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Codesmith\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

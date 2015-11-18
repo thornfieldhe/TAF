@@ -26,7 +26,7 @@ namespace TAF
     /// </summary>
     /// <typeparam name="K">
     /// </typeparam>
-    public abstract class EfBusiness<K> : BaseBusiness<K> where K : EfBusiness<K>, IBusinessBase, new()
+    public abstract class EfBusiness<K> : BaseBusiness<K>, IDbAction where K : EfBusiness<K>, IBusinessBase, new()
     {
         #region 构造函数
 
@@ -53,7 +53,7 @@ namespace TAF
         #endregion
 
         /// <summary>
-        /// Gets or sets the db contex.
+        /// EF数据库对象
         /// </summary>
         [NotMapped]
         protected DbContext DbContex
@@ -195,53 +195,62 @@ namespace TAF
         #endregion
 
         #region 实例方法
+        /// <summary>
+        /// 初始化对象
+        /// </summary>
+        public virtual void Init()
+        {
+        }
 
         /// <summary>
-        /// The create.
+        /// 创建一个对象
         /// </summary>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public override int Create()
+        public int Create()
         {
+            var result = 0;
             PreInsert();
             Validate();
-            Insert();
-            PostInsert();
-            return DbContex.SaveChanges();
+            result += Insert();
+            result += PostInsert();
+            return result;
         }
 
         /// <summary>
-        /// The save.
+        /// 更新一个对象
         /// </summary>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public override int Save()
+        public int Save()
         {
+            var result = 0;
             PreUpdate();
             Validate();
-            Update();
-            PostUpdate();
-            return DbContex.SaveChanges();
+            result += Update();
+            result += PostUpdate();
+            return result;
         }
 
         /// <summary>
-        /// The delete.
+        /// 删除一个对象
         /// </summary>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public override int Delete()
+        public int Delete()
         {
+            var result = 0;
             PreRemove();
-            Remove();
-            PostRemove();
-            return DbContex.SaveChanges();
+            result += this.Remove();
+            result += PostRemove();
+            return result;
         }
 
         /// <summary>
-        /// The find.
+        /// 查询一个对象
         /// </summary>
         /// <param name="id">
         /// The id.
@@ -254,10 +263,8 @@ namespace TAF
             return QuerySingle(i => i.Id == id);
         }
 
-        #region 模块内部方法
-
         /// <summary>
-        /// The query.
+        /// 查询对象列表
         /// </summary>
         /// <param name="func">
         /// The func.
@@ -266,33 +273,16 @@ namespace TAF
         /// The use cache.
         /// </param>
         /// <returns>
-        /// The <see cref="List"/>.
         /// </returns>
-        internal List<K> Query(Expression<Func<K, bool>> func, bool useCache = false)
+        public List<K> Query(Expression<Func<K, bool>> func, bool useCache = false)
         {
             var query = DbContex.Set<K>().Where(func);
             var items = PreQuery(query, useCache);
             return PostQuery(items);
         }
-
+        
         /// <summary>
-        /// The query.
-        /// </summary>
-        /// <param name="useCache">
-        /// The use cache.
-        /// </param>
-        /// <returns>
-        /// The <see cref="List"/>.
-        /// </returns>
-        internal List<K> Query(bool useCache = false)
-        {
-            var query = DbContex.Set<K>();
-            var items = PreQuery(query, useCache);
-            return PostQuery(items);
-        }
-
-        /// <summary>
-        /// The query single.
+        /// 条件查询一个对象列表
         /// </summary>
         /// <param name="func">
         /// The func.
@@ -300,39 +290,154 @@ namespace TAF
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        internal K QuerySingle(Expression<Func<K, bool>> func)
+        public K QuerySingle(Expression<Func<K, bool>> func)
         {
             var query = DbContex.Set<K>().Where(func);
             var item = PreQuerySingle(query);
             return PostQuerySingle(item);
         }
 
-        #endregion
-
-
         #region 继承方法
+
+        #region 插入
+
         /// <summary>
-        /// The insert.
+        /// 在插入之前给对象赋值
         /// </summary>
-        protected override void Insert()
+        protected virtual void PreInsert()
         {
-            DbContex.Set<K>().Add(this as K);
         }
 
         /// <summary>
-        /// The remove.
+        /// 插入对象到数据库
         /// </summary>
-        protected override void Remove()
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        protected virtual int Insert()
+        {
+            DbContex.Set<K>().Add(this as K);
+            return DbContex.SaveChanges();
+        }
+
+
+        /// <summary>
+        /// 在插入之后操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PostInsert()
+        {
+            return 0;
+        }
+
+        #endregion
+
+        #region 更新
+
+        /// <summary>
+        /// 更新之前给对象赋值
+        /// </summary>
+        protected virtual void PreUpdate()
+        {
+            ChangedDate = DateTime.Now;
+        }
+
+        /// <summary>
+        /// 更新对象到数据库
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        protected virtual int Update()
+        {
+            return DbContex.SaveChanges();
+        }
+
+        /// <summary>
+        /// 更新对象到数据库后执行操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PostUpdate()
+        {
+            return 0;
+        }
+
+        #endregion
+
+        #region 移除
+
+        /// <summary>
+        /// 数据库移除对象前执行操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PreRemove()
+        {
+            return 0;
+        }
+
+        /// <summary>
+        /// 从数据库移除对象
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        protected virtual int Remove()
         {
             //软删除
             //            this.Status = -1;
             //            DbContex.SaveChanges();
             //硬删除
             DbContex.Set<K>().Remove(this as K);
+            return this.DbContex.SaveChanges();
+        }
+
+
+        /// <summary>
+        /// 数据库移除对象后执行操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PostRemove()
+        {
+            return 0;
+        }
+
+        #endregion
+
+        #region 查询
+
+        /// <summary>
+        /// 执行查询前，修改查询条件
+        /// </summary>
+        /// <param name="query">
+        /// The query.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        protected virtual K PreQuerySingle(IQueryable<K> query)
+        {
+            return query.FirstOrDefault();
         }
 
         /// <summary>
-        /// The pre query.
+        /// 查询完成后给查询结果属性赋值
+        /// </summary>
+        /// <param name="item">
+        /// The item.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        protected virtual K PostQuerySingle(K item)
+        {
+            item.IfNotNull(i => i.DbContex = DbContex);
+            return item;
+        }
+
+        /// <summary>
+        /// 查询之前，判断是否是从缓存中取数
         /// </summary>
         /// <param name="query">
         /// The query.
@@ -341,9 +446,8 @@ namespace TAF
         /// The use cache.
         /// </param>
         /// <returns>
-        /// The <see cref="List"/>.
         /// </returns>
-        protected override List<K> PreQuery(IQueryable<K> query, bool useCache = false)
+        protected virtual List<K> PreQuery(IQueryable<K> query, bool useCache = false)
         {
             var items = useCache
                             ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(60))).ToList()
@@ -352,35 +456,35 @@ namespace TAF
         }
 
         /// <summary>
-        /// The post query.
+        /// 查询所有对象列表
+        /// </summary>
+        /// <param name="useCache">
+        /// The use cache.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        protected List<K> Query(bool useCache = false)
+        {
+            var query = DbContex.Set<K>();
+            var items = PreQuery(query, useCache);
+            return PostQuery(items);
+        }
+
+        /// <summary>
+        /// 查询完成后给查询结果属性赋值
         /// </summary>
         /// <param name="items">
         /// The items.
         /// </param>
         /// <returns>
-        /// The <see cref="List"/>.
         /// </returns>
-        protected override List<K> PostQuery(List<K> items)
+        protected virtual List<K> PostQuery(List<K> items)
         {
             items.ForEach(i => i.DbContex = DbContex);
             return items;
         }
-
-        /// <summary>
-        /// The post query single.
-        /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <returns>
-        /// The <see cref="K"/>.
-        /// </returns>
-        protected override K PostQuerySingle(K item)
-        {
-            item.IfNotNull(i => i.DbContex = DbContex);
-            return item;
-        }
-
+        #endregion
+        
         #endregion
 
         #endregion

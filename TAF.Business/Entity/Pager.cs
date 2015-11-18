@@ -216,6 +216,11 @@
                     ShowIndex.Sort();
                 }
             }
+
+            if (ShowIndex.Count == 0)
+            {
+                ShowIndex.Add(1);
+            }
         }
     }
 

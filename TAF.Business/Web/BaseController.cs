@@ -32,8 +32,8 @@ namespace TAF.Mvc
     /// 对象视图
     /// </typeparam>
     [Authorize]
-    public class BaseController<K, T, L> : Controller
-        where K : EfBusiness<K>, new() where T : IEntityBase, new() where L : new()
+    public class BaseController<K, T, L> : BaseTAFController
+        where K : EfBusiness<K>, new() where T : class, IEntityBase, new() where L : new()
     {
         /// <summary>
         /// 首页
@@ -73,8 +73,14 @@ namespace TAF.Mvc
         public virtual ActionResult GetView(Guid id)
         {
             var item = EfBusiness<K>.Get(id);
-            var result = Mapper.Map<T>(item);
-            return this.Json(new ActionResultData<T>(result), JsonRequestBehavior.AllowGet);
+            if (item is T)
+            {
+                return this.Json(new ActionResultData<T>(item as T), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return this.Json(new ActionResultData<T>(Mapper.Map<T>(item)), JsonRequestBehavior.AllowGet);
+            }
         }
 
         /// <summary>
@@ -98,8 +104,14 @@ namespace TAF.Mvc
         public virtual ActionResult GetViews()
         {
             var items = EfBusiness<K>.GetAll();
-            var result = Mapper.Map<List<L>>(items);
-            return this.Json(new ActionResultData<List<L>>(result), JsonRequestBehavior.AllowGet);
+            if (items is List<L>)
+            {
+                return this.Json(new ActionResultData<List<L>>(items as List<L>), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return this.Json(new ActionResultData<List<L>>(Mapper.Map<List<L>>(items)), JsonRequestBehavior.AllowGet);
+            }
         }
 
         /// <summary>
@@ -109,7 +121,7 @@ namespace TAF.Mvc
         /// <returns></returns>
         public virtual ActionResult Edit(Guid? id)
         {
-            return PartialView("_Edit", id.HasValue ? EfBusiness<K>.Get(id.Value) : new K());
+            return this.PartialView("_Edit", !id.HasValue ? new K() : EfBusiness<K>.Get(id.Value));
         }
 
         /// <summary>
@@ -128,11 +140,11 @@ namespace TAF.Mvc
             {
                 var item = Mapper.Map<K>(value);
                 item.Create();
-                return this.Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultStatus());
             }
             catch (Exception ex)
             {
-                return this.Json(new ActionResultStatus(ex), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultStatus(ex));
             }
         }
 
@@ -153,11 +165,11 @@ namespace TAF.Mvc
                 var item = EfBusiness<K>.Get(value.Id);
                 Mapper.Map(value, item);
                 item.Save();
-                return this.Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultStatus());
             }
             catch (Exception ex)
             {
-                return this.Json(new ActionResultStatus(ex), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultStatus(ex));
             }
         }
 
@@ -177,11 +189,11 @@ namespace TAF.Mvc
             {
                 var item = EfBusiness<K>.Get(id);
                 item.Delete();
-                return this.Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultStatus());
             }
             catch (Exception ex)
             {
-                return this.Json(new ActionResultStatus(ex), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultStatus(ex));
             }
         }
 

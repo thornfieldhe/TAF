@@ -6,7 +6,6 @@
 //   字符串操作辅助类
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace TAF.Utility
 {
     using System;
@@ -393,6 +392,7 @@ namespace TAF.Utility
         /// 值，范例1："5555",返回"5",范例2："4545",返回"45"
         /// </param>
         /// <returns>
+        /// The <see cref="string"/>.
         /// </returns>
         public static string Distinct(this string value)
         {
@@ -493,6 +493,7 @@ namespace TAF.Utility
         /// <param name="times">
         /// </param>
         /// <returns>
+        /// The <see cref="string"/>.
         /// </returns>
         public static string Repeat(this string @this, int times)
         {
@@ -501,6 +502,7 @@ namespace TAF.Utility
             {
                 @this += repeat;
             }
+
             return @this;
         }
 
@@ -759,6 +761,60 @@ namespace TAF.Utility
         }
 
         /// <summary>
+        /// 单词变成单数形式
+        /// </summary>
+        /// <param name="word">
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string ToSingular(this string word)
+        {
+            var plural1 = new Regex("(?<keep>[^aeiou])ies$");
+            var plural2 = new Regex("(?<keep>[aeiou]y)s$");
+            var plural3 = new Regex("(?<keep>[sxzh])es$");
+            var plural4 = new Regex("(?<keep>[^sxzhyu])s$");
+
+            if (plural1.IsMatch(word))
+                return plural1.Replace(word, "${keep}y");
+            else if (plural2.IsMatch(word))
+                return plural2.Replace(word, "${keep}");
+            else if (plural3.IsMatch(word))
+                return plural3.Replace(word, "${keep}");
+            else if (plural4.IsMatch(word))
+                return plural4.Replace(word, "${keep}");
+
+            return word;
+        }
+
+        /// <summary>
+        /// 单词变成复数形式
+        /// </summary>
+        /// <param name="word">
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        public static string ToPlural(this string word)
+        {
+            var plural1 = new Regex("(?<keep>[^aeiou])y$");
+            var plural2 = new Regex("(?<keep>[aeiou]y)$");
+            var plural3 = new Regex("(?<keep>[sxzh])$");
+            var plural4 = new Regex("(?<keep>[^sxzhy])$");
+
+            if (plural1.IsMatch(word))
+                return plural1.Replace(word, "${keep}ies");
+            else if (plural2.IsMatch(word))
+                return plural2.Replace(word, "${keep}s");
+            else if (plural3.IsMatch(word))
+                return plural3.Replace(word, "${keep}es");
+            else if (plural4.IsMatch(word))
+                return plural4.Replace(word, "${keep}s");
+
+            return word;
+        }
+
+        /// <summary>
         /// The custom replace.
         /// </summary>
         /// <param name="m">
@@ -837,6 +893,7 @@ namespace TAF.Utility
         /// 截取长度
         /// </param>
         /// <returns>
+        /// The <see cref="string"/>.
         /// </returns>
         public static string Cut(this string source, int len)
         {

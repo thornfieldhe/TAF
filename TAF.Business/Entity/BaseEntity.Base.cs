@@ -11,7 +11,6 @@ namespace TAF.Entity
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using TAF.Core;
     using TAF.Utility;
@@ -25,10 +24,8 @@ namespace TAF.Entity
     /// </typeparam>
     public abstract partial class BaseBusiness<T> : StatusDescription,
                                                     IEqualityComparer<T>,
-                                                    IBusinessBase,
                                                     IComparable<IBusinessBase>,
-                                                    IValidationEntity,
-        IDbAction
+                                                    IValidationEntity
         where T : class, IBusinessBase
     {
         #region 克隆操作
@@ -323,165 +320,6 @@ namespace TAF.Entity
 
         #endregion
 
-        #endregion
-
-        #region 基本操作       
-
-        /// <summary>
-        /// 新增
-        /// </summary>
-        /// <returns></returns>
-        public abstract int Create();
-
-        /// <summary>
-        /// 更新
-        /// </summary>
-        /// <returns></returns>
-        public abstract int Save();
-
-        /// <summary>
-        /// 删除
-        /// </summary>
-        /// <returns></returns>
-        public abstract int Delete();
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        protected virtual void Init()
-        {
-        }
-
-        /// <summary>
-        /// The update.
-        /// </summary>
-        protected virtual void Update()
-        {
-        }
-
-        /// <summary>
-        /// The insert.
-        /// </summary>
-        protected virtual void Insert()
-        {
-        }
-
-        /// <summary>
-        /// The remove.
-        /// </summary>
-        protected virtual void Remove()
-        {
-        }
-
-        /// <summary>
-        /// The pre insert.
-        /// </summary>
-        protected virtual void PreInsert()
-        {
-        }
-
-        /// <summary>
-        /// The pre update.
-        /// </summary>
-        protected virtual void PreUpdate()
-        {
-            ChangedDate = DateTime.Now;
-        }
-
-        /// <summary>
-        /// The pre query.
-        /// </summary>
-        /// <param name="query">
-        /// The query.
-        /// </param>
-        /// <param name="useCache">
-        /// The use cache.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected virtual List<T> PreQuery(IQueryable<T> query, bool useCache = false)
-        {
-            return PostQuery(new List<T>());
-        }
-
-        /// <summary>
-        /// The pre query single.
-        /// </summary>
-        /// <param name="query">
-        /// The query.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected virtual T PreQuerySingle(IQueryable<T> query)
-        {
-            return query.FirstOrDefault();
-        }
-
-        /// <summary>
-        /// The pre remove.
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PreRemove()
-        {
-            return 0;
-        }
-
-        /// <summary>
-        /// The post update.
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PostUpdate()
-        {
-            return 0;
-        }
-
-        /// <summary>
-        /// The post remove.
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PostRemove()
-        {
-            return 0;
-        }
-
-        /// <summary>
-        /// The post insert.
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PostInsert()
-        {
-            return 0;
-        }
-
-        /// <summary>
-        /// The post query.
-        /// </summary>
-        /// <param name="items">
-        /// The items.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected virtual List<T> PostQuery(List<T> items)
-        {
-            return items;
-        }
-
-        /// <summary>
-        /// The post query single.
-        /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected virtual T PostQuerySingle(T item)
-        {
-            return item;
-        }
         #endregion
     }
 }
