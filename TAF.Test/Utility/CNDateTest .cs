@@ -6,7 +6,6 @@ namespace TAF.Test
     using System.Text;
 
     using TAF.Utility;
-    using TAF.Utility;
 
     /// <summary>
     /// 测试中国日历

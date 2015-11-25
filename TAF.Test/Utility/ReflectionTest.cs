@@ -31,10 +31,5 @@ namespace TAF.Test.Utility.Extensions
         {
             get; set;
         }
-
-        protected string Note
-        {
-            get; set;
-        }
     }
 }

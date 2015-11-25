@@ -11,6 +11,8 @@ namespace TAF.Mvc
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity.Validation;
+    using System.Linq;
     using System.Web.Mvc;
 
     using AutoMapper;
@@ -18,6 +20,7 @@ namespace TAF.Mvc
 
     using TAF;
     using TAF.Core;
+    using TAF.Utility;
 
     /// <summary>
     /// 控制层基类
@@ -47,21 +50,6 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// 获取单条数据
-        /// </summary>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ActionResult"/>.
-        /// </returns>
-        public virtual ActionResult Get(Guid id)
-        {
-            var item = EfBusiness<K>.Get(id);
-            return this.Json(new ActionResultData<K>(item), JsonRequestBehavior.AllowGet);
-        }
-
-        /// <summary>
         /// 获取单条数据视图
         /// </summary>
         /// <param name="id">
@@ -81,18 +69,6 @@ namespace TAF.Mvc
             {
                 return this.Json(new ActionResultData<T>(Mapper.Map<T>(item)), JsonRequestBehavior.AllowGet);
             }
-        }
-
-        /// <summary>
-        /// 获取所有数据
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ActionResult"/>.
-        /// </returns>
-        public virtual ActionResult GetAll()
-        {
-            var items = EfBusiness<K>.GetAll();
-            return this.Json(new ActionResultData<List<K>>(items), JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -142,6 +118,11 @@ namespace TAF.Mvc
                 item.Create();
                 return this.Json(new ActionResultStatus());
             }
+            catch (DbEntityValidationException ex)
+            {
+                return this.Json(new ActionResultStatus(100,
+                    $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
+            }
             catch (Exception ex)
             {
                 return this.Json(new ActionResultStatus(ex));
@@ -167,6 +148,11 @@ namespace TAF.Mvc
                 item.Save();
                 return this.Json(new ActionResultStatus());
             }
+            catch (DbEntityValidationException ex)
+            {
+                return this.Json(new ActionResultStatus(100,
+                    $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
+            }
             catch (Exception ex)
             {
                 return this.Json(new ActionResultStatus(ex));
@@ -190,6 +176,11 @@ namespace TAF.Mvc
                 var item = EfBusiness<K>.Get(id);
                 item.Delete();
                 return this.Json(new ActionResultStatus());
+            }
+            catch (DbEntityValidationException ex)
+            {
+                return this.Json(new ActionResultStatus(100,
+                    $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
             }
             catch (Exception ex)
             {

@@ -810,6 +810,16 @@ namespace TAF.Utility
         }
 
         /// <summary>
+        /// 获取格式化字符串，带时分秒，格式："yyyyMMddHHmmss"
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static string ToDateTimeString(this DateTime dateTime)
+        {
+            return dateTime.ToString("yyyyMMddHHmm");
+        }
+
+        /// <summary>
         /// 获取格式化字符串，带时分秒，格式："yyyy-MM-dd HH:mm:ss"
         /// </summary>
         /// <param name="dateTime">
@@ -832,12 +842,13 @@ namespace TAF.Utility
         /// <param name="dateTime">
         /// 日期
         /// </param>
+        /// <param name="withOutDash">是否包含-</param>
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        public static string ToDateString(this DateTime dateTime)
+        public static string ToDateString(this DateTime dateTime, bool withOutDash = false)
         {
-            return dateTime.ToString("yyyy-MM-dd");
+            return dateTime.ToString(withOutDash ? "yyyyMMdd" : "yyyy-MM-dd");
         }
 
         /// <summary>

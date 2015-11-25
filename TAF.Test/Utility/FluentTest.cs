@@ -6,7 +6,6 @@ namespace TAF.Test
     using System.Collections.Generic;
 
     using TAF.Utility;
-    using TAF.Utility;
 
 
     /// <summary>

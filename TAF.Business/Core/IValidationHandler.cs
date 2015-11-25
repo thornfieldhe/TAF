@@ -10,7 +10,6 @@
 namespace TAF.Core
 {
     using TAF.Validation;
-    using TAF.Validation;
 
     /// <summary>
     /// 验证处理器
