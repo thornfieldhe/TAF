@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Config.cs" company="">
+// <copyright file="ConfigReader.cs" company="">
 //   
 // </copyright>
 // <summary>
@@ -15,7 +15,7 @@ namespace TAF.Utility
     /// <summary>
     /// 配置
     /// </summary>
-    public static class Config
+    public static class ConfigReader
     {
         #region DefaultEncoding(默认编码)
 

@@ -1,8 +1,8 @@
 ﻿using System.Web;
-using TAF.Entity;
 
-namespace TAF
+namespace TAF.Utility
 {
+
     /// <summary>
     /// 单例基类
     /// </summary>

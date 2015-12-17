@@ -6,6 +6,8 @@ namespace TAF.Core
 
         int Save();
 
+        int Commit();
+
         int Delete();
     }
 }

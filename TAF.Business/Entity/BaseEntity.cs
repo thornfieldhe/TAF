@@ -44,6 +44,8 @@ namespace TAF.Entity
 
             rules = new List<IValidationRule>();
             this.validateionHandler = Ioc.Create<IValidationHandler>();
+
+            MarkNew();
         }
 
         /// <summary>

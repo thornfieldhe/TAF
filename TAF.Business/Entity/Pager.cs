@@ -8,6 +8,9 @@
 
     using Core;
 
+    using EntityFramework.Extensions;
+    using EntityFramework.Future;
+
     /// <summary>
     /// The pager.
     /// </summary>
@@ -107,15 +110,16 @@
             IEnumerable<K> query,
             bool isAsc) where K : EfBusiness<K>, IBusinessBase, new()
         {
-            Total = query.Count();
-            List<K> result;
+            Total = query.AsQueryable().FutureCount();
+            FutureQuery<K> result;
             if (isAsc)
             {
                 result = query
                        .OrderBy(r => r.CreatedDate)
                        .Skip(PageSize * (PageIndex - 1))
                        .Take(PageSize)
-                       .ToList();
+                         .AsQueryable()
+                       .Future();
             }
             else
             {
@@ -123,7 +127,8 @@
                        .OrderBy(r => r.CreatedDate)
                         .Skip(PageSize * (PageIndex - 1))
                         .Take(PageSize)
-                        .ToList();
+                        .AsQueryable()
+                        .Future();
             }
 
             Datas = Mapper.Map<List<T>>(result);

@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity\Pager.cs" />
+    <Compile Include="Logs\LogManager.cs" />
     <Compile Include="Web\ActionResultData.cs" />
     <Compile Include="Web\BaseController.cs" />
     <Compile Include="Entity\BaseEntity.Base.cs" />
@@ -118,12 +119,8 @@
     <Compile Include="DI\Container.cs" />
     <Compile Include="DI\IDependency.cs" />
     <Compile Include="DI\IOC.cs" />
-    <Compile Include="EFEntity.cs" />
-    <Compile Include="Entity\ContextWapper.cs" />
-    <Compile Include="Entity\BaseDbContext.cs" />
+    <Compile Include="EfBusiness.cs" />
     <Compile Include="Entity\BaseEntityTypeConfigurationMap.cs" />
-    <Compile Include="Entity\GenericContex.cs" />
-    <Compile Include="Entity\SingletonBase.cs" />
     <Compile Include="Entity\StatusDescription.cs" />
     <Compile Include="Validations\DataAnnotations\BaseRegValidateAttribute.cs" />
     <Compile Include="Validations\DataAnnotations\DateTimeRequiredAttribute.cs" />

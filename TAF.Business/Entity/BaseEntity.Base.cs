@@ -11,6 +11,7 @@ namespace TAF.Entity
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     using TAF.Core;
     using TAF.Utility;
@@ -28,6 +29,105 @@ namespace TAF.Entity
                                                     IValidationEntity
         where T : class, IBusinessBase
     {
+        #region 基本状态
+        protected bool _isNew = false;
+        protected bool _isDirty = false;
+        protected bool _isDelete = false;
+
+        /// <summary>
+        /// 新建数据，未录入数据库
+        /// </summary>
+        [NotMapped]
+        public bool IsNew
+        {
+            get
+            {
+                return this._isNew;
+            }
+            protected set
+            {
+                this._isNew = value;
+            }
+        }
+
+        /// <summary>
+        /// 从数据库中读取出来标志删除数据
+        /// </summary>
+        [NotMapped]
+        public bool IsDelete
+        {
+            get
+            {
+                return this._isDelete;
+            }
+            protected set
+            {
+                this._isDelete = value;
+            }
+        }
+
+        /// <summary>
+        /// 从数据库中读取出来已修改数据
+        /// </summary>
+        [NotMapped]
+        public bool IsDirty
+        {
+            get
+            {
+                return this._isDirty;
+            }
+            protected set
+            {
+                this._isDirty = value;
+            }
+        }
+
+        /// <summary>
+        /// 从数据库中读取出来未修改的数据
+        /// </summary>
+        [NotMapped]
+        public virtual bool IsClean
+        {
+            get
+            {
+                return !this._isDirty && !this._isNew;
+            }
+        }
+
+
+        protected virtual void MarkNew()
+        {
+            this._isNew = true;
+            this.MarkDirty();
+        }
+
+        protected virtual void MarkOld()
+        {
+            this._isNew = false;
+            this.MarkClean();
+        }
+
+        protected virtual void MarkClean()
+        {
+            this._isDirty = false;
+        }
+
+        protected virtual void MarkDirty()
+        {
+            this._isDirty = true;
+        }
+
+        /// <summary>
+        /// 标记删除
+        /// </summary>
+        public virtual void MarkDelete()
+        {
+            this._isDelete = true;
+            this.MarkDirty();
+        }
+
+        #endregion
+
         #region 克隆操作
 
         /// <summary>

@@ -60,7 +60,7 @@ namespace TAF.Mvc
         /// </returns>
         public virtual ActionResult GetView(Guid id)
         {
-            var item = EfBusiness<K>.Get(id);
+            var item = EfBusiness<K>.Find(id);
             if (item is T)
             {
                 return this.Json(new ActionResultData<T>(item as T), JsonRequestBehavior.AllowGet);
@@ -97,7 +97,7 @@ namespace TAF.Mvc
         /// <returns></returns>
         public virtual ActionResult Edit(Guid? id)
         {
-            return this.PartialView("_Edit", !id.HasValue ? new K() : EfBusiness<K>.Get(id.Value));
+            return this.PartialView("_Edit", !id.HasValue ? new K() : EfBusiness<K>.Find(id.Value));
         }
 
         /// <summary>
@@ -143,9 +143,38 @@ namespace TAF.Mvc
         {
             try
             {
-                var item = EfBusiness<K>.Get(value.Id);
+                var item = EfBusiness<K>.Find(value.Id);
                 Mapper.Map(value, item);
                 item.Save();
+                return this.Json(new ActionResultStatus());
+            }
+            catch (DbEntityValidationException ex)
+            {
+                return this.Json(new ActionResultStatus(100,
+                    $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
+            }
+            catch (Exception ex)
+            {
+                return this.Json(new ActionResultStatus(ex));
+            }
+        }
+
+        /// <summary>
+        /// 新增/更新一条数据
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ActionResult"/>.
+        /// </returns>
+        [HttpPost]
+        public virtual ActionResult Submit(T value)
+        {
+            try
+            {
+                var item = Mapper.Map<K>(value);
+                item.Commit();
                 return this.Json(new ActionResultStatus());
             }
             catch (DbEntityValidationException ex)
@@ -173,7 +202,7 @@ namespace TAF.Mvc
         {
             try
             {
-                var item = EfBusiness<K>.Get(id);
+                var item = EfBusiness<K>.Find(id);
                 item.Delete();
                 return this.Json(new ActionResultStatus());
             }

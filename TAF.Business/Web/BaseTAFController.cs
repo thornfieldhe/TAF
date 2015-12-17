@@ -21,8 +21,15 @@ namespace TAF.Mvc
         {
             if (!this.User.Identity.IsAuthenticated)
             {
-                filterContext.Result = new RedirectResult("/Account/Login");
+                filterContext.HttpContext.Response.Redirect("/Account/Login");
             }
+        }
+
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            base.OnException(filterContext);
+            LogManager.Instance.Logger.Error(filterContext.Exception);
+            filterContext.HttpContext.Response.Redirect("/Error");
         }
     }
 }

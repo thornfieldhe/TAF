@@ -30,7 +30,7 @@ namespace TAF.Files
         /// </returns>
         public static string StreamToString(Stream data)
         {
-            return StreamToString(data, Config.DefaultEncoding);
+            return StreamToString(data, ConfigReader.DefaultEncoding);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace TAF.Files
         /// </returns>
         public static Stream StringToStream(string data)
         {
-            return StringToStream(data, Config.DefaultEncoding);
+            return StringToStream(data, ConfigReader.DefaultEncoding);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace TAF.Files
         /// </returns>
         public static byte[] StringToBytes(string data)
         {
-            return StringToBytes(data, Config.DefaultEncoding);
+            return StringToBytes(data, ConfigReader.DefaultEncoding);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace TAF.Files
         /// </returns>
         public static string BytesToString(byte[] data)
         {
-            return BytesToString(data, Config.DefaultEncoding);
+            return BytesToString(data, ConfigReader.DefaultEncoding);
         }
 
         /// <summary>

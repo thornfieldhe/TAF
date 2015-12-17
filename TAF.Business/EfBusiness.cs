@@ -26,7 +26,7 @@ namespace TAF
     /// </summary>
     /// <typeparam name="K">
     /// </typeparam>
-    public abstract class EfBusiness<K> : BaseBusiness<K>, IDbAction where K : EfBusiness<K>, IBusinessBase, new()
+    public class EfBusiness<K> : BaseBusiness<K>, IDbAction where K : EfBusiness<K>, IBusinessBase, new()
     {
         #region 构造函数
 
@@ -61,21 +61,9 @@ namespace TAF
             get; set;
         }
 
-        #region 静态方法
+        public override bool IsClean { get { return DbContex.Entry<K>(this as K).State == EntityState.Unchanged; } }
 
-        /// <summary>
-        /// The get.
-        /// </summary>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        /// <returns>
-        /// The <see cref="K"/>.
-        /// </returns>
-        public static K Get(Guid id)
-        {
-            return new K().QuerySingle(i => i.Id == id);
-        }
+        #region 静态方法
 
         /// <summary>
         /// The get all.
@@ -156,12 +144,9 @@ namespace TAF
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        public static K GetById(Guid id)
+        public static K Find(Guid id)
         {
-            var context = Ioc.Create<IContextWapper>().Context;
-            var item = context.Set<K>().Find(id);
-            item.DbContex = context;
-            return item;
+            return new K().QuerySingle(i => i.Id == id);
         }
 
         /// <summary>
@@ -190,6 +175,16 @@ namespace TAF
         public static int Count(Expression<Func<K, bool>> func)
         {
             return Ioc.Create<IContextWapper>().Context.Set<K>().Count(func);
+        }
+
+        public static void Delete(Expression<Func<K, bool>> func)
+        {
+            Ioc.Create<IContextWapper>().Context.Set<K>().Where(func).Delete();
+        }
+
+        public static void Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update)
+        {
+            Ioc.Create<IContextWapper>().Context.Set<K>().Where(func).Update(update);
         }
 
         #endregion
@@ -235,6 +230,22 @@ namespace TAF
         }
 
         /// <summary>
+        /// 提交一个对象
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public int Commit()
+        {
+            var result = 0;
+            PreSubmit();
+            Validate();
+            result += Submit();
+            result += PostSubmit();
+            return result;
+        }
+
+        /// <summary>
         /// 删除一个对象
         /// </summary>
         /// <returns>
@@ -258,7 +269,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        public K Find(Guid id)
+        public K Get(Guid id)
         {
             return QuerySingle(i => i.Id == id);
         }
@@ -280,7 +291,7 @@ namespace TAF
             var items = PreQuery(query, useCache);
             return PostQuery(items);
         }
-        
+
         /// <summary>
         /// 条件查询一个对象列表
         /// </summary>
@@ -306,6 +317,7 @@ namespace TAF
         /// </summary>
         protected virtual void PreInsert()
         {
+            this.MarkNew();
         }
 
         /// <summary>
@@ -341,6 +353,7 @@ namespace TAF
         protected virtual void PreUpdate()
         {
             ChangedDate = DateTime.Now;
+            this.MarkDirty();
         }
 
         /// <summary>
@@ -351,7 +364,7 @@ namespace TAF
         /// </returns>
         protected virtual int Update()
         {
-            return DbContex.SaveChanges();
+            return !IsClean ? this.DbContex.SaveChanges() : 0;
         }
 
         /// <summary>
@@ -360,6 +373,39 @@ namespace TAF
         /// <returns>
         /// </returns>
         protected virtual int PostUpdate()
+        {
+            return 0;
+        }
+
+        #endregion
+
+        #region 提交 （包含插入和更新操作） 
+
+        /// <summary>
+        /// 在提交之前给对象赋值
+        /// </summary>
+        protected virtual void PreSubmit()
+        {
+
+        }
+
+        /// <summary>
+        /// 提交对象到数据库
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        protected virtual int Submit()
+        {
+            return this.IsNew ? this.Insert() : this.Update();
+        }
+
+        /// <summary>
+        /// 在提交之后操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PostSubmit()
         {
             return 0;
         }
@@ -375,6 +421,7 @@ namespace TAF
         /// </returns>
         protected virtual int PreRemove()
         {
+            this.MarkDelete();
             return 0;
         }
 
@@ -433,6 +480,7 @@ namespace TAF
         protected virtual K PostQuerySingle(K item)
         {
             item.IfNotNull(i => i.DbContex = DbContex);
+            item.MarkOld();
             return item;
         }
 
@@ -480,11 +528,16 @@ namespace TAF
         /// </returns>
         protected virtual List<K> PostQuery(List<K> items)
         {
-            items.ForEach(i => i.DbContex = DbContex);
+            items.ForEach(
+                i =>
+                    {
+                        i.DbContex = DbContex;
+                        i.MarkOld();
+                    });
             return items;
         }
         #endregion
-        
+
         #endregion
 
         #endregion

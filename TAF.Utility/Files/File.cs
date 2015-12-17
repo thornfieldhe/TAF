@@ -80,7 +80,7 @@ namespace TAF.Files
         /// </returns>
         public static string Read(string filePath)
         {
-            return Read(filePath, Config.DefaultEncoding);
+            return Read(filePath, ConfigReader.DefaultEncoding);
         }
 
         /// <summary>

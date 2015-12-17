@@ -37,6 +37,18 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Roslyn.Compilers, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Roslyn.Compilers.Common.1.2.20906.2\lib\net45\Roslyn.Compilers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Roslyn.Compilers.CSharp, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Roslyn.Compilers.CSharp.1.2.20906.2\lib\net45\Roslyn.Compilers.CSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpConfig, Version=1.4.8.0, Culture=neutral, PublicKeyToken=c1deedac91bd7724, processorArchitecture=MSIL">
+      <HintPath>..\packages\sharpconfig.1.4.8\lib\net20\SharpConfig.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -71,7 +83,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Sys\Config.cs" />
+    <Compile Include="Sys\ConfigManager.cs" />
+    <Compile Include="Sys\ConfigReader.cs" />
     <Compile Include="Encrypt.cs" />
     <Compile Include="EnumExt.cs" />
     <Compile Include="Extensions\Extensions.Array.cs" />
@@ -106,6 +119,7 @@
     <Compile Include="Fluent\FluentInterface.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sys\GenericContex.cs" />
     <Compile Include="Sys\Reflection.cs" />
     <Compile Include="Reg\IExpression.cs" />
     <Compile Include="Reg\IRegExpression.cs" />
@@ -114,6 +128,7 @@
     <Compile Include="Reg\RegexOperator.cs" />
     <Compile Include="Reg\StringReg.cs" />
     <Compile Include="Files\Image\Image.cs" />
+    <Compile Include="Sys\SingletonBase.cs" />
     <Compile Include="Sys\Time.cs" />
     <Compile Include="Sys\Web.cs" />
   </ItemGroup>

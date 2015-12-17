@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF.Entity
+namespace TAF.Utility
 {
     using System;
     using System.Collections.Generic;
