@@ -61,58 +61,72 @@ namespace TAF
             get; set;
         }
 
-        public override bool IsClean { get { return DbContex.Entry<K>(this as K).State == EntityState.Unchanged; } }
+        public override bool IsClean
+        {
+            get
+            {
+                return DbContex.Entry<K>(this as K).State == EntityState.Unchanged;
+            }
+        }
 
         #region 静态方法
 
+        #region 查询
+
         /// <summary>
-        /// The get all.
+        /// 查询所有数据
         /// </summary>
         /// <param name="useCache">
-        /// The use cache.
+        /// 是否使用缓存
         /// </param>
         /// <returns>
         /// The <see cref="List"/>.
         /// </returns>
         public static List<K> GetAll(bool useCache = false)
         {
-            return new K().Query(useCache);
+            return Query(Ioc.Create<IContextWapper>().Context.Set<K>(), useCache);
         }
 
         /// <summary>
-        /// The get.
+        /// 条件查询数据
         /// </summary>
         /// <param name="func">
-        /// The func.
+        /// 过滤条件
         /// </param>
         /// <param name="useCache">
-        /// The use cache.
+        /// 是否使用缓存
         /// </param>
         /// <returns>
         /// </returns>
         public static List<K> Get(Expression<Func<K, bool>> func, bool useCache = false)
         {
-            return new K().Query(func, useCache);
+            return Query(Ioc.Create<IContextWapper>().Context.Set<K>().Where(func), useCache);
         }
 
         /// <summary>
-        /// The pages.
+        /// 分页查询数据
+        /// 转换成对象T的列表
         /// </summary>
         /// <param name="pager">
-        /// The pager.
+        /// 分页对象
         /// </param>
         /// <param name="whereFunc">
-        /// The where func.
+        /// 过滤条件
         /// </param>
         /// <param name="orderByFunc">
-        /// The order by func.
+        /// 排序属性
         /// </param>
         /// <param name="isAsc">
-        /// The is asc.
+        /// 是否是顺序
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
         /// </param>
         /// <typeparam name="R">
+        /// 排序对象
         /// </typeparam>
         /// <typeparam name="T">
+        /// 结果转换为List<T>输出
         /// </typeparam>
         /// <returns>
         /// The <see cref="pager"/>.
@@ -121,36 +135,106 @@ namespace TAF
             Pager<T> pager,
             Func<K, bool> whereFunc,
             Func<K, R> orderByFunc,
-            bool isAsc = true) where T : new()
+            bool isAsc = true,
+            bool useCache = false) where T : new()
         {
             var context = Ioc.Create<IContextWapper>().Context;
-            pager.Load(context.Set<K>().AsEnumerable(), whereFunc, orderByFunc, isAsc);
-            return pager;
-        }
-
-        public static Pager<T> Pages<T>(Pager<T> pager, bool isAsc = true) where T : new()
-        {
-            var context = Ioc.Create<IContextWapper>().Context;
-            pager.Load(context.Set<K>().AsEnumerable(), isAsc);
+            var set = context.Set<K>();
+            var query = useCache ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable() : set;
+            pager.Load(query.AsEnumerable(), whereFunc, orderByFunc, isAsc);
             return pager;
         }
 
         /// <summary>
-        /// The get by id.
+        /// 根据主键查询单条数据
         /// </summary>
         /// <param name="id">
         /// The id.
         /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        public static K Find(Guid id)
+        public static K Find(Guid id, bool useCache = false)
         {
-            return new K().QuerySingle(i => i.Id == id);
+            return QuerySingle(i => i.Id == id, useCache);
         }
 
         /// <summary>
-        /// The exist.
+        /// 条件查询单条数据
+        /// </summary>
+        /// <param name="func">
+        /// The id.
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// The <see cref="K"/>.
+        /// </returns>
+        public static K Find(Expression<Func<K, bool>> func, bool useCache = false)
+        {
+            return QuerySingle(func, useCache);
+        }
+
+        /// <summary>
+        /// 查询对象列表
+        /// </summary>
+        /// <param name="query">
+        /// The func.
+        /// </param>
+        /// <param name="useCache">
+        /// The use cache.
+        /// </param>
+        /// <returns>
+        /// </returns>
+        private static List<K> Query(IQueryable<K> query, bool useCache = false)
+        {
+            var items = useCache
+                ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).ToList()
+                : query.ToList();
+            items.ForEach(
+                i =>
+                {
+                    i.DbContex = Ioc.Create<IContextWapper>().Context;
+                    i.MarkOld();
+                });
+            return items;
+        }
+
+        /// <summary>
+        /// 条件查询单一对象
+        /// </summary>
+        /// <param name="func">
+        /// The func.
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// The <see cref="K"/>.
+        /// </returns>
+        private static K QuerySingle(Expression<Func<K, bool>> func, bool useCache = false)
+        {
+            var query = Ioc.Create<IContextWapper>().Context.Set<K>();
+            var item = useCache
+                ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().FirstOrDefault(func)
+                : query.FirstOrDefault(func);
+            item.IfNotNull(
+          i =>
+          {
+              i.DbContex = Ioc.Create<IContextWapper>().Context;
+              i.MarkOld();
+          });
+            return item;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 是否存在满足条件的对象
         /// </summary>
         /// <param name="func">
         /// The func.
@@ -164,10 +248,10 @@ namespace TAF
         }
 
         /// <summary>
-        /// The count.
+        /// 查询列表数量
         /// </summary>
         /// <param name="func">
-        /// The func.
+        /// 过滤条件
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
@@ -177,11 +261,29 @@ namespace TAF
             return Ioc.Create<IContextWapper>().Context.Set<K>().Count(func);
         }
 
+        /// <summary>
+        /// 根据对象Id删除对象
+        /// </summary>
+        /// <param name="id"></param>
+        public static void Delete(Guid id)
+        {
+            Ioc.Create<IContextWapper>().Context.Set<K>().Where(r => r.Id == id).Delete();
+        }
+
+        /// <summary>
+        /// 根据条件删除对象
+        /// </summary>
+        /// <param name="func"></param>
         public static void Delete(Expression<Func<K, bool>> func)
         {
             Ioc.Create<IContextWapper>().Context.Set<K>().Where(func).Delete();
         }
 
+        /// <summary>
+        /// 根据条件更新对象
+        /// </summary>
+        /// <param name="func"></param>
+        /// <param name="update"></param>
         public static void Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update)
         {
             Ioc.Create<IContextWapper>().Context.Set<K>().Where(func).Update(update);
@@ -229,21 +331,6 @@ namespace TAF
             return result;
         }
 
-        /// <summary>
-        /// 提交一个对象
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        public int Commit()
-        {
-            var result = 0;
-            PreSubmit();
-            Validate();
-            result += Submit();
-            result += PostSubmit();
-            return result;
-        }
 
         /// <summary>
         /// 删除一个对象
@@ -260,53 +347,6 @@ namespace TAF
             return result;
         }
 
-        /// <summary>
-        /// 查询一个对象
-        /// </summary>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        /// <returns>
-        /// The <see cref="K"/>.
-        /// </returns>
-        public K Get(Guid id)
-        {
-            return QuerySingle(i => i.Id == id);
-        }
-
-        /// <summary>
-        /// 查询对象列表
-        /// </summary>
-        /// <param name="func">
-        /// The func.
-        /// </param>
-        /// <param name="useCache">
-        /// The use cache.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public List<K> Query(Expression<Func<K, bool>> func, bool useCache = false)
-        {
-            var query = DbContex.Set<K>().Where(func);
-            var items = PreQuery(query, useCache);
-            return PostQuery(items);
-        }
-
-        /// <summary>
-        /// 条件查询一个对象列表
-        /// </summary>
-        /// <param name="func">
-        /// The func.
-        /// </param>
-        /// <returns>
-        /// The <see cref="K"/>.
-        /// </returns>
-        public K QuerySingle(Expression<Func<K, bool>> func)
-        {
-            var query = DbContex.Set<K>().Where(func);
-            var item = PreQuerySingle(query);
-            return PostQuerySingle(item);
-        }
 
         #region 继承方法
 
@@ -379,39 +419,6 @@ namespace TAF
 
         #endregion
 
-        #region 提交 （包含插入和更新操作） 
-
-        /// <summary>
-        /// 在提交之前给对象赋值
-        /// </summary>
-        protected virtual void PreSubmit()
-        {
-
-        }
-
-        /// <summary>
-        /// 提交对象到数据库
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        protected virtual int Submit()
-        {
-            return this.IsNew ? this.Insert() : this.Update();
-        }
-
-        /// <summary>
-        /// 在提交之后操作
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PostSubmit()
-        {
-            return 0;
-        }
-
-        #endregion
-
         #region 移除
 
         /// <summary>
@@ -454,89 +461,6 @@ namespace TAF
 
         #endregion
 
-        #region 查询
-
-        /// <summary>
-        /// 执行查询前，修改查询条件
-        /// </summary>
-        /// <param name="query">
-        /// The query.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected virtual K PreQuerySingle(IQueryable<K> query)
-        {
-            return query.FirstOrDefault();
-        }
-
-        /// <summary>
-        /// 查询完成后给查询结果属性赋值
-        /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected virtual K PostQuerySingle(K item)
-        {
-            item.IfNotNull(i => i.DbContex = DbContex);
-            item.MarkOld();
-            return item;
-        }
-
-        /// <summary>
-        /// 查询之前，判断是否是从缓存中取数
-        /// </summary>
-        /// <param name="query">
-        /// The query.
-        /// </param>
-        /// <param name="useCache">
-        /// The use cache.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected virtual List<K> PreQuery(IQueryable<K> query, bool useCache = false)
-        {
-            var items = useCache
-                            ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromSeconds(60))).ToList()
-                            : query.ToList();
-            return PostQuery(items);
-        }
-
-        /// <summary>
-        /// 查询所有对象列表
-        /// </summary>
-        /// <param name="useCache">
-        /// The use cache.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected List<K> Query(bool useCache = false)
-        {
-            var query = DbContex.Set<K>();
-            var items = PreQuery(query, useCache);
-            return PostQuery(items);
-        }
-
-        /// <summary>
-        /// 查询完成后给查询结果属性赋值
-        /// </summary>
-        /// <param name="items">
-        /// The items.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        protected virtual List<K> PostQuery(List<K> items)
-        {
-            items.ForEach(
-                i =>
-                    {
-                        i.DbContex = DbContex;
-                        i.MarkOld();
-                    });
-            return items;
-        }
-        #endregion
 
         #endregion
 

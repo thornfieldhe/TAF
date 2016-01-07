@@ -160,35 +160,6 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// 新增/更新一条数据
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ActionResult"/>.
-        /// </returns>
-        [HttpPost]
-        public virtual ActionResult Submit(T value)
-        {
-            try
-            {
-                var item = Mapper.Map<K>(value);
-                item.Commit();
-                return this.Json(new ActionResultStatus());
-            }
-            catch (DbEntityValidationException ex)
-            {
-                return this.Json(new ActionResultStatus(100,
-                    $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
-            }
-            catch (Exception ex)
-            {
-                return this.Json(new ActionResultStatus(ex));
-            }
-        }
-
-        /// <summary>
         /// 删除一条数据
         /// </summary>
         /// <param name="id">
@@ -202,8 +173,7 @@ namespace TAF.Mvc
         {
             try
             {
-                var item = EfBusiness<K>.Find(id);
-                item.Delete();
+                EfBusiness<K>.Delete(id);
                 return this.Json(new ActionResultStatus());
             }
             catch (DbEntityValidationException ex)
@@ -240,7 +210,7 @@ namespace TAF.Mvc
         /// </returns>
         public ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc) where R : struct
         {
-            var pager = EfBusiness<K>.Pages<R, L>(new Pager<L> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
+            var pager = EfBusiness<K>.Pages(new Pager<T> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
             return this.Json(pager, JsonRequestBehavior.AllowGet);
         }
     }

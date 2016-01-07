@@ -509,6 +509,19 @@ namespace TAF.Utility
         #region 正则
 
         /// <summary>
+        /// 截取字符串中开始和结束字符串中间的字符串
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <param name="startStr">开始字符串</param>
+        /// <param name="endStr">结束字符串</param>
+        /// <returns>中间字符串</returns>
+        public static string Substring(this string source, string startStr, string endStr)
+        {
+            Regex rg = new Regex("(?<=(" + startStr + "))[.\\s\\S]*?(?=(" + endStr + "))", RegexOptions.Multiline | RegexOptions.Singleline);
+            return rg.Match(source).Value;
+        }
+
+        /// <summary>
         /// 验证输入与模式是否匹配
         /// </summary>
         /// <param name="input">

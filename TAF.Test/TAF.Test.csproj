@@ -71,6 +71,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Business\CorTest.cs" />
     <Compile Include="Business\Ioc.cs" />
     <Compile Include="Business\ValidateTest.cs" />
     <Compile Include="Utility\CNDateTest .cs" />
