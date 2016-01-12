@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public abstract class CoRHandlerBase<Request> where Request : ICorRequest
+    public abstract class CoRHandlerBase<Request>
     {
         protected CoRHandlerBase()
         {

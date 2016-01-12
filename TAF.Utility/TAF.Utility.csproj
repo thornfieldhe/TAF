@@ -67,11 +67,11 @@
   <ItemGroup>
     <Compile Include="Attributes\OrderByAttribute.cs" />
     <Compile Include="CNDate.cs" />
-    <Compile Include="Collections\ComparisonHelper.cs" />
-    <Compile Include="Collections\EqualityHelper.cs" />
+    <Compile Include="Collections\Comparison.cs" />
+    <Compile Include="Collections\Equality.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Data\AnyRadixConvert.cs" />
-    <Compile Include="Data\CombHelper.cs" />
+    <Compile Include="Data\Comb.cs" />
     <Compile Include="Extensions\Ectensions.SwichCaseExtension.cs" />
     <Compile Include="Extensions\Extensions.Type.cs" />
     <Compile Include="Extensions\ParamterCheckExtensions.cs" />

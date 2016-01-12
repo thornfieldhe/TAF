@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF.Utility
+namespace TAF.DI
 {
     using System;
     using System.Reflection;
@@ -104,9 +104,9 @@ namespace TAF.Utility
         /// <returns>
         /// The <see cref="T"/>.
         /// </returns>
-        public static T Create<T>()
+        public static T Create<T>() where T : class
         {
-            return _container.Resolve<T>();
+            return _container?.Resolve<T>();
         }
 
         /// <summary>

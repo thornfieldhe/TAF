@@ -7,13 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF.Entity
+namespace TAF
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using TAF.Core;
+    using TAF.Entity;
     using TAF.Utility;
 
     using Validation;
@@ -231,16 +232,16 @@ namespace TAF.Entity
             return Id.GetHashCode();
         }
 
-        /// <summary>
-        /// The to string.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public override string ToString()
-        {
-            return Id.ToString();
-        }
+        //        /// <summary>
+        //        /// The to string.
+        //        /// </summary>
+        //        /// <returns>
+        //        /// The <see cref="string"/>.
+        //        /// </returns>
+        //        public override string ToString()
+        //        {
+        //            return Id.ToString();
+        //        }
 
         /// <summary>
         /// The ==.

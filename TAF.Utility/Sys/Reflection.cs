@@ -139,10 +139,6 @@ namespace TAF.Utility
             return (attributes.Length == 0) ? new List<T>() : new List<T>(attributes);
         }
 
-
-
-
-
         /// <summary>
         /// 获取表名
         /// </summary>
@@ -154,6 +150,61 @@ namespace TAF.Utility
             var attribute = GetCustomAttributes<TableAttribute>(typeof(T)).FirstOrDefault();
 
             return attribute != null ? attribute.Name : String.Empty;
+        }
+
+        /// <summary>
+        /// 获取某个类型包括制定属性的所有方法
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static IList<MethodInfo> GetMethodsWithCustomAttribute<T>(Type type) where T : Attribute
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+            var methods = type.GetMethods();
+            if ((methods.Length == 0))
+            {
+                return null;
+            }
+            IList<MethodInfo> result = new List<MethodInfo>();
+            foreach (var method in methods)
+            {
+                if (method.IsDefined(typeof(T), false))
+                {
+                    result.Add(method);
+                }
+            }
+            return result.Count == 0 ? null : result;
+        }
+
+        /// <summary>
+        /// 获取某个方法指定类型的集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static IList<T> GetMethodCustomAttributes<T>(MethodInfo method) where T : Attribute
+        {
+            if (method == null)
+            {
+                throw new ArgumentNullException("method");
+            }
+            var attributes = (T[])(method.GetCustomAttributes(typeof(T), false));
+            return (attributes.Length == 0) ? null : new List<T>(attributes);
+        }
+        /// <summary>
+        /// 获取某个方法制定类型的属性
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static T GetMethodCustomAttribute<T>(MethodInfo method) where T : Attribute
+        {
+            var attributes = GetMethodCustomAttributes<T>(method);
+            return attributes?[0];
         }
 
         #region GetMemberDescription(获取描述)
@@ -325,7 +376,7 @@ namespace TAF.Utility
                                             i =>
                                             {
                                                 result.Add(new Tuple<string, string>(i.Name, i.PropertyType.Name));
-                                                
+
                                             });
                               });
             return result;

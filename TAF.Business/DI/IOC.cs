@@ -21,7 +21,7 @@ namespace TAF
     using TAF.DI;
     using TAF.Utility;
 
-    using Container = TAF.Utility.Container;
+    using Container = DI.Container;
 
     /// <summary>
     /// 容器
@@ -43,7 +43,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="T"/>.
         /// </returns>
-        public static T Create<T>()
+        public static T Create<T>() where T : class
         {
             return Container.Create<T>();
         }
@@ -70,7 +70,7 @@ namespace TAF
         /// 对应映射接口的类型
         /// </param>
         /// <returns></returns>
-        public static T Create<T>(string type)
+        public static T Create<T>(string type) where T : class
         {
             return Container.Create<T>(type);
         }

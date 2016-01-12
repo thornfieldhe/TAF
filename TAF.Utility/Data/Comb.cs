@@ -1,11 +1,11 @@
-﻿namespace TAF.Test.Utility.Data
+﻿namespace TAF.Test.Utility
 {
     using System;
 
     /// <summary>
     /// COMB（<see cref="Guid"/>与<see cref="DateTime"/>混合构成的可排序<see cref="Guid"/>）类型操作类
     /// </summary>
-    public static class CombHelper
+    public static class Comb
     {
         /// <summary>
         /// 返回Guid用于数据库操作，特定的时间代码可以提高检索效率

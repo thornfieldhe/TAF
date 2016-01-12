@@ -7,24 +7,25 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF.Entity
+namespace TAF
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Runtime.CompilerServices;
 
     using AutoMapper.Internal;
 
     using Core;
 
     /// <summary>
-    /// The base entity.
+    /// 业务系统基类
     /// </summary>
     /// <typeparam name="T">
     /// </typeparam>
     [Serializable]
-    public abstract partial class BaseBusiness<T> : IBusinessBase
+    public abstract partial class BaseBusiness<T> : IBusinessBase, INotifyPropertyChanged
     {
 
         #region 构造函数
@@ -59,6 +60,7 @@ namespace TAF.Entity
 
         #region 基本属性
 
+        private Guid id;
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -66,55 +68,134 @@ namespace TAF.Entity
         [Description("序号")]
         public Guid Id
         {
-            get; protected set;
+            get
+            {
+                return id;
+            }
+            protected set
+            {
+                SetProperty(ref this.id, value);
+            }
         }
 
+        private int status;
         /// <summary>
         /// Gets or sets the status.
         /// </summary>
         [Description("状态")]
         public int Status
         {
-            get; set;
+            get
+            {
+                return status;
+            }
+            set
+            {
+                SetProperty(ref this.status, value);
+            }
         }
 
+        private DateTime createdDate;
         /// <summary>
         /// Gets or sets the created date.
         /// </summary>
         [Description("创建时间")]
         public DateTime CreatedDate
         {
-            get; protected set;
+            get
+            {
+                return this.createdDate;
+            }
+            protected set
+            {
+                SetProperty(ref this.createdDate, value);
+            }
         }
 
+        private DateTime changedDate;
         /// <summary>
         /// Gets or sets the changed date.
         /// </summary>
         [Description("更新时间")]
         public DateTime ChangedDate
         {
-            get; protected set;
+            get
+            {
+                return this.changedDate;
+            }
+            protected set
+            {
+                SetProperty(ref this.changedDate, value);
+            }
         }
 
+        private byte[] version;
         /// <summary>
         /// Gets or sets the version.
         /// </summary>
         [Description("版本戳")]
         public byte[] Version
         {
-            get; protected set;
+            get
+            {
+                return this.version;
+            }
+            protected set
+            {
+                SetProperty(ref this.version, value);
+            }
         }
 
+        private string note;
         /// <summary>
         /// Gets or sets the note.
         /// </summary>
         [Description("备注")]
         public string Note
         {
-            get; set;
+            get
+            {
+                return this.note;
+            }
+            set
+            {
+                SetProperty(ref this.note, value);
+            }
         }
 
         #endregion
+
+        #region 注册属性改变事件
+
+        protected void SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (Equals(storage, value))
+                return;
+            OnSetProperty(ref storage, value);
+            
+            this.OnPropertyChanged(propertyName);
+        }
+
+        /// <summary>
+        /// 继承类复写改方法可以用于执行赋值后附加的操作
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="storage"></param>
+        /// <param name="value"></param>
+        protected virtual void OnSetProperty<T>(ref T storage, T value)
+        {
+            storage = value;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
 
         /// <summary>
         /// The add descriptions.

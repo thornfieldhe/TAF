@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EqualityHelper.cs" company="">
+// <copyright file="Equality.cs" company="">
 //   
 // </copyright>
 // <summary>
@@ -16,12 +16,12 @@ namespace TAF.Utility
     /// 相等比较辅助类，用于快速创建<see cref="IEqualityComparer{T}"/>的实例
     /// </summary>
     /// <example>
-    /// var equalityComparer1 = EqualityHelper{Person}.CreateComparer(p => p.ID);
-    /// var equalityComparer2 = EqualityHelper[Person].CreateComparer(p => p.Name);
-    /// var equalityComparer3 = EqualityHelper[Person].CreateComparer(p => p.Birthday.Year);
+    /// var equalityComparer1 = Equality{Person}.CreateComparer(p => p.ID);
+    /// var equalityComparer2 = Equality[Person].CreateComparer(p => p.Name);
+    /// var equalityComparer3 = Equality[Person].CreateComparer(p => p.Birthday.Year);
     /// </example>
     /// <typeparam name="T"> </typeparam>
-    public static class EqualityHelper<T>
+    public static class Equality<T>
     {
         #region 公共方法
         /// <summary>

@@ -5,10 +5,8 @@ namespace TAF.Test.Utility.Collections
 {
     using System;
 
-    using TAF.Utility;
-
     /// <summary>
-    /// ComparisonHelperTest 的摘要说明
+    /// 普通对象提供比较判定的扩展
     /// </summary>
     [TestClass]
     public class ComparisonHelperTest
@@ -26,7 +24,7 @@ namespace TAF.Test.Utility.Collections
                                            new TestInfo { Id = Guid.NewGuid(), Name = "p" },
                                        };
             var info = new TestInfo { Id = Guid.NewGuid(), Name = "a" };
-            var comparer = ComparisonHelper<TestInfo>.CreateComparer(m => m.Name);
+            var comparer = TAF.Utility.Comparison<TestInfo>.CreateComparer(m => m.Name);
             list1.Sort(comparer);
             Assert.AreEqual(list1[0].Name, "a");
         }

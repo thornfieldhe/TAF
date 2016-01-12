@@ -15,6 +15,9 @@ namespace TAF.Test.Utility.Collections
     public class EqualityHelperTest
     {
 
+        /// <summary>
+        /// 普通对象提供相等判定的扩展
+        /// </summary>
         [TestMethod]
         public void CreateComparerTest()
         {
@@ -24,7 +27,7 @@ namespace TAF.Test.Utility.Collections
                                            new TestInfo { Id = Guid.NewGuid(), Name = "b" },
                                        };
             var info = new TestInfo { Id = Guid.NewGuid(), Name = "a" };
-            var comparer = EqualityHelper<TestInfo>.CreateComparer(m => m.Name);
+            var comparer = Equality<TestInfo>.CreateComparer(m => m.Name);
             Assert.IsTrue(list1.Contains(info, comparer));
 
 

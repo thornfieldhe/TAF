@@ -17,8 +17,6 @@ namespace TAF
     using Core;
     using EntityFramework.Caching;
     using EntityFramework.Extensions;
-
-    using TAF.Entity;
     using TAF.Utility;
 
     /// <summary>
@@ -40,7 +38,6 @@ namespace TAF
             : base(id)
         {
             DbContex = Ioc.Create<IContextWapper>().Context;
-            Init();
         }
 
         /// <summary>
@@ -292,12 +289,6 @@ namespace TAF
         #endregion
 
         #region 实例方法
-        /// <summary>
-        /// 初始化对象
-        /// </summary>
-        public virtual void Init()
-        {
-        }
 
         /// <summary>
         /// 创建一个对象

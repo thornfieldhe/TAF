@@ -4,7 +4,7 @@ namespace TAF.Test.Utility.Data
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    
+
     [TestClass]
     public class CombHelperTest
     {
@@ -12,8 +12,8 @@ namespace TAF.Test.Utility.Data
         public void NewCombTest()
         {
             DateTime now = DateTime.Now;
-            Guid id = CombHelper.NewComb();
-            DateTime time = CombHelper.GetDateFromComb(id);
+            Guid id = Comb.NewComb();
+            DateTime time = Comb.GetDateFromComb(id);
             Assert.IsTrue(time.Subtract(now).TotalSeconds < 1);
         }
     }

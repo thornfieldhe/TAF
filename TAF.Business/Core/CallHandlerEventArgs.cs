@@ -5,7 +5,7 @@
     /// <summary>
     /// 职责链响应断点的事件参数
     /// </summary>
-    public class CallHandlerEventArgs<T> : EventArgs where T : ICorRequest
+    public class CallHandlerEventArgs<T> : EventArgs
     {
 
         public CoRHandlerBase<T> Handler

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ComparisonHelper.cs" company="">
+// <copyright file="Comparison.cs" company="">
 //   
 // </copyright>
 // <summary>
@@ -18,7 +18,7 @@ namespace TAF.Utility
     /// <example>
     /// </example>
     /// <typeparam name="T">要比较的类型</typeparam>
-    public static class ComparisonHelper<T>
+    public static class Comparison<T>
     {
         /// <summary>
         /// 创建指定对比委托<paramref name="keySelector"/>的实例
