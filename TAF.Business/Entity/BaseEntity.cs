@@ -172,7 +172,7 @@ namespace TAF
             if (Equals(storage, value))
                 return;
             OnSetProperty(ref storage, value);
-            
+
             this.OnPropertyChanged(propertyName);
         }
 

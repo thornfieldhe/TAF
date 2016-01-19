@@ -1,6 +1,5 @@
 ﻿namespace TAF.Test.Business
 {
-    using System.Collections.Specialized;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,10 +20,32 @@
             Assert.AreNotEqual(product.ToString(), str1);
             product.Name = null;
             Assert.AreEqual(product.ToString(), str1);
+
         }
     }
 
+    public class P4 : P3
+    {
+        protected override void AddDescriptions()
+        {
+            base.AddDescriptions();
+        }
+    }
+    public class P3 : P2
+    {
+        protected override void AddDescriptions()
+        {
+            base.AddDescriptions();
+        }
+    }
 
+    public class P2 : Product
+    {
+        protected override void AddDescriptions()
+        {
+            base.AddDescriptions();
+        }
+    }
 
     public class Product : BaseBusiness<Product>
     {

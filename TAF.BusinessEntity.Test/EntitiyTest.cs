@@ -5,6 +5,15 @@ namespace TAF.BusinessEntity.Test
     [TestClass]
     public class EntitiyTest
     {
+        [TestMethod]
+        public void TestInsert()
+        {
+            var user = new User() { Name = "n1" };
+
+            var result = user.Create();
+            Assert.AreEqual(1, result);
+        }
+
         /// <summary>
         /// 测试初始化
         /// </summary>
@@ -12,15 +21,6 @@ namespace TAF.BusinessEntity.Test
         public void TestInit()
         {
             Ioc.Register(new IocConfig());
-        }
-
-        [TestMethod]
-        public void TestInsert()
-        {
-            var user = new User() { Name = "n1" };
-            
-            var result = user.Create();
-            Assert.AreEqual(1, result);
         }
     }
 }
