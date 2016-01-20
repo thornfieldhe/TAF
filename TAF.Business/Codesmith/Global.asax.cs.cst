@@ -1,0 +1,66 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ Template Language="C#" TargetLanguage="Text"  Debug="True" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="基本信息" Description="Table that the object is based on." %>
+<%@ Assembly Name="System.ComponentModel"  %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
+<%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
+<%@ Assembly Src="Common.cs" %>
+<%@ Import Namespace="TAF.Utility" %>  
+<%@ Import Namespace="TAF" %>  
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaMapper" %>
+<%@ Import Namespace="System" %> 
+<%@ Import Namespace="System.Reflection" %> 
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Map Name="SqlCSharp" Src="Sql-CSharp" Description="System to C# Type Map" %>
+<%@ Map Name="DbDataReader" Src="DbType-DataReaderMethod" Description="DbType to DataReader Method Map" %>
+<%@ Map Name="SqlNativeSqlDb" Src="SqlNativeType-SqlDbType" Description="SqlNativeType to SqlDbType Map" %>
+<%@ Map Name="DbTypeCSharp" Src="DbType-CSharp" Description="DbType to CSharp Map" %>
+
+
+    Mapper.CreateMap<<%=Common.GetClassName(SourceTable)%>View, <%=Common.GetClassName(SourceTable)%>>();
+    Mapper.CreateMap<<%=Common.GetClassName(SourceTable)%>, <%=Common.GetClassName(SourceTable)%>View>();
+    Mapper.CreateMap<<%=Common.GetClassName(SourceTable)%>, <%=Common.GetClassName(SourceTable)%>ListView>() 
+    <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+    <%  ColumnSchema  column=SourceTable.NonPrimaryKeyColumns[i];%>
+    <%if(!Common.IsSystemProperty(column)){ %>
+    .ForMember(n => n.<%=column.Name%>, m => m.MapFrom(m1 => m1.<%=column.Name%>.ToStr()))<%if(i==SourceTable.NonPrimaryKeyColumns.Count-1){%>;<%} %><%if(column.Name.EndsWith("Id")){%>// 单独处理Guid对象<%} %>
+    <% }} %>
+
+
+
+
+
+
+<script runat="template">
+
+    /// <summary>
+    /// 获取C#类型
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private  string GetCSharpVariableType(ColumnSchema column)
+    {
+        if (column.Name.EndsWith("TypeCode")) return column.Name;
+        return DbTypeCSharp[column.DataType.ToString()];
+    }
+
+
+    /// <summary>
+    /// 列是否是Guid
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  bool ColumnIsGuid(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        return type=="Guid" ;
+    }
+
+
+</script>

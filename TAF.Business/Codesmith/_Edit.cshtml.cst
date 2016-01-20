@@ -1,0 +1,138 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ Template Language="C#" TargetLanguage="HTML"  Debug="True" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="基本信息" Description="Table that the object is based on." %>
+<%@ Property Name="ClassNamespace" Type="System.String" Category="基本信息" Default="Erp.Eam" Description="" %>
+<%@ Assembly Name="System.ComponentModel"  %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
+<%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
+<%@ Assembly Src="Common.cs" %>
+<%@ Import Namespace="TAF.Utility" %>  
+<%@ Import Namespace="TAF" %>  
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaMapper" %>
+<%@ Import Namespace="System" %> 
+<%@ Import Namespace="System.Linq" %> 
+<%@ Import Namespace="System.Reflection" %> 
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Map Name="SqlCSharp" Src="Sql-CSharp" Description="System to C# Type Map" %>
+<%@ Map Name="DbDataReader" Src="DbType-DataReaderMethod" Description="DbType to DataReader Method Map" %>
+<%@ Map Name="SqlNativeSqlDb" Src="SqlNativeType-SqlDbType" Description="SqlNativeType to SqlDbType Map" %>
+<%@ Map Name="DbTypeCSharp" Src="DbType-CSharp" Description="DbType to CSharp Map" %>
+
+@using <%=ClassNamespace %>
+@using <%=ClassNamespace %>.<%=Common.GetClassName(SourceTable)%>
+<form id="form" class="form-horizontal" name="form">
+ <%foreach(var item in SourceTable.NonPrimaryKeyColumns.Where(r=>!IsSystemProperty(r))){%>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+            <%if(ColumnIsGuid(item)){ %>
+                <label class="col-sm-2 control-label no-padding-right"><%=item.Name%></label>
+                <div class="col-sm-10">
+                    <select id="<%=item.Name.ToCamel()%>" name="<%=item.Name.ToCamel()%>" style="width:100%">
+                        @* <option value="@item">@item</option> *@
+                    </select>
+                </div>
+            <%}else if(ColumnIsNumber(item)){ %>
+                <label class="col-sm-2 control-label no-padding-right"><%=item.Name%></label>
+                <div class="col-sm-10">
+                    <div class="spinbox spinbox-horizontal spinbox-right">
+                        <div class="spinbox-buttons	btn-group">
+                            <button type="button" class="btn spinbox-down blueberry">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn spinbox-up purple">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                        <input type="text" class="spinbox-input form-control" name="<%=item.Name.ToCamel()%>" id="<%=item.Name.ToCamel()%>" required value="@Model.<%=item.Name%>" />
+                    </div>
+                </div>
+            <%}else{ %>
+                <label class="col-sm-2 control-label no-padding-right"><%=item.Name%></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="<%=item.Name%>" name="<%=item.Name.ToCamel()%>" value="@Model.<%=item.Name%>" />
+                </div>
+            <%} %>
+            </div>
+        </div>
+    </div>
+<%} %> 
+    <div class="row" id="unknownError" style="display: none;">
+        <div class="col-md-12">
+            <div class="form-group  has-feedback has-error">
+                <div class="col-md-10 col-md-offset-2">
+                    <small class="help-block"></small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="hidden" class="form-control" name="id" value="@Model.Id" />
+        </div>
+    </div>
+</form>
+
+<script runat="template">
+/// <summary>
+/// 属性是否为系统属性
+/// </summary>
+/// <param name="propertyName"></param>
+/// <returns></returns>
+public bool IsSystemProperty(ColumnSchema column)
+{
+    var systemProperties=new List<string>{"Id","Status","CreatedDate","ChangedDate","Version","Note"};
+    return column.Name.In(systemProperties);
+    
+}
+
+/// <summary>
+/// 通过数据表获得类名
+/// </summary>
+/// <param name="table"></param>
+/// <returns></returns>
+public string GetClassName(TableSchema table)
+{
+    return table.Name.ToSingular();
+}
+
+/// <summary>
+/// 列是否是Guid
+/// </summary>
+/// <param name="column"></param>
+/// <returns></returns>
+private bool ColumnIsGuid(ColumnSchema column)
+{
+   string type= GetCSharpVariableType(column) ;
+    return type=="Guid" ;
+}
+
+/// <summary>
+/// 获取C#类型
+/// </summary>
+/// <param name="column"></param>
+/// <returns></returns>
+private string GetCSharpVariableType(ColumnSchema column)
+{
+    if (column.Name.EndsWith("TypeCode")) return column.Name;
+    return DbTypeCSharp[column.DataType.ToString()];
+}
+
+/// <summary>
+/// 是否是数字
+/// </summary>
+/// <param name="column"></param>
+/// <returns></returns>
+private bool ColumnIsNumber(ColumnSchema column)
+{
+   string type= GetCSharpVariableType(column) ;
+    return type=="int" ||type=="double"||type=="decimal";
+}
+
+</script>

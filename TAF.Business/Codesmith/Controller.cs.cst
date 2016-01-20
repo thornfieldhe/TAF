@@ -1,0 +1,142 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ Template Language="C#" TargetLanguage="c#"  Debug="True" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="基本信息" Description="Table that the object is based on." %>
+<%@ Property Name="ClassNamespace" Type="System.String" Category="基本信息" Default="Erp.Eam" Description="" %>
+<%@ Property Name="Description" Type="System.String" Category="基本信息" Default="Erp.Eam" Description="" %>
+<%@ Assembly Name="System.ComponentModel"  %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
+<%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
+<%@ Assembly Src="Common.cs" %>
+<%@ Import Namespace="TAF.Utility" %>  
+<%@ Import Namespace="TAF" %>  
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaMapper" %>
+<%@ Import Namespace="System" %> 
+<%@ Import Namespace="System.Linq" %> 
+<%@ Import Namespace="System.Reflection" %> 
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Map Name="SqlCSharp" Src="Sql-CSharp" Description="System to C# Type Map" %>
+<%@ Map Name="DbDataReader" Src="DbType-DataReaderMethod" Description="DbType to DataReader Method Map" %>
+<%@ Map Name="SqlNativeSqlDb" Src="SqlNativeType-SqlDbType" Description="SqlNativeType to SqlDbType Map" %>
+<%@ Map Name="DbTypeCSharp" Src="DbType-CSharp" Description="DbType to CSharp Map" %>
+
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="<%=Common.GetClassName(SourceTable)%>Controller.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   <%=Description%>
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace <%=ClassNamespace %>.Controllers
+{
+    using System;
+    using System.Web.Mvc;
+
+    using Erp.Eam.Models;
+    using TAF;
+    using TAF.Utility;
+    using TAF.Mvc;
+
+    /// <summary>
+    /// The manage controller.
+    /// </summary>
+    public class <%=Common.GetClassName(SourceTable)%>Controller : BaseController<<%=Common.GetClassName(SourceTable)%>, <%=Common.GetClassName(SourceTable)%>View, <%=Common.GetClassName(SourceTable)%>ListView>
+    {
+        public ActionResult List(<%=Common.GetClassName(SourceTable)%>ListView query, int pageIndex, int pageSize = 20)
+        {
+            Func<<%=Common.GetClassName(SourceTable)%>,bool> func = r => 
+            <%=GetQueryFunc()%>
+
+            return Json(<%=Common.GetClassName(SourceTable)%>.Pages(
+                              new Pager<<%=Common.GetClassName(SourceTable)%>ListView>
+                              {
+                                  PageIndex = pageIndex,
+                                  PageSize = pageSize
+                              },
+                              func,
+                              r => r.Name),
+                    JsonRequestBehavior.AllowGet);
+        }
+    }
+}
+
+
+
+
+<script runat="template">
+
+    /// <summary>
+    /// 获取C#类型
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private  string GetCSharpVariableType(ColumnSchema column)
+    {
+        if (column.Name.EndsWith("TypeCode")) return column.Name;
+        return DbTypeCSharp[column.DataType.ToString()];
+    }
+
+
+    /// <summary>
+    /// 列是否是Guid
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  bool ColumnIsGuid(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        return type=="Guid" ;
+    }
+
+    /// <summary>
+    /// 列是否是数字
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private bool ColumnIsNumber(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        return type=="int" ||type=="double"||type=="decimal";
+    }
+    
+    /// <summary>
+    /// 列是否是日期
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private bool ColumnIsDateTime(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        Debug.Write(type=="DateTime");
+        return type=="DateTime" ;
+    }
+
+    /// <summary>
+    /// 获取查询字符串
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  string GetQueryFunc()
+    {
+       var funStr="";
+       foreach(var item in SourceTable.Columns.Where(r=>!Common.IsSystemProperty(r))){
+           if(ColumnIsGuid(item)){
+               funStr+="\t\t\t && "+"(string.IsNullOrWhiteSpace(query."+item.Name.ReplaceLast("Id","")+")||(!string.IsNullOrWhiteSpace(query."+item.Name.ReplaceLast("Id","")+") && r."+item.Name+".ToStr() == query."+item.Name.ReplaceLast("Id","")+".ToStr()))\r\n" ;
+           }else if(ColumnIsNumber(item)){
+               funStr+="\t\t\t && "+" ((query."+item.Name+"==0)||(query."+item.Name+"!=0) && r."+item.Name+"== query."+item.Name+")\r\n";
+           }else {
+               funStr+="\t\t\t && "+"(string.IsNullOrWhiteSpace(query."+item.Name+")||(!string.IsNullOrWhiteSpace(query."+item.Name+") && r."+item.Name+".ToStr() == query."+item.Name+".ToStr()))\r\n";
+           }
+       }
+       funStr=funStr.ReplaceFirst("\t\t\t &&","").ReplaceLast("\r\n",";");
+       return funStr;
+    }
+
+</script>

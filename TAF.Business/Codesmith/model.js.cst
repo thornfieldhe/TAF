@@ -1,0 +1,126 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ Template Language="C#" TargetLanguage="JavaScript"  Debug="True" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="基本信息" Description="Table that the object is based on." %>
+<%@ Property Name="ClassNamespace" Type="System.String" Category="基本信息" Default="Erp.Eam" Description="" %>
+<%@ Assembly Name="System.ComponentModel"  %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
+<%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
+<%@ Assembly Src="Common.cs" %>
+<%@ Import Namespace="TAF.Utility" %>  
+<%@ Import Namespace="TAF" %>  
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaMapper" %>
+<%@ Import Namespace="System" %> 
+<%@ Import Namespace="System.Linq" %> 
+<%@ Import Namespace="System.Reflection" %> 
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Map Name="SqlCSharp" Src="Sql-CSharp" Description="System to C# Type Map" %>
+<%@ Map Name="DbDataReader" Src="DbType-DataReaderMethod" Description="DbType to DataReader Method Map" %>
+<%@ Map Name="SqlNativeSqlDb" Src="SqlNativeType-SqlDbType" Description="SqlNativeType to SqlDbType Map" %>
+<%@ Map Name="DbTypeCSharp" Src="DbType-CSharp" Description="DbType to CSharp Map" %>
+
+<% var columns0=Common.GetUnSystemProperties(SourceTable); %>
+	var queryEntity={};
+	function bindItems(index) {
+		$.get("/<%=Common.GetClassName(SourceTable)%>/List?pageIndex=" + index + "&pageSize=10",queryEntity, function(e) {
+			e = $.extend(true, e, { colspan: <%=columns0.Count%>, pageChangeAction:  "bindItems"});
+			var html = juicer($("#table").html(), { data: e });
+			$("#itemGrid").html(html);
+			$("select[id$='Id']").each(function(e) {
+					$(this).select2();
+			});
+		});
+	}
+    
+    function onFormInit() {
+      <%for(var i=0 ;i< columns0.Count;i++){%>
+      <%if(ColumnIsNumber(columns0[i])){%>
+        $('.spinbox').spinbox('value', 1);
+        <%}else if(ColumnIsGuid(columns0[i])){%>
+        $('#<%=columns0[i].Name.ToCamel() %>').select2();
+        <%}}%>
+    	validate();
+	}
+
+	function filter() {
+		queryEntity = {
+            //自定义查询条件        
+        <%for(var i=0 ;i< columns0.Count;i++){%>
+            <%=columns0[i].Name.ToCamel()%>: $("#search<%=columns0[i].Name%>").val()<%if(i<columns0.Count-1 ){ %>,<%} %>
+        <% }%>
+		};
+		bindItems(1);
+	}
+
+	function resetSearch() {
+			queryEntity = {};
+            //重置查询条件    
+        <%for(var i=0 ;i< columns0.Count;i++){%>
+        <%if(ColumnIsGuid(columns0[i])){ %>
+            $("#search<%=columns0[i].Name%>").trigger("change");
+        <%}else{ %>
+            $("#search<%=columns0[i].Name%>").val(""); 
+        <%}} %>
+		}
+
+	function validate() {
+		$("#form").bootstrapValidator({
+			message: '验证未通过',
+			fields: {
+            <%foreach(var item in columns0.Where(r=>!r.AllowDBNull || ColumnIsNumber(r))){ %>
+            	<%=item.Name.ToCamel() %>: {
+					validators: {
+                    <%if(!item.AllowDBNull) {%>
+						notEmpty: {
+							message: '<%=item.Name%>不能为空'
+						},
+                    <%} %>
+                    <%if(ColumnIsNumber(item)){ %>
+                    	digits: {
+							message: '<%=item.Name%>必须是数字'
+						},                        
+                    <%} %>
+                    }
+				},
+            <%} %>
+			}
+		});
+	}
+
+	function onFormInit() {
+		validate();
+	}
+
+	initIndexPage();
+	
+<script runat="template">
+
+
+/// <summary>
+/// 获取C#类型
+/// </summary>
+/// <param name="column"></param>
+/// <returns></returns>
+private string GetCSharpVariableType(ColumnSchema column)
+{
+    if (column.Name.EndsWith("TypeCode")) return column.Name;
+    return DbTypeCSharp[column.DataType.ToString()];
+}
+
+private bool ColumnIsGuid(ColumnSchema column)
+{
+   string type= GetCSharpVariableType(column) ;
+    return type=="Guid" ;
+}
+
+private bool ColumnIsNumber(ColumnSchema column)
+{
+   string type= GetCSharpVariableType(column) ;
+    return type=="int" ||type=="double"||type=="decimal";
+}
+</script>

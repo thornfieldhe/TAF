@@ -15,9 +15,9 @@ namespace TAF
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.CompilerServices;
 
-    using AutoMapper.Internal;
-
     using Core;
+
+    using TAF.Utility;
 
     /// <summary>
     /// 业务系统基类
@@ -204,7 +204,7 @@ namespace TAF
         {
             AddDescription("Id:" + Id);
             AddDescription("Status:" + Status);
-            AddDescription("Note:" + Note.ToNullSafeString());
+            AddDescription("Note:" + Note.ToStr());
             AddDescription("CreatedDate:" + CreatedDate);
             AddDescription("ChangedDate:" + ChangedDate);
         }

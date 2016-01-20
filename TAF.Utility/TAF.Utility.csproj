@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TAF.Utility</RootNamespace>
     <AssemblyName>TAF.Utility</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -72,6 +72,7 @@
     <Compile Include="Const.cs" />
     <Compile Include="Data\AnyRadixConvert.cs" />
     <Compile Include="Data\Comb.cs" />
+    <Compile Include="Extensions\CommonEqualityComparer.cs" />
     <Compile Include="Extensions\Ectensions.SwichCaseExtension.cs" />
     <Compile Include="Extensions\Extensions.Type.cs" />
     <Compile Include="Extensions\ParamterCheckExtensions.cs" />
