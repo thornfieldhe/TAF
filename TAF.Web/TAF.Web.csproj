@@ -263,6 +263,7 @@
     <Content Include="Assets\js\modal.js" />
     <Content Include="Assets\js\nestable\jquery.nestable.min.js" />
     <Content Include="Assets\js\select2\select2.js" />
+    <Content Include="Assets\js\simple-inheritance.js" />
     <Content Include="Assets\js\skins.min.js" />
     <Content Include="Assets\js\slider\jQRangeSlider\jQAllRangeSliders-withRuler-min.js" />
     <Content Include="Assets\js\slider\jquery.nouislider.js" />

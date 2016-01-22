@@ -29,6 +29,7 @@
                         "~/assets/js/bootbox/bootbox.js",
                          "~/assets/js/lodash.min.js",
                      "~/assets/js/underscore.string.min.js",
+                     "~/assets/js/simple-inheritance",
                      "~/assets/js/ztree/jquery.ztree.core-3.5.js",
                      "~/assets/js/toastr/toastr.js",
                      "~/assets/js/fuelux/spinbox/fuelux.spinbox.min.js",

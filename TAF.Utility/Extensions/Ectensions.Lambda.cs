@@ -17,7 +17,7 @@ namespace TAF.Utility
     /// <summary>
     /// The where if extension.
     /// </summary>
-    public static class WhereIfExtension
+    public static class LambdaEctensions
     {
         /// <summary>
         /// The where if.
@@ -114,6 +114,11 @@ namespace TAF.Utility
             bool condition)
         {
             return condition ? source.Where(predicate) : source;
+        }
+
+        public static bool Contains<T, V>(this IEnumerable<T> source, T value, Func<T, V> keySelector)
+        {
+            return source.Contains(value, Equality<T>.CreateComparer(keySelector));
         }
 
         public static IEnumerable<T> Distinct<T, V>(this IEnumerable<T> source, Func<T, V> keySelector)

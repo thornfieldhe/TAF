@@ -30,7 +30,7 @@ namespace TAF.Test.Utility.Collections
             var comparer = Equality<TestInfo>.CreateComparer(m => m.Name);
             Assert.IsTrue(list1.Contains(info, comparer));
 
-
+            Assert.IsTrue(list1.Contains(info,r=>r.Name));
         }
     }
 }
