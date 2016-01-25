@@ -37,7 +37,7 @@ namespace TAF
         protected EfBusiness(Guid id)
             : base(id)
         {
-            DbContex = Ioc.Create<IContextWapper>().Context;
+            this.DbContext = Ioc.Create<DbContext>();
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace TAF
         /// EF数据库对象
         /// </summary>
         [NotMapped]
-        protected DbContext DbContex
+        protected DbContext DbContext
         {
             get; set;
         }
@@ -62,7 +62,7 @@ namespace TAF
         {
             get
             {
-                return DbContex.Entry<K>(this as K).State == EntityState.Unchanged;
+                return this.DbContext.Entry<K>(this as K).State == EntityState.Unchanged;
             }
         }
 
@@ -81,7 +81,7 @@ namespace TAF
         /// </returns>
         public static List<K> GetAll(bool useCache = false)
         {
-            return Query(Ioc.Create<IContextWapper>().Context.Set<K>(), useCache);
+            return Query(Ioc.Create < DbContext > ().Set<K>(), useCache);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace TAF
         /// </returns>
         public static List<K> Get(Expression<Func<K, bool>> func, bool useCache = false)
         {
-            return Query(Ioc.Create<IContextWapper>().Context.Set<K>().Where(func), useCache);
+            return Query(Ioc.Create<DbContext>().Set<K>().Where(func), useCache);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace TAF
             bool isAsc = true,
             bool useCache = false) where T : new()
         {
-            var context = Ioc.Create<IContextWapper>().Context;
+            var context = Ioc.Create<DbContext>();
             var set = context.Set<K>();
             var query = useCache ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable() : set;
             pager.Load(query.AsEnumerable(), whereFunc, orderByFunc, isAsc);
@@ -195,7 +195,7 @@ namespace TAF
             items.ForEach(
                 i =>
                 {
-                    i.DbContex = Ioc.Create<IContextWapper>().Context;
+                    i.DbContext = Ioc.Create<DbContext>();
                     i.MarkOld();
                 });
             return items;
@@ -215,14 +215,14 @@ namespace TAF
         /// </returns>
         private static K QuerySingle(Expression<Func<K, bool>> func, bool useCache = false)
         {
-            var query = Ioc.Create<IContextWapper>().Context.Set<K>();
+            var query = Ioc.Create<DbContext>().Set<K>();
             var item = useCache
                 ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().FirstOrDefault(func)
                 : query.FirstOrDefault(func);
             item.IfNotNull(
           i =>
           {
-              i.DbContex = Ioc.Create<IContextWapper>().Context;
+              i.DbContext = Ioc.Create<DbContext>();
               i.MarkOld();
           });
             return item;
@@ -241,7 +241,7 @@ namespace TAF
         /// </returns>
         public static bool Exist(Expression<Func<K, bool>> func)
         {
-            return Ioc.Create<IContextWapper>().Context.Set<K>().Any(func);
+            return Ioc.Create<DbContext>().Set<K>().Any(func);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@ namespace TAF
         /// </returns>
         public static int Count(Expression<Func<K, bool>> func)
         {
-            return Ioc.Create<IContextWapper>().Context.Set<K>().Count(func);
+            return Ioc.Create<DbContext>().Set<K>().Count(func);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace TAF
         /// <param name="id"></param>
         public static void Delete(Guid id)
         {
-            Ioc.Create<IContextWapper>().Context.Set<K>().Where(r => r.Id == id).Delete();
+            Ioc.Create<DbContext>().Set<K>().Where(r => r.Id == id).Delete();
         }
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace TAF
         /// <param name="func"></param>
         public static void Delete(Expression<Func<K, bool>> func)
         {
-            Ioc.Create<IContextWapper>().Context.Set<K>().Where(func).Delete();
+            Ioc.Create<DbContext>().Set<K>().Where(func).Delete();
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace TAF
         /// <param name="update"></param>
         public static void Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update)
         {
-            Ioc.Create<IContextWapper>().Context.Set<K>().Where(func).Update(update);
+            Ioc.Create<DbContext>().Set<K>().Where(func).Update(update);
         }
 
         #endregion
@@ -359,8 +359,8 @@ namespace TAF
         /// </returns>
         protected virtual int Insert()
         {
-            DbContex.Set<K>().Add(this as K);
-            return DbContex.SaveChanges();
+            this.DbContext.Set<K>().Add(this as K);
+            return this.DbContext.SaveChanges();
         }
 
 
@@ -395,7 +395,7 @@ namespace TAF
         /// </returns>
         protected virtual int Update()
         {
-            return !IsClean ? this.DbContex.SaveChanges() : 0;
+            return !IsClean ? this.DbContext.SaveChanges() : 0;
         }
 
         /// <summary>
@@ -433,10 +433,10 @@ namespace TAF
         {
             //软删除
             //            this.Status = -1;
-            //            DbContex.SaveChanges();
+            //            DbContext.SaveChanges();
             //硬删除
-            DbContex.Set<K>().Remove(this as K);
-            return this.DbContex.SaveChanges();
+            this.DbContext.Set<K>().Remove(this as K);
+            return this.DbContext.SaveChanges();
         }
 
 

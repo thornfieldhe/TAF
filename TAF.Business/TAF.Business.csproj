@@ -134,7 +134,6 @@
     <Compile Include="Entity\BaseEntity.Base.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Core\IBusinessBase.cs" />
-    <Compile Include="Core\IContextWapper.cs" />
     <Compile Include="Core\IDbAction.cs" />
     <Compile Include="DI\ConfigBase.cs" />
     <Compile Include="DI\Container.cs" />

@@ -7,7 +7,7 @@
     public class TAFDbContext : IdentityDbContext<ApplicationUser>
     {
         public TAFDbContext()
-            : base("DefaultConnection")
+            : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
 

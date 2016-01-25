@@ -9,6 +9,8 @@
 
 namespace TAF.Mvc
 {
+    using System;
+    using System.Linq;
     using System.Web.Mvc;
     using System.Web.Mvc.Filters;
 
@@ -19,17 +21,17 @@ namespace TAF.Mvc
     {
         protected override void OnAuthentication(AuthenticationContext filterContext)
         {
-            if (!this.User.Identity.IsAuthenticated)
+            var allowAnonymous = filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute),false).Any();
+            if(!allowAnonymous && !this.User.Identity.IsAuthenticated)
             {
-                filterContext.HttpContext.Response.Redirect("/Account/Login");
+                filterContext.HttpContext.Response.Redirect("/Home/Login");
             }
         }
 
         protected override void OnException(ExceptionContext filterContext)
         {
-            base.OnException(filterContext);
             LogManager.Instance.Logger.Error(filterContext.Exception);
-            filterContext.HttpContext.Response.Redirect("/Error");
+            filterContext.Result = new JsonResult { Data = new ActionResultStatus(filterContext.Exception), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }
 }

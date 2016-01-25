@@ -3,33 +3,14 @@
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
-    using Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
-
+    using Models;
     using TAF.Web.Businesses;
 
-    public class EmailService : IIdentityMessageService
-    {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // 在此处插入电子邮件服务可发送电子邮件。
-            return Task.FromResult(0);
-        }
-    }
-
-    public class SmsService : IIdentityMessageService
-    {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // 在此处插入 SMS 服务可发送短信。
-            return Task.FromResult(0);
-        }
-    }
 
     public class ApplicationRoleManager : RoleManager<IdentityRole>
     {
@@ -103,7 +84,7 @@
             // 配置用户锁定默认值
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            manager.MaxFailedAccessAttemptsBeforeLockout = 50;
+            manager.MaxFailedAccessAttemptsBeforeLockout = 10;
 
 
             var dataProtectionProvider = options.DataProtectionProvider;
