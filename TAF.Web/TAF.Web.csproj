@@ -250,6 +250,7 @@
     <Content Include="Assets\js\datetime\bootstrap-timepicker.js" />
     <Content Include="Assets\js\datetime\daterangepicker.js" />
     <Content Include="Assets\js\datetime\moment.js" />
+    <Content Include="Assets\js\director.min.js" />
     <Content Include="Assets\js\dropzone\dropzone.css" />
     <Content Include="Assets\js\dropzone\dropzone.js" />
     <Content Include="Assets\js\editors\summernote\summernote.js" />
@@ -584,6 +585,12 @@
     <Content Include="Assets\js\ztree\zTreeStyle.css" />
     <Content Include="Assets\sound\alert.mp3" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\base.js" />
+    <Content Include="Scripts\changePassword.js" />
+    <Content Include="Scripts\index.js" />
+    <Content Include="Scripts\templates.js" />
+    <Content Include="Scripts\user.js" />
+    <Content Include="Scripts\utility.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -654,6 +661,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Content Include="Views\Shared\_EmptyLayout.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Home\_UserIndex.cshtml" />
+    <Content Include="Views\Shared\_Templates.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -663,7 +672,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Upload\" />
-    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAF.Business\TAF.Business.csproj">
