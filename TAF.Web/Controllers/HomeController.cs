@@ -11,6 +11,7 @@ namespace TAF.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Dynamic;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Web;
@@ -20,6 +21,8 @@ namespace TAF.Web.Controllers
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
+
+    using Newtonsoft.Json;
 
     using TAF.Mvc;
     using TAF.Utility;
@@ -217,18 +220,7 @@ namespace TAF.Web.Controllers
             return Json(result.Succeeded ? new ActionResultData<string>("密码修改成功！") : new ActionResultStatus(10, result.Errors.First()), JsonRequestBehavior.AllowGet);
         }
 
-        /// <summary>
-        /// 编辑用户信息
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [Authorize(Roles = "Admins")]
-        public ActionResult EditUser(string userId)
-        {
-            var user = UserManager.FindById(userId);
-            ViewBag.Roles = RoleManager.Roles.ToList();
-            return PartialView("_EditUser", user ?? new ApplicationUser() { Id = string.Empty });
-        }
+
 
         /// <summary>
         /// 新增用户
@@ -251,12 +243,7 @@ namespace TAF.Web.Controllers
             {
                 user.Roles.Add(new IdentityUserRole() { RoleId = roleName, UserId = user.Id });
             }
-
-            if (string.IsNullOrWhiteSpace(item.Password))
-            {
-                return Json(new ActionResultStatus(10, "密码不能为空！"), JsonRequestBehavior.AllowGet);
-            }
-
+            item.Password = "11111111";
             UserManager.Create(user, item.Password);
             return Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
         }
@@ -285,17 +272,17 @@ namespace TAF.Web.Controllers
             }
 
             UserManager.Update(user);
-            if (!string.IsNullOrWhiteSpace(infoView.Password))
-            {
-                var token = UserManager.GeneratePasswordResetToken(infoView.Id);
-                var result = UserManager.ResetPassword(infoView.Id, token, infoView.Password);
-                return
-                    Json(
-                         !result.Succeeded
-                             ? new ActionResultStatus(10, result.Errors.First())
-                             : new ActionResultStatus(),
-                        JsonRequestBehavior.AllowGet);
-            }
+            //            if (!string.IsNullOrWhiteSpace(infoView.Password))
+            //            {
+            //                var token = UserManager.GeneratePasswordResetToken(infoView.Id);
+            //                var result = UserManager.ResetPassword(infoView.Id, token, infoView.Password);
+            //                return
+            //                    Json(
+            //                         !result.Succeeded
+            //                             ? new ActionResultStatus(10, result.Errors.First())
+            //                             : new ActionResultStatus(),
+            //                        JsonRequestBehavior.AllowGet);
+            //            }
 
             return Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
         }
@@ -316,9 +303,19 @@ namespace TAF.Web.Controllers
             {
                 return Json(new ActionResultStatus(10, "用户不存在！"), JsonRequestBehavior.AllowGet);
             }
-
             UserManager.Delete(user);
             return Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 获取系统资源
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetResources()
+        {
+            dynamic resource = new ExpandoObject();
+            resource.Roles = RoleManager.Roles.ToList();
+            return Content(JsonConvert.SerializeObject(resource));
         }
     }
 }

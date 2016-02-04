@@ -562,6 +562,7 @@
     <Content Include="Assets\js\ueditor\ueditor.parse.min.js" />
     <Content Include="Assets\js\underscore.string.min.js" />
     <Content Include="Assets\js\validation\bootstrapValidator.js" />
+    <Content Include="Assets\js\vue.js" />
     <Content Include="Assets\js\vue.min.js" />
     <Content Include="Assets\js\ztree\img\diy\1_close.png" />
     <Content Include="Assets\js\ztree\img\diy\1_open.png" />
@@ -591,6 +592,7 @@
     <Content Include="Scripts\templates.js" />
     <Content Include="Scripts\user.js" />
     <Content Include="Scripts\utility.js" />
+    <Content Include="test.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

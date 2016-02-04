@@ -16,6 +16,8 @@ namespace TAF.Utility
     using System.Runtime.Serialization.Formatters.Soap;
     using System.Xml.Serialization;
 
+    using Newtonsoft.Json;
+
     /// <summary>
     /// The extensions.
     /// </summary>
@@ -189,6 +191,35 @@ namespace TAF.Utility
 
         #endregion
 
+
+        #region Json序列化
+
+        ///<summary>
+        /// json反序列化（非二进制方式）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="jsonString"></param>
+        /// <returns></returns>
+        public static T DeSerializesFromString<T>(string jsonString) where T : class
+        {
+            var serializer = new JsonSerializer();
+            var sr = new StringReader(jsonString);
+            var o = serializer.Deserialize(new JsonTextReader(sr), typeof(T));
+            return o as T;
+        }
+
+        /// <summary>
+        /// json序列化（非二进制方式）
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static string SerializeToString<T>(T t)
+        {
+            return JsonConvert.SerializeObject(t);
+        }
+
+        #endregion
 
         /// <summary>
         /// The get formatter.

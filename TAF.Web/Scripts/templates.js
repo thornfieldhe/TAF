@@ -1,11 +1,11 @@
 ﻿//新增按钮
 Vue.component('add-button', {
-    props: ['title'],
+    props: ['title','id'],
     template: '#addButton',
     methods: {
         newItem: function (title) {
             $("#addItemModal").modal("show");
-            this.$dispatch('onAddItem', title);
+            this.$dispatch('onAddItem', title,this.item);
         }
     }
 });

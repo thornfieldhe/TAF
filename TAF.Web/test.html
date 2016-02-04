@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <script src="/Assets/js/vue.js"></script>
+</head>
+<body>
+<div class="row" id="row">
+    <input type="text" v-model="text1" />
+    <label for="a">
+        <input type="checkbox" value="a" id="a" v-model="chk1">
+        用户组
+    </label>
+    <label for="b">
+        <input type="checkbox" value="b" id="b" v-model="chk1">
+        系统管理员组
+    </label>
+    <p>组件外使用checkbox: {{ chk1 | json }}</p>
+    <p>组件外使用input: {{ text1 }}</p>
+    <form-edit></form-edit>
+</div>
+<template id="formEdit">
+    <input type="text" v-model="text2"/>
+    <label for="aa">
+        <input type="checkbox" value="aa" id="aa" v-model="chk2">
+        <span class=" text">用户组</span>
+    </label>
+    <label for="bb">
+        <input type="checkbox" value="bb" id="bb" v-model="chk2">
+        <span class=" text">系统管理员组</span>
+    </label>
+    <p>组件内使用checkbox: {{ chk2 | json }}</p>
+    <p>组件内使用input: {{ text2 }}</p>
+  
+</template>
+<script>
+    var main=new Vue({
+        el: '#row',
+            data: {
+        chk1:[]
+    },
+        components: {
+            'form-edit': {
+                template: '#formEdit'
+            },
+            data: {
+                chk2:[]
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -5,26 +5,40 @@
             liginName: "",
             fullName: "",
             roleNames:""
-        }
+        }, checkedNames:[]
     },
     components: {
         'form-edit': {
-            props: ['model.Id', 'title'],
+            props: ['id', 'title'],
             template: '#formEdit',
+            data: {
+                item: {
+                    id: '',
+                    loginName: '',
+                    fullName: '',
+                    roleIds:[]
+                }
+            },
             events: {
                 'onAddItem': function (title) {
                     this.title = title;
                 },
                 'onUpdateItem': function (title, id) {
                     this.title = title;
-                    this.id = id;
+                    this.item.id = id;
+                }
+            },
+            methods: {
+                saveItem:function() {
+
                 }
             }
         }
     },
     events: {
-        'onAddItem': function (title) {
+        'onAddItem': function (title,item) {
             this.formInit();
+            console.log(item,3);
             this.$broadcast("onAddItem", title);
         },
         'onUpdateItem': function (title,id) {
@@ -56,6 +70,9 @@
         },
         formInit: function () {
             this.validate();
+        },
+        init:function() {
+           
         }
     }
 });
