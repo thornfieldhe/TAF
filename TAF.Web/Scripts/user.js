@@ -1,43 +1,20 @@
-﻿var main = new Vue({
-    mixins: [indexMixin],
-    data: {
-        query: {
-            liginName: "",
-            fullName: "",
-            roleNames:""
-        }
-    },
-    components: {
-        'form-edit': {
-            template: '#formEdit',
-            data: function () {
-             return  { item: {
-                    id: '',
-                    loginName: '',
-                    fullName: '',
-                    roleIds:[]
-                }};
-            },
-            methods: {
-                saveItem: function (item) {
-                    var $this = this;
-                    console.log(this);
-                    $(form).data('bootstrapValidator').validate();
-                    if ($(form).data('bootstrapValidator').isValid()) {
-                        $.post("/Home/SaveUser", item, function (e) {
-                            if (e.Status === 0) {
-                                $this.$dispatch('postSaveItem');
-                                $("#addItemModal").modal("hide");
-                            } else {
-                                $("#unknownError").show().find(".help-block").html(e.Message);
-                            }
-                        });
-                    }
-                }
+﻿Vue.component('form-edit', {
+    mixins: [itemMixin],
+    template: '#formEdit',
+    data: function () {
+        return {
+            item: {
+                id: '',
+                loginName: '',
+                fullName: '',
+                roleIds: []
             }
-        }
+        };
     },
     methods: {
+        saveItem: function () {
+            this.submit("/Home/SaveUser");
+        },
         validate: function () {
             $("#form").bootstrapValidator({
                 message: '用户验证未通过',
@@ -58,9 +35,18 @@
                     }
                 }
             });
-        },
-        clearForm:function() {//初始化表单
-            this.formInit(1);//1指vue子组件中的编辑组件
+        }
+    }
+});
+
+
+var main = new Vue({
+    mixins: [indexMixin],
+    data: {
+        query: {
+            liginName: "",
+            fullName: "",
+            roleNames:""
         }
     }
 });

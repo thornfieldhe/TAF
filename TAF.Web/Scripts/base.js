@@ -12,39 +12,41 @@
         'postSaveItem': function () {
 
         }
+    }
+}
+
+var itemMixin = {
+    props: ['id', 'title'],
+    ready: function () {
+        this.validate();
+        $('#addItemModal').on('hide.bs.modal', function () {
+            $(form).data('bootstrapValidator').resetForm();
+            $("#unknownError").show().find(".help-block").html("");
+            this.item = {};
+        });
     },
-    methods: {
-        formInit: function (index) {
-            this.validate();
-            $('#addItemModal').on('hide.bs.modal', function () {
-                $(form).data('bootstrapValidator').resetForm();
-                $("#unknownError").show().find(".help-block").html();
-                main.$children[index].item = {};
-            });
+    events: {
+        'onAddItem': function (title) {
+            this.title = title;
+        },
+        'onUpdateItem': function (title, id) {
+            this.title = title;
+            this.item.id = id;
         }
     },
-    components: {
-        'form-edit': {
-            props: ['id', 'title'],
-            events: {
-                'onAddItem': function (title) {
-                    this.title = title;
-                },
-                'onUpdateItem': function (title, id) {
-                    this.title = title;
-                    this.item.id = id;
-                }
-            },
-            methods: {
-                submitForm: function (model) {
-                    console.log(model,e,111);
+    methods: {
+        submit: function (url) {
+            var $this = this;
+            $(form).data('bootstrapValidator').validate();
+            if ($(form).data('bootstrapValidator').isValid()) {
+                $.post(url, $this.item, function (e) {
                     if (e.Status === 0) {
-                        model.$dispatch('postSaveItem');
                         $("#addItemModal").modal("hide");
+                        $this.$dispatch('postSaveItem');
                     } else {
                         $("#unknownError").show().find(".help-block").html(e.Message);
                     }
-                }
+                });
             }
         }
     }
