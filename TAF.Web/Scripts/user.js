@@ -1,49 +1,40 @@
 ﻿var main = new Vue({
-    el: "#main",
+    mixins: [indexMixin],
     data: {
         query: {
             liginName: "",
             fullName: "",
             roleNames:""
-        }, checkedNames:[]
+        }
     },
     components: {
         'form-edit': {
-            props: ['id', 'title'],
             template: '#formEdit',
-            data: {
-                item: {
+            data: function () {
+             return  { item: {
                     id: '',
                     loginName: '',
                     fullName: '',
                     roleIds:[]
-                }
-            },
-            events: {
-                'onAddItem': function (title) {
-                    this.title = title;
-                },
-                'onUpdateItem': function (title, id) {
-                    this.title = title;
-                    this.item.id = id;
-                }
+                }};
             },
             methods: {
-                saveItem:function() {
-
+                saveItem: function (item) {
+                    var $this = this;
+                    console.log(this);
+                    $(form).data('bootstrapValidator').validate();
+                    if ($(form).data('bootstrapValidator').isValid()) {
+                        $.post("/Home/SaveUser", item, function (e) {
+                            if (e.Status === 0) {
+                                $this.$dispatch('postSaveItem');
+                                $("#addItemModal").modal("hide");
+                            } else {
+                                $("#unknownError").show().find(".help-block").html(e.Message);
+                            }
+                        });
+                    }
                 }
             }
-        }
-    },
-    events: {
-        'onAddItem': function (title,item) {
-            this.formInit();
-            console.log(item,3);
-            this.$broadcast("onAddItem", title);
-        },
-        'onUpdateItem': function (title,id) {
-            this.formInit();
-            this.$broadcast("onUpdateItem", title,id);
         }
     },
     methods: {
@@ -68,11 +59,8 @@
                 }
             });
         },
-        formInit: function () {
-            this.validate();
-        },
-        init:function() {
-           
+        clearForm:function() {//初始化表单
+            this.formInit(1);//1指vue子组件中的编辑组件
         }
     }
 });

@@ -9,28 +9,6 @@
                     <span class="widget-caption">用户管理</span>
                 </div>
                 <div class="widget-body">
-
-                    <div class="col-sm-10">
-                        <div class="row">
-                            <div class="col-lg-4 col-sm-4 col-xs-4">
-                                <div class="checkbox">
-                                    <label for="aa">
-                                        <input type="checkbox" value="aa" id="aa" v-model="checkedNames">
-                                        <span class=" text">用户组</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-sm-4 col-xs-4">
-                                <div class="checkbox">
-                                    <label for="bb">
-                                        <input type="checkbox" value="bb" id="bb" v-model="checkedNames">
-                                        <span class=" text">系统管理员组</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <span>Checked names: {{ checkedNames | json }}</span>
-                    </div>
                     <div class="table-toolbar">
                         <add-button title="新增"></add-button>
                     </div>
@@ -42,7 +20,7 @@
     </div>
 </div>
 <template id="formEdit">
-    <div class="bootbox modal fade modal-primary in" id="addItemModal">
+    <div class="bootbox modal fade modal-primary in" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -66,7 +44,7 @@
                                     <label class="col-sm-2 control-label no-padding-right">登录名</label>
                                     <div class="col-sm-10">
                                         <span class="input-icon icon-right">
-                                            <input type="text" class="form-control" placeholder="登录名" name="loginName" v-model="user.loginName"/>
+                                            <input type="text" class="form-control" placeholder="登录名" name="loginName" v-model="item.loginName"/>
                                             <i class="glyphicon glyphicon-user blue"></i>
                                         </span>
                                     </div>
@@ -79,7 +57,7 @@
                                     <label class="col-sm-2 control-label no-padding-right">全名</label>
                                     <div class="col-sm-10">
                                         <span class="input-icon icon-right">
-                                            <input type="text" class="form-control" placeholder="全名" name="fullName" v-model="user.fullName"/>
+                                            <input type="text" class="form-control" placeholder="全名" name="fullName" v-model="item.fullName"/>
                                             <i class="glyphicon glyphicon-user blue"></i>
                                         </span>
                                     </div>
@@ -97,7 +75,7 @@
                                                 <div class="col-lg-4 col-sm-4 col-xs-4">
                                                     <div class="checkbox">
                                                         <label for="@role.Id">
-                                                                <input  type="checkbox" value="@role.Id" v-model="user.roleIds" id="@role.Id">
+                                                                <input  type="checkbox" value="@role.Id" v-model="item.roleIds" id="@role.Id">
                                                             <span class=" text">@role.Name</span>
                                                         </label>
                                                     </div>
@@ -117,16 +95,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input type="hidden" class="form-control" name="id"/>
-                            </div>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa   fa-mail-reply'></i>取消</button>
-                    <button type="button" class="btn btn-primary"  v-on:click="saveItem(item)"><i class='fa    fa-floppy-o'></i>保存</button>
+                    <button type="submit" class="btn btn-primary"  v-on:click="saveItem(item)"><i class='fa    fa-floppy-o'></i>保存</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

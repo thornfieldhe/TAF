@@ -177,7 +177,7 @@ namespace TAF.Web.Controllers
             return PartialView("_UserIndex", roles);
         }
 
-        [Authorize(Roles = "Admins")]
+        [Authorize(Roles = "系统管理员组")]
         public ActionResult GetUserList(int pageIndex, int pageSize = 20)
         {
             var roles = RoleManager.Roles.ToList();
@@ -220,18 +220,31 @@ namespace TAF.Web.Controllers
             return Json(result.Succeeded ? new ActionResultData<string>("密码修改成功！") : new ActionResultStatus(10, result.Errors.First()), JsonRequestBehavior.AllowGet);
         }
 
-
+        /// <summary>
+        /// 保存用户
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize(Roles = "系统管理员组")]
+        public ActionResult SaveUser(UserInfoView item)
+        {
+            return string.IsNullOrWhiteSpace(item.Id) ? this.CreateUser(item) : this.UpdateUser(item);
+        }
 
         /// <summary>
         /// 新增用户
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Authorize(Roles = "Admins")]
-        public ActionResult CreateUser(UserInfoView item)
+        private ActionResult CreateUser(UserInfoView item)
         {
-            var user = new ApplicationUser
+            var user = UserManager.FindByName(item.LoginName);
+            if (user != null)
+            {
+                return Json(new ActionResultStatus(10, "用户已存在！"));
+            }
+            user = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
                 UserName = item.LoginName,
@@ -245,7 +258,7 @@ namespace TAF.Web.Controllers
             }
             item.Password = "11111111";
             UserManager.Create(user, item.Password);
-            return Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
+            return Json(new ActionResultStatus());
         }
 
         /// <summary>
@@ -253,16 +266,13 @@ namespace TAF.Web.Controllers
         /// </summary>
         /// <param name="infoView"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Authorize(Roles = "Admins")]
-        public ActionResult UpdateUser(UserInfoView infoView)
+        private ActionResult UpdateUser(UserInfoView infoView)
         {
             var user = UserManager.FindByName(infoView.LoginName);
             if (user == null)
             {
-                return Json(new ActionResultStatus(10, "用户不存在！"), JsonRequestBehavior.AllowGet);
+                return Json(new ActionResultStatus(10, "用户不存在！"));
             }
-
             user.UserName = infoView.LoginName;
             user.FullName = infoView.FullName;
             user.Roles.Clear();
@@ -284,7 +294,7 @@ namespace TAF.Web.Controllers
             //                        JsonRequestBehavior.AllowGet);
             //            }
 
-            return Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
+            return Json(new ActionResultStatus());
         }
 
         /// <summary>
@@ -295,7 +305,7 @@ namespace TAF.Web.Controllers
         /// <returns>
         /// </returns>
         [HttpPost]
-        [Authorize(Roles = "Admins")]
+        [Authorize(Roles = "系统管理员组")]
         public ActionResult DeleteUser(string id)
         {
             var user = UserManager.FindById(id);
