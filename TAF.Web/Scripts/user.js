@@ -1,4 +1,4 @@
-﻿Vue.component('form-edit', {
+﻿Vue.component('form-body', {
     mixins: [itemMixin],
     data: function () {
         return {
@@ -10,10 +10,19 @@
             }
         };
     },
-    methods: {
-        saveItem: function () {
+    events: {
+        'onSaveItem': function (id) {
+            this.item.id = id;
             this.submit("/Home/SaveUser");
         },
+        'onClearItem': function () {
+            this.item.id = "";
+            this.item.loginName = "";
+            this.item.fullName = "";
+            this.item.roleIds = [];
+        }
+    },
+    methods: {
         validate: function () {
             $("#form").bootstrapValidator({
                 message: '用户验证未通过',

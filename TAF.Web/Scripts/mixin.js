@@ -2,11 +2,9 @@
     el: "#main",
     events: {
         'onAddItem': function (title) {
-            this.clearForm();
             this.$broadcast("onAddItem", title);
         },
         'onUpdateItem': function (title, id) {
-            this.clearForm();
             this.$broadcast("onUpdateItem", title, id);
         },
         'postSaveItem': function () {
@@ -15,25 +13,12 @@
     }
 }
 
+
 var itemMixin = {
-    template: '#formEdit',
-    props: ['id', 'title'],
+    template: '#formBody',
+    props: ['id'],
     ready: function () {
         this.validate();
-        $('#addItemModal').on('hide.bs.modal', function () {
-            $(form).data('bootstrapValidator').resetForm();
-            $("#unknownError").show().find(".help-block").html("");
-            this.item = {};
-        });
-    },
-    events: {
-        'onAddItem': function (title) {
-            this.title = title;
-        },
-        'onUpdateItem': function (title, id) {
-            this.title = title;
-            this.item.id = id;
-        }
     },
     methods: {
         submit: function (url) {

@@ -45,41 +45,28 @@ Vue.component('row-command', {
 
 //编辑页
 Vue.component('form-edit', {
-    mixins: [itemMixin],
-    data: function () {
-        return {
-            item: {
-                id: '',
-                loginName: '',
-                fullName: '',
-                roleIds: []
-            }
-        };
+    template: '#formEdit',
+    props: ['id', 'title'],
+    ready: function () {
+        var $this = this;
+        $('#addItemModal').on('hide.bs.modal', function () {
+            $(form).data('bootstrapValidator').resetForm();
+            $("#unknownError").show().find(".help-block").html("");
+            $this.$broadcast('onClearItem');
+        });
+    },
+    events: {
+        'onAddItem': function (title) {
+            this.title = title;
+        },
+        'onUpdateItem': function (title, id) {
+            this.title = title;
+            this.id = id;
+        }
     },
     methods: {
         saveItem: function () {
-            this.submit("/Home/SaveUser");
-        },
-        validate: function () {
-            $("#form").bootstrapValidator({
-                message: '用户验证未通过',
-                fields: {
-                    loginName: {
-                        validators: {
-                            notEmpty: {
-                                message: '用户名不能为空'
-                            }
-                        }
-                    },
-                    fullName: {
-                        validators: {
-                            notEmpty: {
-                                message: '全名不能为空'
-                            }
-                        }
-                    }
-                }
-            });
+            this.$broadcast('onSaveItem', this.id);
         }
     }
 });

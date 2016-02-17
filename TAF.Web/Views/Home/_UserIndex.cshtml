@@ -19,92 +19,65 @@
         </div>
     </div>
 </div>
-<template id="formEdit">
-    <div class="bootbox modal fade modal-primary in" id="addItemModal" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">{{ title }}</h4>
-                    <div v-model="title"></div>
+<template id="formBody">
+    <form id="form" class="form-horizontal " name="form">
+        <div class="row">
+            <div class="col-md-12 ">
+                <div class="alert alert-warning fade in alert-radius-bordered alert-shadowed">
+                    <i class="fa-fw fa fa-info"></i>
+                    <strong>注：</strong>用户初始密码11111111
                 </div>
-                <div class="modal-body">
-                    <form id="form" class="form-horizontal " name="form">
-                        <div class="row">
-                            <div class="col-md-12 ">
-                                <div class="alert alert-warning fade in alert-radius-bordered alert-shadowed">
-                                    <i class="fa-fw fa fa-info"></i>
-                                    <strong>注：</strong>用户初始密码11111111
-                                </div>
-                            </div>
-                            </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label no-padding-right">登录名</label>
-                                    <div class="col-sm-10">
-                                        <span class="input-icon icon-right">
-                                            <input type="text" class="form-control" placeholder="登录名" name="loginName" v-model="item.loginName"/>
-                                            <i class="glyphicon glyphicon-user blue"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label no-padding-right">全名</label>
-                                    <div class="col-sm-10">
-                                        <span class="input-icon icon-right">
-                                            <input type="text" class="form-control" placeholder="全名" name="fullName" v-model="item.fullName"/>
-                                            <i class="glyphicon glyphicon-user blue"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label no-padding-right">角色</label>
-                                    <div class="col-sm-10">
-                                        <div class="row">
-                                            @foreach (var role in Model)
-                                            {
-                                                <div class="col-lg-4 col-sm-4 col-xs-4">
-                                                    <div class="checkbox">
-                                                        <label for="@role.Id">
-                                                                <input  type="checkbox" value="@role.Id" v-model="item.roleIds" id="@role.Id">
-                                                            <span class=" text">@role.Name</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" id="unknownError" style="display: none;">
-                            <div class="col-md-12">
-                                <div class="form-group  has-feedback has-error">
-                                    <div class="col-md-10 col-md-offset-2">
-                                        <small class="help-block"></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+            </div>
+            </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right">登录名</label>
+                    <div class="col-sm-10">
+                        <span class="input-icon icon-right">
+                            <input type="text" class="form-control" placeholder="登录名" name="loginName" v-model="item.loginName"/>
+                            <i class="glyphicon glyphicon-user blue"></i>
+                        </span>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa   fa-mail-reply'></i>取消</button>
-                    <button type="submit" class="btn btn-primary"  v-on:click="saveItem()"><i class='fa    fa-floppy-o'></i>保存</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right">全名</label>
+                    <div class="col-sm-10">
+                        <span class="input-icon icon-right">
+                            <input type="text" class="form-control" placeholder="全名" name="fullName" v-model="item.fullName"/>
+                            <i class="glyphicon glyphicon-user blue"></i>
+                        </span>
+                    </div>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label no-padding-right">角色</label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            @foreach (var role in Model)
+                            {
+                                <div class="col-lg-4 col-sm-4 col-xs-4">
+                                    <div class="checkbox">
+                                        <label for="@role.Id">
+                                                <input  type="checkbox" value="@role.Id" v-model="item.roleIds" id="@role.Id">
+                                            <span class=" text">@role.Name</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </template>
 <script src="~/Scripts/user.js"></script>
 
