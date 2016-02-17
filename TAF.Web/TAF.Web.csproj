@@ -277,9 +277,6 @@
     <Content Include="Assets\js\slider\jQRangeSlider\jQAllRangeSliders-withRuler-min.js" />
     <Content Include="Assets\js\slider\jquery.nouislider.js" />
     <Content Include="Assets\js\slimscroll\jquery.slimscroll.min.js" />
-    <Content Include="Assets\js\taf\vue-template.html" />
-    <Content Include="Assets\js\taf\vue-ui.js" />
-    <Content Include="Assets\js\taf\vue.min.js" />
     <Content Include="Assets\js\tagsinput\bootstrap-tagsinput.js" />
     <Content Include="Assets\js\textarea\jquery.autosize.js" />
     <Content Include="Assets\js\toastr\toastr.js" />

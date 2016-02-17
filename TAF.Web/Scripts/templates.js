@@ -28,17 +28,15 @@ Vue.component('row-search', {
 
 //行命令按钮
 Vue.component('row-command', {
-    props: ['id', 'model', 'title', 'name'],
-    template: '#scommanButton',
+    props: ['id', 'title', 'name'],
+    template: '#rowCommand',
     methods: {
-        editItem: function (id, model, title) {
-            $("#addUserModal").modal("show");
+        editItem: function (id, title) {
+            $("#addItemModal").modal("show");
             this.$dispatch('onUpdateItem', title, id);
         },
-        deleteItem: function (id, model, name) {
-            taf.delete(id, model, name, function () {
-                taf.model.query(1, null, model, function (result) { $this.$dispatch('onBindItems', result); });
-            });
+        deleteItem: function (id, name) {
+            this.$dispatch('onDeleteItem', name, id);
         }
     }
 });
@@ -58,10 +56,11 @@ Vue.component('form-edit', {
     events: {
         'onAddItem': function (title) {
             this.title = title;
+            this.$broadcast("onNewItem");
         },
         'onUpdateItem': function (title, id) {
             this.title = title;
-            this.id = id;
+            this.$broadcast("onGetItem", id);
         }
     },
     methods: {
@@ -71,3 +70,29 @@ Vue.component('form-edit', {
     }
 });
 
+//删除对话框
+Vue.component('dialog-delete', {
+    template: '#dialogDelete',
+    props: ['id', 'name', 'deleteUrl'],
+    events: {
+        'onDeleteItem': function (name, id) {
+            $("#deleteItemDialog").modal("show");
+            this.id = id;
+            this.name = name;
+        }
+    },
+    methods: {
+        deleteItem: function () {
+            var $this = this;
+            $.post($this.deleteUrl + $this.id, function (e) {
+                if (e.Status === 0) {
+                    $this.$dispatch('onChange');
+                    $("#deleteItemDialog").modal("hide");
+                } else {
+                    taf.notify.danger(e.Message);
+                }
+            });
+            
+        }
+    }
+});

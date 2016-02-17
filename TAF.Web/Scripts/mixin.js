@@ -7,8 +7,19 @@
         'onUpdateItem': function (title, id) {
             this.$broadcast("onUpdateItem", title, id);
         },
-        'postSaveItem': function () {
-            //todos 刷新列表
+        'onDeleteItem':function(name, id) {
+            this.$broadcast("onDeleteItem", name, id);
+        },
+        'onChange': function () {
+            this.query(1);
+        }
+    },
+    methods: {
+        query: function (index) {
+            var $this = this;
+            $.get($this.queryUrl + "?pageIndex="+index, function (e) {
+                $this.list = e.Data;
+            });
         }
     }
 }
@@ -20,6 +31,11 @@ var itemMixin = {
     ready: function () {
         this.validate();
     },
+    events: {
+        'onNewItem':function() {
+            this.editModel = false;
+        }
+    },
     methods: {
         submit: function (url) {
             var $this = this;
@@ -28,12 +44,18 @@ var itemMixin = {
                 $.post(url, $this.item, function (e) {
                     if (e.Status === 0) {
                         $("#addItemModal").modal("hide");
-                        $this.$dispatch('postSaveItem');
+                        $this.$dispatch('onChange');
                     } else {
                         $("#unknownError").show().find(".help-block").html(e.Message);
                     }
                 });
             }
+        },
+        get: function (url) {
+            var $this = this;
+            $.get(url, function (e) {
+                $this.item = e.Data;
+            });
         }
     }
 }

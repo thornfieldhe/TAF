@@ -42,7 +42,7 @@
                     "~/assets/js/toastr/toastr.js",
                     "~/assets/js/fuelux/spinbox/fuelux.spinbox.min.js",
                     "~/assets/js/validation/bootstrapValidator.js",
-                    "~/assets/js/vue.min.js",
+                    "~/assets/js/vue.js",
                     "~/assets/js/select2/select2.js",
                     "~/assets/js/beyond.js"));
 

@@ -3,23 +3,27 @@
     data: function () {
         return {
             item: {
-                id: '',
-                loginName: '',
-                fullName: '',
-                roleIds: []
-            }
+                Id: '',
+                LoginName: '',
+                FullName: '',
+                RoleIds: []
+            },
+            editModel: false
         };
     },
     events: {
         'onSaveItem': function (id) {
-            this.item.id = id;
             this.submit("/Home/SaveUser");
         },
         'onClearItem': function () {
-            this.item.id = "";
-            this.item.loginName = "";
-            this.item.fullName = "";
-            this.item.roleIds = [];
+            this.item.Id = "";
+            this.item.LoginName = "";
+            this.item.FullName = "";
+            this.item.RoleIds = [];
+        },
+        'onGetItem': function (id) {
+            this.editModel = true;
+            this.get("/Home/GetUser?userId="+id);
         }
     },
     methods: {
@@ -49,11 +53,16 @@
 
 var main = new Vue({
     mixins: [indexMixin],
+    ready: function () {
+        this.query(1);
+    },
     data: {
-        query: {
+        queryEntity: {
             liginName: "",
             fullName: "",
             roleNames:""
-        }
+        },
+        list: {},
+        queryUrl : "/Home/GetUserList"
     }
 });

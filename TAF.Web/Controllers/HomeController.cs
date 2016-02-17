@@ -207,7 +207,25 @@ namespace TAF.Web.Controllers
             };
             pager.GetShowIndex();
 
-            return Json(pager, JsonRequestBehavior.AllowGet);
+            return Json(new ActionResultData<Pager<UserInfoView>>(pager), JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "系统管理员组")]
+        public ActionResult GetUser(string userId)
+        {
+            var user = UserManager.FindByIdAsync(userId).Result;
+            var roles = RoleManager.Roles.ToList();
+            var result = new UserInfoView
+            {
+                FullName = user.FullName,
+                Id = user.Id,
+                LoginName = user.UserName,
+                RoleIds = user.Roles.Select(r => r.RoleId).ToList(),
+                RoleNames = string.Join(
+                                                      ",",
+                                      roles.Where(r => user.Roles.Select(ur => ur.RoleId).Contains(r.Id)).Select(r => r.Name).ToList())
+            };
+            return Json(new ActionResultData<UserInfoView>(result), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

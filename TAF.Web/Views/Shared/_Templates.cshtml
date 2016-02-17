@@ -1,13 +1,13 @@
 ﻿<template id="addButton">
-    <a href="javascript:void(0);" class="btn btn-primary " v-on:click="newItem(title)"><i class="fa  fa-plus"></i> 新增</a>
+    <button type="button" class="btn btn-primary " v-on:click="newItem(title)"><i class="fa  fa-plus"></i> 新增</button>
 </template>
 <template id="searchButton">
-    <a href="javascript:void(0)" class="btn btn-danger " v-on:click="search(index,filter,model)"><i class="fa fa-search"></i> 搜索</a>
-    <a href="javascript:void(0)" class="btn" v-on:click="resetSearch()"><i class="fa fa-times"></i> 重置</a>
+    <button type="button" class="btn btn-danger " v-on:click="search(index,filter,model)"><i class="fa fa-search"></i> 搜索</button>
+    <button type="button" class="btn" v-on:click="resetSearch()"><i class="fa fa-times"></i> 重置</button>
 </template>
-<template id="commanButton">
-    <a href="javascript:void(0)" class="btn   edit" v-on:click="editItem(id,title) "><i class="fa fa-edit"></i> 编辑</a>
-    <a href="javascript:void(0)" class="btn btn-danger  " v-on:click="deleteItem(id,model,name) "><i class="fa fa-trash-o"></i> 删除</a>
+<template id="rowCommand">
+    <button type="button" class="btn   edit" v-on:click="editItem(id,title) "><i class="fa fa-edit"></i> 编辑</button>
+    <button type="button" class="btn btn-danger  " v-on:click="deleteItem(id,name) "><i class="fa fa-trash-o"></i> 删除</button>
 </template>
 <template id="formEdit">
     <div class="bootbox modal fade modal-primary in" id="addItemModal">
@@ -36,6 +36,26 @@
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
+    </div>
+</template>
+<template id="dialogDelete">
+    <div class="bootbox modal fade modal-darkorange in" id="deleteItemDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">删除</h4>
+                    <div v-model="title"></div>
+                </div>
+                <div class="modal-body">
+                    <div class="bootbox-body">确认删除[{{name}}]么？</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fa   fa-mail-reply"></i> 取消</button>
+                    <button type="button" class="btn btn-danger" v-on:click="deleteItem()"><i class="fa   fa-trash-o"></i>删除</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script src="~/Scripts/templates.js"></script>
