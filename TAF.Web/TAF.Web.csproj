@@ -586,7 +586,7 @@
     <Content Include="Assets\js\ztree\zTreeStyle.css" />
     <Content Include="Assets\sound\alert.mp3" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\base.js" />
+    <Content Include="Scripts\mixin.js" />
     <Content Include="Scripts\changePassword.js" />
     <Content Include="Scripts\index.js" />
     <Content Include="Scripts\templates.js" />

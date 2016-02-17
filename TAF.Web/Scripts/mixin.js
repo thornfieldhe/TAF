@@ -10,12 +10,13 @@
             this.$broadcast("onUpdateItem", title, id);
         },
         'postSaveItem': function () {
-
+            //todos 刷新列表
         }
     }
 }
 
 var itemMixin = {
+    template: '#formEdit',
     props: ['id', 'title'],
     ready: function () {
         this.validate();

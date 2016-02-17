@@ -1,6 +1,5 @@
 ﻿Vue.component('form-edit', {
     mixins: [itemMixin],
-    template: '#formEdit',
     data: function () {
         return {
             item: {
@@ -38,7 +37,6 @@
         }
     }
 });
-
 
 var main = new Vue({
     mixins: [indexMixin],
