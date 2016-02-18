@@ -180,48 +180,51 @@
         /// </summary>
         public void GetShowIndex()
         {
+            var totalPage = Total / PageSize; //总分页数;
+            var showMaxPages = 5;//显示5条页码
+            ShowIndex = new List<int>();
             var temp0 = Total % PageSize;//总页数是否能够整出每页数
             var temp1 = temp0 == 0 ? Total / PageSize : Total / PageSize + 1; //总分页数;
 
-            ShowIndex = new List<int>();
-            for (var i = 0; i < temp1; i++)
+            if (PageIndex == 1)
             {
-                if (i * PageSize < PageIndex && (i + 1) * PageSize >= PageIndex)
+                for (int p = 1; p <= (showMaxPages < temp1 ? showMaxPages : temp1); p++)
                 {
-                    for (var j = 1; j <= 5; j++)
+                    ShowIndex.Add(p);
+                }
+            }
+            else if (PageIndex == Total)
+            {
+                ShowIndex.Add(PageIndex - 1);
+                ShowIndex.Add(PageIndex);
+            }
+            else
+            {
+                for (int j = 0; j < totalPage + 1; j++)
+                {
+                    if (PageIndex % showMaxPages == 1 && PageIndex / showMaxPages == j)
                     {
-                        if (temp1 >= i * PageSize + j)
+                        for (int p = PageIndex - 1; p <= (showMaxPages * (j + 1) < temp1 ? PageIndex - 2 + showMaxPages : temp1); p++)
                         {
-                            ShowIndex.Add(i * PageSize + j);
+                            ShowIndex.Add(p);
+                        }
+                    }
+                    else if (showMaxPages * j < PageIndex && showMaxPages * (j + 1) > PageIndex && PageIndex != 1)
+                    {
+                        for (int p = showMaxPages * j + 1; p <= (showMaxPages * (j + 1) < temp1 ? showMaxPages * (j + 1) : temp1); p++)
+                        {
+                            ShowIndex.Add(p);
+                        }
+                    }
+                    else if (PageIndex % showMaxPages == 0 && PageIndex / showMaxPages == j)
+                    {
+                        for (int p = PageIndex - 1; p <= (showMaxPages * (j + 1) < temp1 ? PageIndex - 2 + showMaxPages : temp1); p++)
+                        {
+                            ShowIndex.Add(p);
                         }
                     }
                 }
             }
-
-
-            if (temp1 > 5 && PageIndex % 5 == 0)
-            {
-                for (int i = 0; i < ShowIndex.Count; i++)
-                {
-                    ShowIndex[i] = ShowIndex[i] + 1;
-                }
-            }
-            else if (PageIndex >= 6 && PageIndex % 5 == 1)
-            {
-                if (ShowIndex.Count == 5)
-                {
-                    for (int i = 0; i < ShowIndex.Count; i++)
-                    {
-                        ShowIndex[i] = ShowIndex[i] - 1;
-                    }
-                }
-                else
-                {
-                    ShowIndex.Add(PageIndex - 1);
-                    ShowIndex.Sort();
-                }
-            }
-
             if (ShowIndex.Count == 0)
             {
                 ShowIndex.Add(1);

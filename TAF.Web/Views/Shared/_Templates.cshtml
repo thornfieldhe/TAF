@@ -68,11 +68,11 @@
                 <div class="col-sm-6">
                     <div class="dataTables_paginate paging_bootstrap" id="simpledatatable_paginate">
                         <ul class="pagination">
-                            <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)">上一页</a></li>
-                            <li v-for="item in list.ShowIndex" v-bind:class="{ 'active': list.PageIndex===$index+1 }">
-                                <a href="javascript:void(0)">{{item}}</a>
+                            <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)" v-on:click="query(list.PageIndex-1) ">上一页</a></li>
+                            <li v-for="item in list.ShowIndex" v-bind:class="{ 'active': list.PageIndex===item }">
+                                <a href="javascript:void(0)" v-on:click="query(item) ">{{item}}</a>
                             </li>
-                            <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)">下一页</a></li>
+                            <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)" v-on:click="query(list.PageIndex+1) ">下一页</a></li>
                         </ul>
                     </div>
                 </div>

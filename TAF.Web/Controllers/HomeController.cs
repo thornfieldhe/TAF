@@ -202,7 +202,7 @@ namespace TAF.Web.Controllers
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                Datas = list,
+                Datas = list.OrderBy(r=>r.FullName).Skip(pageSize*(pageIndex-1)).Take(pageSize).ToList(),
                 Total = list.Count
             };
             pager.GetShowIndex();

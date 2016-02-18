@@ -12,12 +12,16 @@
         },
         'onChange': function () {
             this.query(1);
+        },
+        'newQuery': function (index) {
+            this.query(index);
         }
     },
     methods: {
         query: function (index) {
             var $this = this;
-            $.get($this.queryUrl + "?pageSize=2&pageIndex=" + index, function (e) {
+            $.get($this.queryUrl + "?pageSize=10&pageIndex=" + index, function (e) {
+                console.log(e.Data,345);
                 $this.list = e.Data;
                 $this.$broadcast("onQuery", $this.list);
             });
