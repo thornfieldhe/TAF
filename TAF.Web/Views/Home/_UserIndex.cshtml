@@ -34,10 +34,11 @@
                                     <td>{{it.FullName}}</td>
                                     <td>{{it.RoleNames}}</td>
                                     <td>
-                                        <row-command :id="it.Id"  title="编辑" :name="it.FullName"></row-command>
+                                        <row-command :id="it.Id" title="编辑" :name="it.FullName"></row-command>
                                     </td>
                                 </tr>
                                 </tbody>
+                                <tfoot is="table-foot" colspan="4" ></tfoot>
                             </table>
                         </div>
                     </div>
@@ -48,7 +49,6 @@
         </div>
     </div>
 </div>
-<template id="grid"></template>
 <template id="formBody">
     <form id="form" class="form-horizontal " name="form">
         <div class="row">

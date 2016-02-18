@@ -17,8 +17,9 @@
     methods: {
         query: function (index) {
             var $this = this;
-            $.get($this.queryUrl + "?pageIndex="+index, function (e) {
+            $.get($this.queryUrl + "?pageSize=2&pageIndex=" + index, function (e) {
                 $this.list = e.Data;
+                $this.$broadcast("onQuery", $this.list);
             });
         }
     }

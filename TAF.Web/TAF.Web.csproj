@@ -219,7 +219,6 @@
     <Content Include="Assets\img\temp1.png" />
     <Content Include="Assets\js\beyond.js" />
     <Content Include="Assets\js\beyond.min.js" />
-    <Content Include="Assets\js\bootbox\bootbox.js" />
     <Content Include="Assets\js\bootstrap.min.js" />
     <Content Include="Assets\js\charts\chartjs\Chart.js" />
     <Content Include="Assets\js\charts\chartjs\chartjs-init.js" />

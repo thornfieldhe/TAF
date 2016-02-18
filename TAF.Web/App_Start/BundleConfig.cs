@@ -34,7 +34,6 @@
                     "~/assets/js/bootstrap.min.js",
                     "~/assets/js/modal.js",
                     "~/assets/js/slimscroll/jquery.slimscroll.min.js",
-                    "~/assets/js/bootbox/bootbox.js",
                     "~/assets/js/lodash.min.js",
                     "~/assets/js/underscore.string.min.js",
                     "~/assets/js/simple-inheritance",

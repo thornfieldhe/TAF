@@ -65,7 +65,7 @@ Vue.component('form-edit', {
     },
     methods: {
         saveItem: function () {
-            this.$broadcast('onSaveItem', this.id);
+            this.$broadcast('onSaveItem');
         }
     }
 });
@@ -92,7 +92,31 @@ Vue.component('dialog-delete', {
                     taf.notify.danger(e.Message);
                 }
             });
-            
+        }
+    }
+});
+
+//表脚
+Vue.component('table-foot', {
+    template: '#tableFoot',
+    props: ['colspan', 'list'],
+    data: function() {
+        return {
+            list: {
+            },
+            length:0
+        }
+    },
+    events: {
+        'onQuery': function (list) {
+            this.list = list;
+            this.length = this.list.Datas.length;
+            console.log(this.list);
+        }
+    },
+    methods: {
+        query: function () {
+            this.$dispatch('onQuery');
         }
     }
 });

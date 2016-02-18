@@ -12,7 +12,7 @@
         };
     },
     events: {
-        'onSaveItem': function (id) {
+        'onSaveItem': function () {
             this.submit("/Home/SaveUser");
         },
         'onClearItem': function () {

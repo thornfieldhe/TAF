@@ -58,4 +58,26 @@
         </div>
     </div>
 </template>
+<template id="tableFoot">
+    <tfoot>
+        <tr>
+            <td colspan="{{colspan}}" class="DTTTFooter">
+                <div class="col-sm-6">
+                    <div class="dataTables_info" id="simpledatatable_info" role="status" aria-live="polite"> {{(list.PageIndex-1)*list.PageSize+1}} - {{(list.PageIndex-1)*list.PageSize+length}} / {{list.Total}} </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="dataTables_paginate paging_bootstrap" id="simpledatatable_paginate">
+                        <ul class="pagination">
+                            <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)">上一页</a></li>
+                            <li v-for="item in list.ShowIndex" v-bind:class="{ 'active': list.PageIndex===$index+1 }">
+                                <a href="javascript:void(0)">{{item}}</a>
+                            </li>
+                            <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)">下一页</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</template>
 <script src="~/Scripts/templates.js"></script>
