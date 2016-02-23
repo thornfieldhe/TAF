@@ -592,8 +592,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\IndentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Assets\js\ueditor\net\App_Code\Config.cs" />
     <Compile Include="Assets\js\ueditor\net\App_Code\ConfigHandler.cs" />
@@ -605,7 +603,6 @@
     <Compile Include="Assets\js\ueditor\net\App_Code\UploadHandler.cs" />
     <Compile Include="Businesses\DbInitializer.cs" />
     <Compile Include="Businesses\IocConfig.cs" />
-    <Compile Include="Businesses\TAFContext.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -615,8 +612,6 @@
       <DependentUpon>201601251217040_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\ApplicationUser\ApplicationUser.cs" />
-    <Compile Include="Models\ApplicationUser\UserViews.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -656,7 +651,6 @@
     <Content Include="Views\Home\_Dashboard.cshtml" />
     <Content Include="Views\Home\_ChangePassword.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
     <Content Include="Views\Shared\_EmptyLayout.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Home\_UserIndex.cshtml" />
@@ -679,6 +673,10 @@
     <ProjectReference Include="..\TAF.Utility\TAF.Utility.csproj">
       <Project>{6ab3c277-a165-4327-b0fd-2c131dfb9a9d}</Project>
       <Name>TAF.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TAF.Web.Core\TAF.Web.Core.csproj">
+      <Project>{3e6c3290-de02-4e69-afc7-136d7b743196}</Project>
+      <Name>TAF.Web.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

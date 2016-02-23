@@ -12,7 +12,7 @@
     using TAF.Web.Businesses;
     using TAF.Web.Models;
 
-    public partial class Startup
+    public class TAFStartup
     {
         public void ConfigureAuth(IAppBuilder app)
         {
@@ -22,18 +22,18 @@
 
             app.UseCookieAuthentication(
                 new CookieAuthenticationOptions
-                    {
-                        AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                        LoginPath = new PathString("/Home/Login"),
-                        Provider =
+                {
+                    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                    LoginPath = new PathString("/Home/Login"),
+                    Provider =
                             new CookieAuthenticationProvider
-                                {
-                                    OnValidateIdentity =
+                            {
+                                OnValidateIdentity =
                                         SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
                                             TimeSpan.FromMinutes(30),
                                             (manager, user) => user.GenerateUserIdentityAsync(manager))
-                                }
-                    });
+                            }
+                });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
             app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);

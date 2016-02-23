@@ -16,8 +16,7 @@
     /// </summary>
     /// <typeparam name="T">
     /// </typeparam>
-    public class Pager<T>
-        where T : new()
+    public class Pager<T> where T : new()
     {
         /// <summary>
         /// </summary>
@@ -84,13 +83,28 @@
         {
             get
             {
-                var temp0 = Total % PageSize;//总页数是否能够整出每页数
+                var temp0 = Total % PageSize; //总页数是否能够整出每页数
                 var temp1 = temp0 == 0 ? Total / PageSize : Total / PageSize + 1; //总分页数;
                 return temp1 <= PageIndex;
             }
         }
 
+        public int FirstPage
+        {
+            get
+            {
+                return 1;
+            }
+        }
 
+        public int LastPage
+        {
+            get
+            {
+                var temp0 = Total % PageSize;//总页数是否能够整出每页数
+                return temp0 == 0 ? Total / PageSize : Total / PageSize + 1; //总分页数;
+            }
+        }
 
         /// <summary>
         /// 表单页脚需要显示的页码
@@ -106,25 +120,23 @@
         /// <typeparam name="K">查询对象</typeparam>
         /// <param name="query">查询表达式</param>
         /// <param name="isAsc">是否是顺序</param>
-        public void Load<K>(
-            IEnumerable<K> query,
-            bool isAsc) where K : EfBusiness<K>, IBusinessBase, new()
+        public void Load<K>(IEnumerable<K> query, bool isAsc) where K : EfBusiness<K>, IBusinessBase, new()
         {
             Total = query.AsQueryable().FutureCount();
             FutureQuery<K> result;
             if (isAsc)
             {
-                result = query
-                       .OrderBy(r => r.CreatedDate)
-                       .Skip(PageSize * (PageIndex - 1))
-                       .Take(PageSize)
-                         .AsQueryable()
-                       .Future();
+                result =
+                    query.OrderBy(r => r.CreatedDate)
+                        .Skip(PageSize * (PageIndex - 1))
+                        .Take(PageSize)
+                        .AsQueryable()
+                        .Future();
             }
             else
             {
-                result = query
-                       .OrderBy(r => r.CreatedDate)
+                result =
+                    query.OrderBy(r => r.CreatedDate)
                         .Skip(PageSize * (PageIndex - 1))
                         .Take(PageSize)
                         .AsQueryable()
@@ -144,27 +156,20 @@
         /// <param name="whereFunc">条件表达式</param>
         /// <param name="orderByFunc">排序表达式</param>
         /// <param name="isAsc">是否是顺序</param>
-        public void Load<R, K>(
-                        IEnumerable<K> query,
-                        Func<K, bool> whereFunc,
-                        Func<K, R> orderByFunc,
-                        bool isAsc) where K : EfBusiness<K>, IBusinessBase, new()
+        public void Load<R, K>(IEnumerable<K> query, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc)
+            where K : EfBusiness<K>, IBusinessBase, new()
         {
             Total = query.Where(whereFunc).Count();
             List<K> result;
             if (isAsc)
             {
-                result = query
-                       .Where(whereFunc)
-                       .OrderBy(orderByFunc)
-                       .Skip(PageSize * (PageIndex - 1))
-                       .Take(PageSize)
-                       .ToList();
+                result =
+                    query.Where(whereFunc).OrderBy(orderByFunc).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
             }
             else
             {
-                result = query
-                        .Where(whereFunc)
+                result =
+                    query.Where(whereFunc)
                         .OrderByDescending(orderByFunc)
                         .Skip(PageSize * (PageIndex - 1))
                         .Take(PageSize)
@@ -180,48 +185,19 @@
         /// </summary>
         public void GetShowIndex()
         {
-            var totalPage = Total / PageSize; //总分页数;
-            var showMaxPages = 5;//显示5条页码
+            var showMaxPages = 5; //显示5条页码
             ShowIndex = new List<int>();
-            var temp0 = Total % PageSize;//总页数是否能够整出每页数
-            var temp1 = temp0 == 0 ? Total / PageSize : Total / PageSize + 1; //总分页数;
+            var totalPage = Total % PageSize == 0 ? Total / PageSize : Total / PageSize + 1; //总分页数;
 
-            if (PageIndex == 1)
+            for (int j = 0; j < totalPage; j++)
             {
-                for (int p = 1; p <= (showMaxPages < temp1 ? showMaxPages : temp1); p++)
+                if (showMaxPages * j < PageIndex && showMaxPages * (j + 1) >= PageIndex)
                 {
-                    ShowIndex.Add(p);
-                }
-            }
-            else if (PageIndex == Total)
-            {
-                ShowIndex.Add(PageIndex - 1);
-                ShowIndex.Add(PageIndex);
-            }
-            else
-            {
-                for (int j = 0; j < totalPage + 1; j++)
-                {
-                    if (PageIndex % showMaxPages == 1 && PageIndex / showMaxPages == j)
+                    for (int p = showMaxPages * j + 1;
+                         p <= (showMaxPages * (j + 1) < totalPage ? showMaxPages * (j + 1) : totalPage);
+                         p++)
                     {
-                        for (int p = PageIndex - 1; p <= (showMaxPages * (j + 1) < temp1 ? PageIndex - 2 + showMaxPages : temp1); p++)
-                        {
-                            ShowIndex.Add(p);
-                        }
-                    }
-                    else if (showMaxPages * j < PageIndex && showMaxPages * (j + 1) > PageIndex && PageIndex != 1)
-                    {
-                        for (int p = showMaxPages * j + 1; p <= (showMaxPages * (j + 1) < temp1 ? showMaxPages * (j + 1) : temp1); p++)
-                        {
-                            ShowIndex.Add(p);
-                        }
-                    }
-                    else if (PageIndex % showMaxPages == 0 && PageIndex / showMaxPages == j)
-                    {
-                        for (int p = PageIndex - 1; p <= (showMaxPages * (j + 1) < temp1 ? PageIndex - 2 + showMaxPages : temp1); p++)
-                        {
-                            ShowIndex.Add(p);
-                        }
+                        ShowIndex.Add(p);
                     }
                 }
             }
@@ -231,5 +207,4 @@
             }
         }
     }
-
 }

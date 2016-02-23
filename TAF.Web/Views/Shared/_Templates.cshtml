@@ -66,13 +66,15 @@
                     <div class="dataTables_info" id="simpledatatable_info" role="status" aria-live="polite"> {{(list.PageIndex-1)*list.PageSize+1}} - {{(list.PageIndex-1)*list.PageSize+length}} / {{list.Total}} </div>
                 </div>
                 <div class="col-sm-6">
-                    <div class="dataTables_paginate paging_bootstrap" id="simpledatatable_paginate">
+                    <div class="dataTables_paginate paging_bootstrap right-align" id="simpledatatable_paginate">
                         <ul class="pagination">
-                            <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)" v-on:click="query(list.PageIndex-1) ">上一页</a></li>
+                            <li class="prev " v-bind:class="{ 'disabled': list.FirstPage }"><a href="javascript:void(0)" v-on:click="query( list.FirstPage) "><<</a></li>
+                            <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)" v-on:click="query(list.PageIndex-1) "><</a></li>
                             <li v-for="item in list.ShowIndex" v-bind:class="{ 'active': list.PageIndex===item }">
                                 <a href="javascript:void(0)" v-on:click="query(item) ">{{item}}</a>
                             </li>
-                            <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)" v-on:click="query(list.PageIndex+1) ">下一页</a></li>
+                            <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)" v-on:click="query(list.PageIndex+1) ">></a></li>
+                            <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)" v-on:click="query(list.LastPage) ">>></a></li>
                         </ul>
                     </div>
                 </div>

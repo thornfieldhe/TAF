@@ -5,11 +5,11 @@ namespace TAF.Web
 {
     using Owin;
 
-    public partial class Startup
+    public  class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+          new TAFStartup().ConfigureAuth(app);
         }
     }
 }
