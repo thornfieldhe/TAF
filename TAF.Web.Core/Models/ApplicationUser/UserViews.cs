@@ -1,5 +1,6 @@
 ﻿namespace TAF.Web.Models
 {
+    using System;
     using System.Collections.Generic;
 
     public class LoginUser
@@ -71,19 +72,19 @@
         }
     }
 
-    public class ConfirmPassword
+    public class UserQueryView
     {
-        public string NewPassword
+        public string LoginName
         {
             get; set;
         }
 
-        public string OldPassword
+        public string FullName
         {
             get; set;
         }
 
-        public string UserName
+        public string RoleId
         {
             get; set;
         }

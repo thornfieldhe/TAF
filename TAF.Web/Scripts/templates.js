@@ -11,14 +11,12 @@ Vue.component('add-button', {
 });
 
 //行搜索按钮
-Vue.component('row-search', {
+Vue.component('search-command', {
     props: ['index', 'filter', 'model'],
-    template: '#searchButton',
+    template: '#searchCommand',
     methods: {
-        search: function (index, filter, model) {
-            var $this = this;
-            console.log(index, filter, model);
-            taf.model.get(index, filter, model, function (result) { $this.$dispatch('onBindItems', result); });
+        search: function () {
+            this.$dispatch('onChange', 1);
         },
         resetSearch: function () {
             this.$dispatch('onResetSearch');
@@ -86,7 +84,7 @@ Vue.component('dialog-delete', {
             var $this = this;
             $.post($this.deleteUrl + $this.id, function (e) {
                 if (e.Status === 0) {
-                    $this.$dispatch('onChange');
+                    $this.$dispatch('onChange',1);
                     $("#deleteItemDialog").modal("hide");
                 } else {
                     taf.notify.danger(e.Message);
@@ -116,7 +114,7 @@ Vue.component('table-foot', {
     },
     methods: {
         query: function (index) {
-            this.$dispatch('newQuery',index);
+            this.$dispatch('onChange', index);
         }
     }
 });

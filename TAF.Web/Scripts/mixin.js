@@ -10,17 +10,15 @@
         'onDeleteItem':function(name, id) {
             this.$broadcast("onDeleteItem", name, id);
         },
-        'onChange': function () {
-            this.query(1);
-        },
-        'newQuery': function (index) {
+        'onChange': function (index) {
             this.query(index);
         }
     },
     methods: {
         query: function (index) {
             var $this = this;
-            $.get($this.queryUrl + "?pageSize=1&pageIndex=" + index, function (e) {
+            console.log($this.queryEntity,111111);
+            $.get($this.queryUrl + "?pageSize=20&pageIndex=" + index, $this.queryEntity , function (e) {
                 console.log(e.Data,345);
                 $this.list = e.Data;
                 $this.$broadcast("onQuery", $this.list);
@@ -49,7 +47,7 @@ var itemMixin = {
                 $.post(url, $this.item, function (e) {
                     if (e.Status === 0) {
                         $("#addItemModal").modal("hide");
-                        $this.$dispatch('onChange');
+                        $this.$dispatch('onChange',1);
                     } else {
                         $("#unknownError").show().find(".help-block").html(e.Message);
                     }

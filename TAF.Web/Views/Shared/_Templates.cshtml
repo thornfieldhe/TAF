@@ -1,8 +1,8 @@
 ﻿<template id="addButton">
     <button type="button" class="btn btn-primary " v-on:click="newItem(title)"><i class="fa  fa-plus"></i> 新增</button>
 </template>
-<template id="searchButton">
-    <button type="button" class="btn btn-danger " v-on:click="search(index,filter,model)"><i class="fa fa-search"></i> 搜索</button>
+<template id="searchCommand">
+    <button type="button" class="btn " v-on:click="search()"><i class="fa fa-search"></i> 搜索</button>
     <button type="button" class="btn" v-on:click="resetSearch()"><i class="fa fa-times"></i> 重置</button>
 </template>
 <template id="rowCommand">
@@ -60,20 +60,20 @@
 </template>
 <template id="tableFoot">
     <tfoot>
-        <tr>
-            <td colspan="{{colspan}}" class="DTTTFooter">
-                <div class="col-sm-6">
+        <tr role="row">
+            <td colspan="{{colspan}}" class="DTTTFooter ">
+                <div class="col-sm-2">
                     <div class="dataTables_info" id="simpledatatable_info" role="status" aria-live="polite"> {{(list.PageIndex-1)*list.PageSize+1}} - {{(list.PageIndex-1)*list.PageSize+length}} / {{list.Total}} </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-10 ">
                     <div class="dataTables_paginate paging_bootstrap right-align" id="simpledatatable_paginate">
                         <ul class="pagination">
-                            <li class="prev " v-bind:class="{ 'disabled': list.FirstPage }"><a href="javascript:void(0)" v-on:click="query( list.FirstPage) "><<</a></li>
-                            <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)" v-on:click="query(list.PageIndex-1) "><</a></li>
+                            <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)" v-on:click="query( list.FirstPage) "><<</a></li>
+                            <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)" v-on:click="query(list.IsFirst?list.FirstPage:list.PageIndex-1) "><</a></li>
                             <li v-for="item in list.ShowIndex" v-bind:class="{ 'active': list.PageIndex===item }">
                                 <a href="javascript:void(0)" v-on:click="query(item) ">{{item}}</a>
                             </li>
-                            <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)" v-on:click="query(list.PageIndex+1) ">></a></li>
+                            <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)" v-on:click="query(list.IsLast?list.LastPage:list.PageIndex+1) ">></a></li>
                             <li class="next " v-bind:class="{ 'disabled': list.IsLast }"><a href="javascript:void(0)" v-on:click="query(list.LastPage) ">>></a></li>
                         </ul>
                     </div>

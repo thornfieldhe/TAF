@@ -54,15 +54,25 @@
 var main = new Vue({
     mixins: [indexMixin],
     ready: function () {
+        $("#searchRoleId").select2().on("change", function (e) { main.queryEntity.roleId = $("#searchRoleId").val(); });
         this.query(1);
     },
     data: {
         queryEntity: {
-            liginName: "",
+            loginName: "",
             fullName: "",
-            roleNames:""
+            roleId:""
         },
         list: {},
         queryUrl : "/Home/GetUserList"
+    },
+    events: {
+        'onResetSearch': function () {
+            console.log(333333333333333333);
+            this.queryEntity.loginName = "";
+            this.queryEntity.fullName = "";
+            this.queryEntity.roleId = "";
+            $("#searchRoleId").select2().val("").trigger("change");
+        }
     }
 });

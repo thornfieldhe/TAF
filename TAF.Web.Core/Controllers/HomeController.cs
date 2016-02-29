@@ -178,10 +178,14 @@ namespace TAF.Web.Controllers
         }
 
         [Authorize(Roles = "系统管理员组")]
-        public ActionResult GetUserList(int pageIndex, int pageSize = 20)
+        public ActionResult GetUserList(UserQueryView query,int pageIndex, int pageSize = 20)
         {
             var roles = RoleManager.Roles.ToList();
-            var users = UserManager.Users.ToList();
+            var users = UserManager.Users
+                .Where(u=>((query.FullName==null ||query.FullName.Trim()==string.Empty)||u.FullName.Contains(query.FullName))&&
+                ((query.LoginName==null||query.LoginName.Trim()==string.Empty) || u.UserName.Contains(query.LoginName))&&
+                ((query.RoleId==null || query.RoleId.Trim()==string.Empty) || u.Roles.Select(r=>r.RoleId).Contains(query.RoleId)))
+                .ToList();
             var list = new List<UserInfoView>();
             users.ForEach(
                           u =>
