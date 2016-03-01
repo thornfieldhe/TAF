@@ -4,8 +4,6 @@
 
     using Autofac;
 
-    using TAF.Core;
-
     /// <summary>
     /// 依赖注入配置
     /// </summary>
@@ -13,7 +11,7 @@
     {
         protected override void LoadDb(ContainerBuilder builder)
         {
-           // builder.RegisterType<TAFDbContext>().As<DbContext>();
+            builder.RegisterType<WebDbContext>().As<DbContext>();
         }
     }
 }

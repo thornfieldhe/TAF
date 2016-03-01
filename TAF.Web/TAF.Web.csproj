@@ -603,6 +603,7 @@
     <Compile Include="Assets\js\ueditor\net\App_Code\UploadHandler.cs" />
     <Compile Include="Businesses\DbInitializer.cs" />
     <Compile Include="Businesses\IocConfig.cs" />
+    <Compile Include="Businesses\WebContext.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -612,7 +613,6 @@
       <DependentUpon>201601251217040_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -655,7 +655,6 @@
     <Content Include="Views\Shared\_Menu.cshtml" />
     <Content Include="Views\Home\_UserIndex.cshtml" />
     <Content Include="Views\Shared\_Templates.cshtml" />
-    <None Include="Properties\PublishProfiles\publish.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -665,6 +664,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Upload\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAF.Business\TAF.Business.csproj">

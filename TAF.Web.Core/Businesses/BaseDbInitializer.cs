@@ -12,7 +12,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class BaseWebDbInitializer : CreateDatabaseIfNotExists<TAFDbContext>
+    public class BaseDbInitializer : CreateDatabaseIfNotExists<TAFDbContext>
     {
         public const string _saUserId = "76edf148-3e31-4e9e-8cf8-f17d3c96f05f";
         public const string _saUserName = "sa";

@@ -1,6 +1,7 @@
 ﻿namespace TAF.Web
 {
     using System;
+    using System.Data.Entity;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Microsoft.AspNet.Identity;
@@ -19,7 +20,7 @@
         {
         }
 
-        public static ApplicationRoleManager CreateForEF(TAFDbContext db = null)
+        public static ApplicationRoleManager CreateForEF(DbContext db = null)
         {
             if (db == null)
             {
@@ -47,7 +48,7 @@
         {
         }
 
-        public static ApplicationUserManager CreateForEF(TAFDbContext db)
+        public static ApplicationUserManager CreateForEF(DbContext db)
         {
             if (db == null)
                 db = TAFDbContext.Create();

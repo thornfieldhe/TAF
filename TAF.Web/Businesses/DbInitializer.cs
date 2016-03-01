@@ -1,14 +1,15 @@
 ﻿namespace TAF.Web.Businesses
 {
+    using System.Data.Entity;
+
     /// <summary>
     /// 
     /// </summary>
-    public class DbInitializer : BaseWebDbInitializer
+    public class DbInitializer : CreateDatabaseIfNotExists<WebDbContext>
     {
-
-        protected override void Seed(TAFDbContext context)
-        {
-            base.Seed(context);
-        }
+        //        protected override void Seed(WebDbContext context)
+        //        {
+        //            base.Seed(context);
+        //        }
     }
 }

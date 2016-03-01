@@ -147,7 +147,7 @@
     <Compile Include="App_Start\IndentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Businesses\DbInitializer.cs" />
+    <Compile Include="Businesses\BaseDbInitializer.cs" />
     <Compile Include="Businesses\IocConfig.cs" />
     <Compile Include="Businesses\TAFContext.cs" />
     <Compile Include="Controllers\HomeController.cs" />
