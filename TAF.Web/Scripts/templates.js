@@ -107,7 +107,6 @@ Vue.component('table-foot', {
     },
     events: {
         'onQuery': function (list) {
-            console.log(list,33);
             this.list = list;
             this.length = this.list.Datas.length;
         }

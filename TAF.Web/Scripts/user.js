@@ -68,7 +68,6 @@ var main = new Vue({
     },
     events: {
         'onResetSearch': function () {
-            console.log(333333333333333333);
             this.queryEntity.loginName = "";
             this.queryEntity.fullName = "";
             this.queryEntity.roleId = "";

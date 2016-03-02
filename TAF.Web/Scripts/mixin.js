@@ -17,9 +17,7 @@
     methods: {
         query: function (index) {
             var $this = this;
-            console.log($this.queryEntity,111111);
             $.get($this.queryUrl + "?pageSize=20&pageIndex=" + index, $this.queryEntity , function (e) {
-                console.log(e.Data,345);
                 $this.list = e.Data;
                 $this.$broadcast("onQuery", $this.list);
             });

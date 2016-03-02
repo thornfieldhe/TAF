@@ -91,16 +91,6 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// 编辑页
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public virtual ActionResult Edit(Guid? id)
-        {
-            return this.PartialView("_Edit", !id.HasValue ? new K() : EfBusiness<K>.Find(id.Value));
-        }
-
-        /// <summary>
         /// 新增一条数据
         /// </summary>
         /// <param name="value">
@@ -208,7 +198,7 @@ namespace TAF.Mvc
         /// <returns>
         /// The <see cref="ActionResult"/>.
         /// </returns>
-        public ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc) where R : struct
+        protected ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc) where R : struct
         {
             var pager = EfBusiness<K>.Pages(new Pager<T> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
             return this.Json(pager, JsonRequestBehavior.AllowGet);

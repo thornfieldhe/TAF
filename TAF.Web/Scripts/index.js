@@ -8,7 +8,6 @@
     });
 
     function loadPage(url, parentTitle, title, document, isHomePage) {
-        console.log(url);
         $.get(url, function (data) {
             $(".page-body").html(data);
             if (!isHomePage) {
@@ -17,8 +16,10 @@
                 $(".breadcrumb").html("<li><i class='fa fa-home'></i><a href='#/home' >主页</a></li>");
             }
             $(".sidebar-menu .active").each(function (r) {
+                $(this).parent().parent().removeClass("open");
                 $(this).removeClass("active");
             });
+            $(document).parent().parent().addClass("open");
             $(document).addClass("active");
             $("#bodyTitle").html(parentTitle);
         });
@@ -40,6 +41,7 @@
         loadPage("/Home/ChangePasswordIndex", "用户管理", "修改密码", "#menuChangePass", false);
     }
     var usersPage = function () {
+        console.log(1234);
         loadPage("/Home/UserIndex", "用户管理", "用户管理", "#menuUsers", false);
     }
     var routes = {
