@@ -1,4 +1,4 @@
-﻿namespace TAF.Web.Businesses
+﻿namespace TAF.MVC.Businesses
 {
     using System;
     using System.Data.Entity;
@@ -7,7 +7,7 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    using TAF.Web.Models;
+    using TAF.MVC.Models;
 
     /// <summary>
     /// 

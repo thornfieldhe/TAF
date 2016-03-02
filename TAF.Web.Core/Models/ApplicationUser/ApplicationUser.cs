@@ -1,4 +1,4 @@
-﻿namespace TAF.Web.Models
+﻿namespace TAF.MVC.Models
 {
     using System.Security.Claims;
     using System.Threading.Tasks;

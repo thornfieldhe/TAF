@@ -1,4 +1,4 @@
-﻿namespace TAF.Web.Models
+﻿namespace TAF.MVC.Models
 {
     using System;
     using System.Collections.Generic;

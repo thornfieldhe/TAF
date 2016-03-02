@@ -1,4 +1,4 @@
-﻿namespace TAF.Web
+﻿namespace TAF.MVC
 {
     using System;
     using System.Data.Entity;
@@ -10,7 +10,7 @@
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
     using Models;
-    using TAF.Web.Businesses;
+    using TAF.MVC.Businesses;
 
 
     public class ApplicationRoleManager : RoleManager<IdentityRole>

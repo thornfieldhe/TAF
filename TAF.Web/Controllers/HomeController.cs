@@ -9,24 +9,8 @@
 
 namespace TAF.Web.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Dynamic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Mvc;
-
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using Microsoft.AspNet.Identity.Owin;
-    using Microsoft.Owin.Security;
-
-    using Newtonsoft.Json;
-
-    using TAF.Mvc;
-    using TAF.Utility;
-    using TAF.Web.Models;
+    using TAF.MVC;
 
     /// <summary>
     /// The HomeController controller.
@@ -34,6 +18,6 @@ namespace TAF.Web.Controllers
     [Authorize]
     public class HomeController : BaseHomeController
     {
-        
+
     }
 }

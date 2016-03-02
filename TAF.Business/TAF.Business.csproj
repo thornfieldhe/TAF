@@ -94,10 +94,6 @@
       <HintPath>..\..\..\My Works\CafErp\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\My Works\CafErp\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\My Works\CafErp\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
       <Private>True</Private>
@@ -129,8 +125,6 @@
     <Compile Include="DP\Proxy.cs" />
     <Compile Include="Entity\Pager.cs" />
     <Compile Include="Logs\LogManager.cs" />
-    <Compile Include="Web\ActionResultData.cs" />
-    <Compile Include="Web\BaseController.cs" />
     <Compile Include="Entity\BaseEntity.Base.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Core\IBusinessBase.cs" />
@@ -161,8 +155,6 @@
     <Compile Include="Validations\Validator.cs" />
     <Compile Include="Validations\ValidationHandler.cs" />
     <Compile Include="Validations\ValidationResultCollection.cs" />
-    <Compile Include="Web\BaseTAFController.cs" />
-    <Compile Include="Web\KeyValueEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAF.Utility\TAF.Utility.csproj">

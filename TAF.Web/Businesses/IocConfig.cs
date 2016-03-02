@@ -4,6 +4,8 @@
 
     using Autofac;
 
+    using TAF.MVC.Businesses;
+
     /// <summary>
     /// 依赖注入配置
     /// </summary>

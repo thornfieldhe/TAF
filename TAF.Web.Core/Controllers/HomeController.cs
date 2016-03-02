@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF.Web.Controllers
+namespace TAF.MVC
 {
     using System;
     using System.Collections.Generic;
@@ -25,8 +25,9 @@ namespace TAF.Web.Controllers
     using Newtonsoft.Json;
 
     using TAF.Mvc;
+    using TAF.MVC.Models;
     using TAF.Utility;
-    using TAF.Web.Models;
+    using TAF.MVC.Models;
 
     /// <summary>
     /// The HomeController controller.

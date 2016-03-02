@@ -1,4 +1,4 @@
-﻿namespace TAF.Web.Businesses
+﻿namespace TAF.MVC.Businesses
 {
     using System.Data.Entity;
 
