@@ -1,5 +1,7 @@
 ﻿namespace TAF.MVC.Businesses
 {
+    using System.Data.Entity;
+
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using Models;
@@ -10,7 +12,6 @@
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-
 
         public static TAFDbContext Create()
         {

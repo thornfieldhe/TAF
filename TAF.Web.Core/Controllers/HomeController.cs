@@ -27,7 +27,6 @@ namespace TAF.MVC
     using TAF.Mvc;
     using TAF.MVC.Models;
     using TAF.Utility;
-    using TAF.MVC.Models;
 
     /// <summary>
     /// The HomeController controller.
@@ -179,13 +178,13 @@ namespace TAF.MVC
         }
 
         [Authorize(Roles = "系统管理员组")]
-        public ActionResult GetUserList(UserQueryView query,int pageIndex, int pageSize = 20)
+        public ActionResult GetUserList(UserQueryView query, int pageIndex, int pageSize = 20)
         {
             var roles = RoleManager.Roles.ToList();
             var users = UserManager.Users
-                .Where(u=>((query.FullName==null ||query.FullName.Trim()==string.Empty)||u.FullName.Contains(query.FullName))&&
-                ((query.LoginName==null||query.LoginName.Trim()==string.Empty) || u.UserName.Contains(query.LoginName))&&
-                ((query.RoleId==null || query.RoleId.Trim()==string.Empty) || u.Roles.Select(r=>r.RoleId).Contains(query.RoleId)))
+                .Where(u => ((query.FullName == null || query.FullName.Trim() == string.Empty) || u.FullName.Contains(query.FullName)) &&
+                ((query.LoginName == null || query.LoginName.Trim() == string.Empty) || u.UserName.Contains(query.LoginName)) &&
+                ((query.RoleId == null || query.RoleId.Trim() == string.Empty) || u.Roles.Select(r => r.RoleId).Contains(query.RoleId)))
                 .ToList();
             var list = new List<UserInfoView>();
             users.ForEach(
@@ -207,7 +206,7 @@ namespace TAF.MVC
             {
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                Datas = list.OrderBy(r=>r.FullName).Skip(pageSize*(pageIndex-1)).Take(pageSize).ToList(),
+                Datas = list.OrderBy(r => r.FullName).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList(),
                 Total = list.Count
             };
             pager.GetShowIndex();
@@ -299,9 +298,12 @@ namespace TAF.MVC
             user.UserName = infoView.LoginName;
             user.FullName = infoView.FullName;
             user.Roles.Clear();
-            foreach (var roleId in infoView.RoleIds)
+            if (infoView.RoleIds != null)
             {
-                user.Roles.Add(new IdentityUserRole { RoleId = roleId, UserId = user.Id });
+                foreach (var roleId in infoView.RoleIds)
+                {
+                    user.Roles.Add(new IdentityUserRole { RoleId = roleId, UserId = user.Id });
+                }
             }
 
             UserManager.Update(user);

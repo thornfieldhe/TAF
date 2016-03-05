@@ -41,14 +41,17 @@
         loadPage("/Home/ChangePasswordIndex", "用户管理", "修改密码", "#menuChangePass", false);
     }
     var usersPage = function () {
-        console.log(1234);
-        loadPage("/Home/UserIndex", "用户管理", "用户管理", "#menuUsers", false);
+        loadPage("/Home/UserIndex", "用户管理", "用户列表", "#menuUsers", false);
+    }
+    var dictionaryPage = function () {
+        loadPage("/Dictionary/Index", "字典管理", "字典列表", "#menuDictionary", false);
     }
     var routes = {
         '/': homePage,
         '/home': homePage,
         '/users': usersPage,
-        '/changePw': changePwPage
+        '/changePw': changePwPage,
+        '/dictionary': dictionaryPage
     };
     var router = Router(routes);
     router.init();

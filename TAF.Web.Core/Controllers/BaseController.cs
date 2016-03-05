@@ -58,7 +58,7 @@ namespace TAF.Mvc
         /// <returns>
         /// The <see cref="ActionResult"/>.
         /// </returns>
-        public virtual ActionResult GetView(Guid id)
+        public virtual ActionResult Get(Guid id)
         {
             var item = EfBusiness<K>.Find(id);
             if (item is T)
@@ -77,7 +77,7 @@ namespace TAF.Mvc
         /// <returns>
         /// The <see cref="ActionResult"/>.
         /// </returns>
-        public virtual ActionResult GetViews()
+        public ActionResult GetAll()
         {
             var items = EfBusiness<K>.GetAll();
             if (items is List<L>)
@@ -91,7 +91,7 @@ namespace TAF.Mvc
         }
 
         /// <summary>
-        /// 新增一条数据
+        /// 保存一条数据
         /// </summary>
         /// <param name="value">
         /// The value.
@@ -100,42 +100,21 @@ namespace TAF.Mvc
         /// The <see cref="ActionResult"/>.
         /// </returns>
         [HttpPost]
-        public virtual ActionResult Insert(T value)
-        {
-            try
-            {
-                var item = Mapper.Map<K>(value);
-                item.Create();
-                return this.Json(new ActionResultStatus());
-            }
-            catch (DbEntityValidationException ex)
-            {
-                return this.Json(new ActionResultStatus(100,
-                    $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
-            }
-            catch (Exception ex)
-            {
-                return this.Json(new ActionResultStatus(ex));
-            }
-        }
-
-        /// <summary>
-        /// 更新一条数据
-        /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <returns>
-        /// The <see cref="ActionResult"/>.
-        /// </returns>
-        [HttpPost]
-        public virtual ActionResult Update(T value)
+        public ActionResult Save(T value)
         {
             try
             {
                 var item = EfBusiness<K>.Find(value.Id);
-                Mapper.Map(value, item);
-                item.Save();
+                if (item == null)
+                {
+                    item = Mapper.Map<K>(value);
+                    item.Create();
+                }
+                else
+                {
+                    Mapper.Map(value, item);
+                    item.Save();
+                }
                 return this.Json(new ActionResultStatus());
             }
             catch (DbEntityValidationException ex)
@@ -159,7 +138,7 @@ namespace TAF.Mvc
         /// The <see cref="ActionResult"/>.
         /// </returns>
         [HttpPost]
-        public virtual ActionResult Delete(Guid id)
+        public ActionResult Delete(Guid id)
         {
             try
             {
@@ -198,10 +177,10 @@ namespace TAF.Mvc
         /// <returns>
         /// The <see cref="ActionResult"/>.
         /// </returns>
-        protected ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc) where R : struct
+        protected virtual ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc = true) where R : class
         {
             var pager = EfBusiness<K>.Pages(new Pager<T> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
-            return this.Json(pager, JsonRequestBehavior.AllowGet);
+            return this.Json(new ActionResultData<Pager<T>>(pager), JsonRequestBehavior.AllowGet);
         }
     }
 }

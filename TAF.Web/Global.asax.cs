@@ -7,8 +7,11 @@ namespace TAF.Web
     using System.Reflection;
     using System.Web.Optimization;
 
+    using AutoMapper;
+
     using TAF.MVC.Businesses;
     using TAF.Web.Businesses;
+    using TAF.Web.Models;
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -25,6 +28,8 @@ namespace TAF.Web
 
         private void InitMap()
         {
+            Mapper.CreateMap<SystemDictionaryView, SystemDictionary>();
+            Mapper.CreateMap<SystemDictionary, SystemDictionaryView>();
         }
     }
 }
