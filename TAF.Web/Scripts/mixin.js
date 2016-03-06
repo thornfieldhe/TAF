@@ -2,9 +2,11 @@
     el: "#main",
     events: {
         'onAddItem': function (title) {
+            $("#addItemModal").modal("show");
             this.$broadcast("onAddItem", title);
         },
         'onUpdateItem': function (title, id) {
+            $("#addItemModal").modal("show");
             this.$broadcast("onUpdateItem", title, id);
         },
         'onDeleteItem':function(name, id) {
@@ -27,14 +29,25 @@
 
 
 var itemMixin = {
-    template: '#formBody',
-    props: ['id'],
+    template: '#formEdit',
+    props: ['id','title'],
     ready: function () {
-        this.validate();
+        var $this = this;
+        $this.validate();
+        $('#addItemModal').on('hide.bs.modal', function () {
+            $(form).data('bootstrapValidator').resetForm();
+            $("#unknownError").show().find(".help-block").html("");
+        });
     },
     events: {
-        'onNewItem':function() {
+        'onAddItem': function (title) {
+            this.clearItem();
             this.editModel = false;
+            this.title = title;
+        },
+        'onUpdateItem': function ( title,id) {
+            this.editModel = true;
+            this.title = title;
         }
     },
     methods: {

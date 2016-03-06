@@ -4,7 +4,6 @@ Vue.component('add-button', {
     template: '#addButton',
     methods: {
         newItem: function (title) {
-            $("#addItemModal").modal("show");
             this.$dispatch('onAddItem', title);
         }
     }
@@ -45,10 +44,10 @@ Vue.component('form-edit', {
     props: ['id', 'title'],
     ready: function () {
         var $this = this;
+        $this.$broadcast('onClearItem');
         $('#addItemModal').on('hide.bs.modal', function () {
             $(form).data('bootstrapValidator').resetForm();
             $("#unknownError").show().find(".help-block").html("");
-            $this.$broadcast('onClearItem');
         });
     },
     events: {

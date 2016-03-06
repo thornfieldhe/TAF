@@ -15,98 +15,98 @@
                     <div class="col-md-12">
                         <table class="table table-striped table-hover table-bordered ">
                             <thead>
-                                <tr role="row">
-                                    <th>
-                                        键
-                                    </th>
-                                    <th>
-                                        值
-                                    </th>
-                                    <th>
-                                        值1
-                                    </th>
-                                    <th>
-                                        值2
-                                    </th>
-                                    <th>
-                                        值3
-                                    </th>
-                                    <th>
-                                        值4
-                                    </th>
-                                    <th>
-                                        值5
-                                    </th>
-                                    <th>
-                                        值6
-                                    </th>
-                                    <th>
-                                        值7
-                                    </th>
-                                    <th>
-                                        值8
-                                    </th>
-                                    <th>
-                                        值9
-                                    </th>
-                                    <th style="width: 180px;">
-                                        操作
-                                    </th>
-                                </tr>
-                                <tr role="row">
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="键" v-model="queryEntity.key" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值" v-model="queryEntity.value"/>
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值1" v-model="queryEntity.value1" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值2" v-model="queryEntity.value2" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值3" v-model="queryEntity.value3" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值4" v-model="queryEntity.value4" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值5" v-model="queryEntity.value5" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值6" v-model="queryEntity.value6" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值7" v-model="queryEntity.value7" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值8" v-model="queryEntity.value8" />
-                                    </th>
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="值9" v-model="queryEntity.value9" />
-                                    </th>
-                                    <th><search-command></search-command></th>
-                                </tr>
+                            <tr role="row">
+                                <th>
+                                    键
+                                </th>
+                                <th>
+                                    值
+                                </th>
+                                <th>
+                                    值1
+                                </th>
+                                <th>
+                                    值2
+                                </th>
+                                <th>
+                                    值3
+                                </th>
+                                <th>
+                                    值4
+                                </th>
+                                <th>
+                                    值5
+                                </th>
+                                <th>
+                                    值6
+                                </th>
+                                <th>
+                                    值7
+                                </th>
+                                <th>
+                                    值8
+                                </th>
+                                <th>
+                                    值9
+                                </th>
+                                <th style="width: 180px;">
+                                    操作
+                                </th>
+                            </tr>
+                            <tr role="row">
+                                <th>
+                                    <input type="text" class="form-control" placeholder="键" v-model="queryEntity.key"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值" v-model="queryEntity.value"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值1" v-model="queryEntity.value1"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值2" v-model="queryEntity.value2"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值3" v-model="queryEntity.value3"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值4" v-model="queryEntity.value4"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值5" v-model="queryEntity.value5"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值6" v-model="queryEntity.value6"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值7" v-model="queryEntity.value7"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值8" v-model="queryEntity.value8"/>
+                                </th>
+                                <th>
+                                    <input type="text" class="form-control" placeholder="值9" v-model="queryEntity.value9"/>
+                                </th>
+                                <th><search-command></search-command></th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr v-for=" it in list.Datas">
-                                    <td>{{it.Key}}</td>
-                                    <td>{{it.Value}}</td>
-                                    <td>{{it.Value1}}</td>
-                                    <td>{{it.Value2}}</td>
-                                    <td>{{it.Value3}}</td>
-                                    <td>{{it.Value4}}</td>
-                                    <td>{{it.Value5}}</td>
-                                    <td>{{it.Value6}}</td>
-                                    <td>{{it.Value7}}</td>
-                                    <td>{{it.Value8}}</td>
-                                    <td>{{it.Value9}}</td>
-                                    <td>
-                                        <row-command :id="it.Id" title="编辑" :name="it.Value"></row-command>
-                                    </td>
-                                </tr>
+                            <tr v-for=" it in list.Datas">
+                                <td>{{it.Key}}</td>
+                                <td>{{it.Value}}</td>
+                                <td>{{it.Value1}}</td>
+                                <td>{{it.Value2}}</td>
+                                <td>{{it.Value3}}</td>
+                                <td>{{it.Value4}}</td>
+                                <td>{{it.Value5}}</td>
+                                <td>{{it.Value6}}</td>
+                                <td>{{it.Value7}}</td>
+                                <td>{{it.Value8}}</td>
+                                <td>{{it.Value9}}</td>
+                                <td>
+                                    <row-command :id="it.Id" title="编辑" :name="it.Value"></row-command>
+                                </td>
+                            </tr>
                             </tbody>
                             <tfoot is="table-foot" colspan="12"></tfoot>
                         </table>
@@ -118,159 +118,184 @@
         </div>
     </div>
 </div>
-<template id="formBody">
-    <form id="form" class="form-horizontal " name="form">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">键</label>
-                    <div class="col-sm-10">
+<template id="formEdit">
+    <div class="bootbox modal fade modal-primary in" id="addItemModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">{{ title }}</h4>
+                    <div v-model="title"></div>
+                </div>
+                <div class="modal-body">
+                    <form id="form" class="form-horizontal " name="form">
                         <div class="row">
-                            <select name="key" style="width: 100%" v-model="item.Key">
-                                <option value="">请选择...</option>
-                                @{
-                                    foreach (var  item in EnumExt.GetItems<DictionaryKey>())
-                                    {
-                                        <option value="@item.Value">@item.Text</option>
-                                    }
-                                }
-                            </select>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">键</label>
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <select name="key" style="width: 100%" v-model="item.Key">
+                                                <option value="">请选择...</option>
+                                                @{
+                                                    foreach (var item in EnumExt.GetItems<DictionaryKey>())
+                                                    {
+                                                        <option value="@item.Value">@item.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值" name="value" v-model="item.Value" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值1</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值1" name="value1" v-model="item.Value1" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值2</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值2" name="value2" v-model="item.Value2" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值3</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值3" name="value3" v-model="item.Value3" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值4</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值4" name="value4" v-model="item.Value4" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值5</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值5" name="value5" v-model="item.Value5" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值6</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值6" name="value6" v-model="item.Value6" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值7</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值7" name="value7" v-model="item.Value7" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值8</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值8" name="value8" v-model="item.Value8" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label no-padding-right">值9</label>
+                                    <div class="col-sm-10">
+                                        <span class="input-icon icon-right">
+                                            <input type="text" class="form-control " placeholder="值9" name="value9" v-model="item.Value9" />
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row" id="unknownError" style="display: none;">
+                        <div class="col-md-12">
+                            <div class="form-group  has-feedback has-error">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <small class="help-block"></small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值" name="value" v-model="item.Value"  />
-                            
-                        </span>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa   fa-mail-reply'></i>取消</button>
+                    <button type="submit" class="btn btn-primary" v-on:click="saveItem()"><i class='fa    fa-floppy-o'></i>保存</button>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值1</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值1" name="value1" v-model="item.Value1"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值2</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值2" name="value2" v-model="item.Value2"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值3</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值3" name="value3" v-model="item.Value3"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-           <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值4</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值4" name="value4" v-model="item.Value4"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-           <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值5</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值5" name="value5" v-model="item.Value5"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-           <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值6</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值6" name="value6" v-model="item.Value6"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值7</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值7" name="value7" v-model="item.Value7"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-              <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值8</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值8" name="value8" v-model="item.Value8"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">值9</label>
-                    <div class="col-sm-10">
-                        <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="值9" name="value9" v-model="item.Value9"  />
-                            
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 </template>
 <script src="~/Scripts/dictionary.js"></script>

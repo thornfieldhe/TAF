@@ -1,4 +1,4 @@
-﻿Vue.component('form-body', {
+﻿var item = Vue.extend({
     mixins: [itemMixin],
     data: function () {
         return {
@@ -12,21 +12,20 @@
         };
     },
     events: {
-        'onSaveItem': function () {
-            this.submit("/Home/SaveUser");
-        },
-        'onClearItem': function () {
+        'onUpdateItem': function (title,id) {
+            this.get("/Home/GetUser?userId="+id);
+        }
+    },
+    methods: {
+        clearItem:function() {
             this.item.Id = "";
             this.item.LoginName = "";
             this.item.FullName = "";
             this.item.RoleIds = [];
         },
-        'onGetItem': function (id) {
-            this.editModel = true;
-            this.get("/Home/GetUser?userId="+id);
-        }
-    },
-    methods: {
+        saveItem: function () {
+            this.submit("/Home/SaveUser");
+        },
         validate: function () {
             $("#form").bootstrapValidator({
                 message: '用户验证未通过',
@@ -65,6 +64,9 @@ var main = new Vue({
         },
         list: {},
         queryUrl : "/Home/GetUserList"
+    },
+    components: {
+        'form-edit': item
     },
     events: {
         'onResetSearch': function () {

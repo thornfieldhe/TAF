@@ -1,4 +1,4 @@
-﻿Vue.component('form-body', {
+﻿var item1 = Vue.extend({
     mixins: [itemMixin],
     data: function () {
         return {
@@ -19,28 +19,28 @@
         };
     },
     events: {
-        'onSaveItem': function () {
-            this.submit("/Dictionary/Save");
-        },
-        'onClearItem': function () {
-            this.item.Id = "00000000-0000-0000-0000-000000000000";
-            this.item.Key = "";
-            this.item.Value = "";
-            this.item.Value1= "";
-            this.item.Value2 = "";
-            this.item.Value3 = "";
-            this.item.Value4 = "";
-            this.item.Value5 = "";
-            this.item.Value6 = "";
-            this.item.Value7 = "";
-            this.item.Value8 = "";
-            this.item.Value9 = "";
-        },
-        'onGetItem': function (id) {
+        'onUpdateItem': function (title,id) {
             this.get("/Dictionary/Get?id=" + id);
         }
     },
     methods: {
+    clearItem:function() {
+        this.item.Id = "00000000-0000-0000-0000-000000000000";
+        this.item.Key = "";
+        this.item.Value = "";
+        this.item.Value1= "";
+        this.item.Value2 = "";
+        this.item.Value3 = "";
+        this.item.Value4 = "";
+        this.item.Value5 = "";
+        this.item.Value6 = "";
+        this.item.Value7 = "";
+        this.item.Value8 = "";
+        this.item.Value9 = "";
+    },
+    saveItem: function () {
+        this.submit("/Dictionary/Save");
+    },
         validate: function () {
             $("#form").bootstrapValidator({
                 message: '字典验证未通过',
@@ -65,7 +65,7 @@
     }
 });
 
-var main = new Vue({
+var main1 = new Vue({
     mixins: [indexMixin],
     ready: function () {
 //        $("#searchRoleId").select2().on("change", function (e) { main.queryEntity.roleId = $("#searchRoleId").val(); });
@@ -87,6 +87,9 @@ var main = new Vue({
         },
         list: {},
         queryUrl : "/Dictionary/GetList"
+    },
+    components: {
+        'form-edit': item1
     },
     events: {
         'onResetSearch': function () {
