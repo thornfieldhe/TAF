@@ -29,25 +29,13 @@
 
 
 var itemMixin = {
-    template: '#formEdit',
-    props: ['id','title'],
+    props: ['id'],
     ready: function () {
-        var $this = this;
-        $this.validate();
-        $('#addItemModal').on('hide.bs.modal', function () {
-            $(form).data('bootstrapValidator').resetForm();
-            $("#unknownError").show().find(".help-block").html("");
-        });
+        this.validate();
     },
     events: {
-        'onAddItem': function (title) {
-            this.clearItem();
+        'onNewItem':function() {
             this.editModel = false;
-            this.title = title;
-        },
-        'onUpdateItem': function ( title,id) {
-            this.editModel = true;
-            this.title = title;
         }
     },
     methods: {
