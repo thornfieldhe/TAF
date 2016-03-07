@@ -16,18 +16,18 @@
         'onSaveItem': function () {
             this.submit("/Home/SaveUser");
         },
-        'onClearItem': function () {
-            this.item.Id = "";
-            this.item.LoginName = "";
-            this.item.FullName = "";
-            this.item.RoleIds = [];
-        },
-        'onGetItem': function (id) {
+   'onGetItem': function (id) {
             this.editModel = true;
             this.get("/Home/GetUser?userId="+id);
         }
     },
     methods: {
+        clearItem: function () {
+            this.item.Id = "";
+            this.item.LoginName = "";
+            this.item.FullName = "";
+            this.item.RoleIds = [];
+        },
         validate: function () {
             $("#form").bootstrapValidator({
                 message: '用户验证未通过',

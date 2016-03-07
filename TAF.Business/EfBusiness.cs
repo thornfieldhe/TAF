@@ -49,6 +49,11 @@ namespace TAF
 
         #endregion
 
+        public void LoadDbContext(DbContext context)
+        {
+            this.DbContext = context;
+        }
+
         /// <summary>
         /// EF数据库对象
         /// </summary>
@@ -81,7 +86,7 @@ namespace TAF
         /// </returns>
         public static List<K> GetAll(bool useCache = false)
         {
-            return Query(Ioc.Create < DbContext > ().Set<K>(), useCache);
+            return Query(Ioc.Create<DbContext>().Set<K>(), useCache);
         }
 
         /// <summary>
@@ -215,14 +220,15 @@ namespace TAF
         /// </returns>
         private static K QuerySingle(Expression<Func<K, bool>> func, bool useCache = false)
         {
-            var query = Ioc.Create<DbContext>().Set<K>();
+            var dbContext = Ioc.Create<DbContext>();
+            var query = dbContext.Set<K>();
             var item = useCache
                 ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().FirstOrDefault(func)
                 : query.FirstOrDefault(func);
             item.IfNotNull(
           i =>
           {
-              i.DbContext = Ioc.Create<DbContext>();
+              i.DbContext = dbContext;
               i.MarkOld();
           });
             return item;
@@ -348,6 +354,9 @@ namespace TAF
         /// </summary>
         protected virtual void PreInsert()
         {
+            this.Id = Guid.NewGuid();
+            this.CreatedDate = DateTime.Now;
+            this.ChangedDate = DateTime.Now;
             this.MarkNew();
         }
 

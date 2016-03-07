@@ -34,7 +34,8 @@ var itemMixin = {
         this.validate();
     },
     events: {
-        'onNewItem':function() {
+        'onNewItem': function () {
+            this.clearItem();
             this.editModel = false;
         }
     },
@@ -57,7 +58,11 @@ var itemMixin = {
             var $this = this;
             $.get(url, function (e) {
                 $this.item = e.Data;
+                $this.postGet();
             });
+        },
+        postGet:function() {
+            
         }
     }
 }

@@ -284,6 +284,7 @@
     <Content Include="Assets\js\slider\jQRangeSlider\jQAllRangeSliders-withRuler-min.js" />
     <Content Include="Assets\js\slider\jquery.nouislider.js" />
     <Content Include="Assets\js\slimscroll\jquery.slimscroll.min.js" />
+    <Content Include="Assets\js\spin.min.js" />
     <Content Include="Assets\js\tagsinput\bootstrap-tagsinput.js" />
     <Content Include="Assets\js\textarea\jquery.autosize.js" />
     <Content Include="Assets\js\toastr\toastr.js" />
@@ -632,7 +633,7 @@
     <Compile Include="Models\CodeSmith\SystemDictionary.cs" />
     <Compile Include="Models\CodeSmith\Product.cs" />
     <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ViewModels\SystemDictionary.cs" />
+    <Compile Include="Models\ViewModels\SystemDictionaryView.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

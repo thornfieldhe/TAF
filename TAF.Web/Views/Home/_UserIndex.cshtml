@@ -72,7 +72,7 @@
 </div>
 <template id="userFormBody">
     <form id="form" class="form-horizontal " name="form">
-        <div class="row">
+        <div class="row" v-if="!editModel">
             <div class="col-md-12 ">
                 <div class="alert alert-warning fade in alert-radius-bordered alert-shadowed">
                     <i class="fa-fw fa fa-info"></i>

@@ -44,7 +44,6 @@ Vue.component('form-edit', {
     props: ['id', 'title'],
     ready: function () {
         var $this = this;
-        $this.$broadcast('onClearItem');
         $('#addItemModal').on('hide.bs.modal', function () {
             $(form).data('bootstrapValidator').resetForm();
             $("#unknownError").show().find(".help-block").html("");

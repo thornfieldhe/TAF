@@ -99,12 +99,12 @@ namespace TAF.Mvc
         /// <returns>
         /// The <see cref="ActionResult"/>.
         /// </returns>
-        [HttpPost]
-        public ActionResult Save(T value)
+        protected ActionResult Update(T value)
         {
             try
             {
                 var item = EfBusiness<K>.Find(value.Id);
+
                 if (item == null)
                 {
                     item = Mapper.Map<K>(value);
@@ -119,11 +119,13 @@ namespace TAF.Mvc
             }
             catch (DbEntityValidationException ex)
             {
+                LogManager.Instance.Logger.Error(ex);
                 return this.Json(new ActionResultStatus(100,
                     $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
             }
             catch (Exception ex)
             {
+
                 return this.Json(new ActionResultStatus(ex));
             }
         }

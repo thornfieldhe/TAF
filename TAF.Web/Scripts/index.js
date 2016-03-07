@@ -8,7 +8,13 @@
     });
 
     function loadPage(url, parentTitle, title, document, isHomePage) {
+        var target = $(".page-body");
+        var spinner = new Spinner();
+        target.append(spinner.el);
+        spinner.spin();
+
         $.get(url, function (data) {
+            spinner.stop();
             $(".page-body").html(data);
             if (!isHomePage) {
                 $(".breadcrumb").html("<li><i class='fa fa-home'></i><a href='#/home' >主页</a></li><li >" + parentTitle + "</li><li >" + title + "</li>");
@@ -22,6 +28,7 @@
             $(document).parent().parent().addClass("open");
             $(document).addClass("active");
             $("#bodyTitle").html(parentTitle);
+            
         });
     }
 

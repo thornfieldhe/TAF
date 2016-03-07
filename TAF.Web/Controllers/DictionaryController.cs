@@ -7,10 +7,11 @@ namespace TAF.Web.Controllers
     using TAF.Utility;
     using TAF.Web.Models;
 
-    public class DictionaryController : BaseController<SystemDictionary, SystemDictionary, SystemDictionaryView>
+    [Authorize]
+    public class DictionaryController : BaseController<SystemDictionary, SystemDictionaryView, SystemDictionaryView>
     {
 
-        public ActionResult GetList(SystemDictionary query, int pageIndex, int pageSize = 20)
+        public ActionResult GetList(SystemDictionaryView query, int pageIndex, int pageSize = 20)
         {
             Func<SystemDictionary, bool> func =
                 r => (string.IsNullOrWhiteSpace(query.Key)
@@ -45,6 +46,11 @@ namespace TAF.Web.Controllers
                          || (!string.IsNullOrWhiteSpace(query.Value9)
                              && r.Value9.ToStr() == query.Value9.ToStr()));
             return base.Pager(pageIndex, pageSize, func, r => r.Value);
+        }
+
+        public ActionResult Save(SystemDictionaryView item)
+        {
+            return this.Update(item);
         }
 
     }

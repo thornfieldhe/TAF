@@ -54,8 +54,16 @@
                                     </th>
                                 </tr>
                                 <tr role="row">
-                                    <th>
-                                        <input type="text" class="form-control" placeholder="键" v-model="queryEntity.key" />
+                                    <th style="width: 120px">
+                                        <select  id="queryEntity" style="width: 100%" v-model="queryEntity.key" >
+                                            <option value="">请选择...</option>
+                                            @{
+                                                foreach (var item in EnumExt.GetItems<DictionaryKey>())
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
                                     </th>
                                     <th>
                                         <input type="text" class="form-control" placeholder="值" v-model="queryEntity.value"/>
@@ -92,7 +100,7 @@
                             </thead>
                             <tbody>
                                 <tr v-for=" it in list.Datas">
-                                    <td>{{it.Key}}</td>
+                                    <td>{{it.KeyName}}</td>
                                     <td>{{it.Value}}</td>
                                     <td>{{it.Value1}}</td>
                                     <td>{{it.Value2}}</td>
@@ -125,17 +133,15 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right">键</label>
                     <div class="col-sm-10">
-                        <div class="row">
-                            <select name="key" style="width: 100%" v-model="item.Key">
+                            <select name="key" id="key" style="width: 100%" v-model="item.Key" style="width: 100%">
                                 <option value="">请选择...</option>
                                 @{
                                     foreach (var  item in EnumExt.GetItems<DictionaryKey>())
                                     {
-                                        <option value="@item.Value">@item.Text</option>
+                                        <option value="@item.Value" >@item.Text</option>
                                     }
                                 }
                             </select>
-                        </div>
                     </div>
                 </div>
             </div>
