@@ -1,6 +1,6 @@
 ﻿@using TAF.MVC
 @using TAF.Utility
-@using TAF.Web.Models
+@model  List<Item>
 <div class="row" id="main">
     <div class="col-xs-12 col-md-12">
         <div class="widget">
@@ -58,7 +58,7 @@
                                         <select  id="queryEntity" style="width: 100%" v-model="queryEntity.key" >
                                             <option value="">请选择...</option>
                                             @{
-                                                foreach (var item in EnumExt.GetItems<DictionaryKey>())
+                                                foreach (var item in Model)
                                                 {
                                                     <option value="@item.Value">@item.Text</option>
                                                 }
@@ -136,7 +136,7 @@
                             <select name="key" id="key" style="width: 100%" v-model="item.Key" style="width: 100%">
                                 <option value="">请选择...</option>
                                 @{
-                                    foreach (var  item in EnumExt.GetItems<DictionaryKey>())
+                                    foreach (var  item in Model)
                                     {
                                         <option value="@item.Value" >@item.Text</option>
                                     }

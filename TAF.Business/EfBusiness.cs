@@ -86,7 +86,7 @@ namespace TAF
         /// </returns>
         public static List<K> GetAll(bool useCache = false)
         {
-            return Query(Ioc.Create<DbContext>().Set<K>(), useCache);
+            return Query(r => true, useCache);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace TAF
         /// </returns>
         public static List<K> Get(Expression<Func<K, bool>> func, bool useCache = false)
         {
-            return Query(Ioc.Create<DbContext>().Set<K>().Where(func), useCache);
+            return Query(func, useCache);
         }
 
         /// <summary>
@@ -184,6 +184,7 @@ namespace TAF
         /// <summary>
         /// 查询对象列表
         /// </summary>
+        /// <param name="dbContext"></param>
         /// <param name="query">
         /// The func.
         /// </param>
@@ -192,15 +193,16 @@ namespace TAF
         /// </param>
         /// <returns>
         /// </returns>
-        private static List<K> Query(IQueryable<K> query, bool useCache = false)
+        private static List<K> Query(Expression<Func<K, bool>> query, bool useCache = false)
         {
+            var dbContext = Ioc.Create<DbContext>();
             var items = useCache
-                ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).ToList()
-                : query.ToList();
+                ? dbContext.Set<K>().Where(query).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).ToList()
+                : dbContext.Set<K>().Where(query).ToList();
             items.ForEach(
                 i =>
                 {
-                    i.DbContext = Ioc.Create<DbContext>();
+                    i.DbContext = dbContext;
                     i.MarkOld();
                 });
             return items;

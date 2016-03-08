@@ -162,6 +162,7 @@ namespace TAF.Mvc
         /// 分页获取数据视图
         /// </summary>
         /// <typeparam name="R">
+        /// ListView
         /// </typeparam>
         /// <param name="pageIndex">
         /// The page index.
@@ -179,10 +180,10 @@ namespace TAF.Mvc
         /// <returns>
         /// The <see cref="ActionResult"/>.
         /// </returns>
-        protected virtual ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc = true) where R : class
+        protected virtual ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc = true)
         {
-            var pager = EfBusiness<K>.Pages(new Pager<T> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
-            return this.Json(new ActionResultData<Pager<T>>(pager), JsonRequestBehavior.AllowGet);
+            var pager = EfBusiness<K>.Pages(new Pager<L> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
+            return this.Json(new ActionResultData<Pager<L>>(pager), JsonRequestBehavior.AllowGet);
         }
     }
 }

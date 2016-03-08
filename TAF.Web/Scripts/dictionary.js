@@ -1,9 +1,6 @@
 ﻿Vue.component('form-body', {
     mixins: [itemMixin],
     template: '#dictionaryFormBody',
-    ready:function() {
-
-    },
     data: function () {
         return {
             item: {

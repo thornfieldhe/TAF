@@ -594,6 +594,7 @@
     <Content Include="Scripts\mixin.js" />
     <Content Include="Scripts\changePassword.js" />
     <Content Include="Scripts\index.js" />
+    <Content Include="Scripts\product.js" />
     <Content Include="Scripts\templates.js" />
     <Content Include="Scripts\dictionary.js" />
     <Content Include="Scripts\user.js" />
@@ -615,6 +616,7 @@
     <Compile Include="Businesses\DbInitializer.cs" />
     <Compile Include="Businesses\IocConfig.cs" />
     <Compile Include="Businesses\WebContext.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -628,11 +630,16 @@
     <Compile Include="Migrations\201603021341475_addTable_dictionary.Designer.cs">
       <DependentUpon>201603021341475_addTable_dictionary.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603081505002_createTable_product.cs" />
+    <Compile Include="Migrations\201603081505002_createTable_product.Designer.cs">
+      <DependentUpon>201603081505002_createTable_product.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\SystemDictionary.cs" />
     <Compile Include="Models\CodeSmith\SystemDictionary.cs" />
     <Compile Include="Models\CodeSmith\Product.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ViewModels\ProductView.cs" />
     <Compile Include="Models\ViewModels\SystemDictionaryView.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -681,6 +688,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Dictionary\_Index.cshtml" />
+    <Content Include="Views\Product\_Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -712,6 +720,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603021341475_addTable_dictionary.resx">
       <DependentUpon>201603021341475_addTable_dictionary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603081505002_createTable_product.resx">
+      <DependentUpon>201603081505002_createTable_product.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

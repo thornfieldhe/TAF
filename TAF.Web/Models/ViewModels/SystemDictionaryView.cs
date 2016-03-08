@@ -82,7 +82,7 @@
 
     public enum DictionaryKey
     {
-        [Description("产品分类")]
+        [Description("商品分类")]
         ProductCategory,
         [Description("颜色")]
         Color,

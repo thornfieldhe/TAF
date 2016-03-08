@@ -12,6 +12,11 @@
             get; set;
         }
 
+        public DbSet<Product> Products
+        {
+            get; set;
+        }
+
         public new static WebDbContext Create()
         {
             return new WebDbContext();

@@ -8,13 +8,10 @@
     });
 
     function loadPage(url, parentTitle, title, document, isHomePage) {
-        var target = $(".page-body");
-        var spinner = new Spinner();
-        target.append(spinner.el);
-        spinner.spin();
+
 
         $.get(url, function (data) {
-            spinner.stop();
+
             $(".page-body").html(data);
             if (!isHomePage) {
                 $(".breadcrumb").html("<li><i class='fa fa-home'></i><a href='#/home' >主页</a></li><li >" + parentTitle + "</li><li >" + title + "</li>");
@@ -51,14 +48,18 @@
         loadPage("/Home/UserIndex", "用户管理", "用户列表", "#menuUsers", false);
     }
     var dictionaryPage = function () {
-        loadPage("/Dictionary/Index", "字典管理", "字典列表", "#menuDictionary", false);
+        loadPage("/Dictionary/Index", "商品管理", "字典列表", "#menuDictionary", false);
+    }
+    var productPage = function () {
+        loadPage("/Product/Index", "商品管理", "商品列表", "#menuProduct", false);
     }
     var routes = {
         '/': homePage,
         '/home': homePage,
         '/users': usersPage,
         '/changePw': changePwPage,
-        '/dictionary': dictionaryPage
+        '/dictionary': dictionaryPage,
+        '/product': productPage
     };
     var router = Router(routes);
     router.init();
