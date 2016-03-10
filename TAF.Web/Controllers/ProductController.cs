@@ -25,8 +25,9 @@ namespace TAF.Web.Controllers
                      && (query.CategoryId == new Guid() || r.CategoryId == query.CategoryId)
                      && (!query.ColorId.HasValue || query.ColorId == new Guid() || r.ColorId == query.ColorId.Value)
                     && (query.Price == 0 || query.Price == r.Price)
-                    && (query.ProductionDateFrom == new DateTime(1, 1, 1) || query.ProductionDateFrom <= r.ProductionDate)
-                    && (query.ProductionDateTo == new DateTime(1, 1, 1) || query.ProductionDateTo >= r.ProductionDate);
+                    && ((query.ProductionDateFrom==query.ProductionDateTo && query.ProductionDateTo==DateTime.Today)
+                    || (query.ProductionDateFrom == new DateTime(1, 1, 1) || query.ProductionDateFrom <= r.ProductionDate)
+                    && (query.ProductionDateTo == new DateTime(1, 1, 1) || query.ProductionDateTo >= r.ProductionDate));
             return base.Pager(pageIndex, pageSize, func, r => r.CreatedDate);
         }
 

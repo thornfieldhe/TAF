@@ -31,10 +31,12 @@
             this.item.ProductionDate = "";
             $("#categoryId").select2().val("").trigger("change");
             $("#colorId").select2().val("").trigger("change");
+            $('#itemPrice').spinbox('value', 0);
         },
         postGet: function () {
-            $("#categoryId").select2().val(item.CategoryId).trigger("change");
-            $("#colorId").select2().val(item.ColorId).trigger("change");
+            $("#categoryId").select2().val(this.item.CategoryId).trigger("change");
+            $("#colorId").select2().val(this.item.ColorId).trigger("change");
+            $('#itemPrice').spinbox('value', this.item.Price);
         },
         validate: function () {
             $("#form").bootstrapValidator({
@@ -84,8 +86,6 @@
 var main = new Vue({
     mixins: [indexMixin],
     ready: function () {
-        $("#queryCategoryId").select2().on("change", function (e) { main.queryEntity.categoryId = $("#queryCategoryId").val(); });
-        $("#queryColorId").select2().on("change", function (e) { main.queryEntity.colorId = $("#queryColorId").val(); });
         this.query(1);
     },
     data: {
@@ -93,8 +93,9 @@ var main = new Vue({
             name: '',
            categoryId: '',
            colorId: "",
-            price: "",
-            productionDate: ""
+            price: 0,
+            productionDateFrom: "",
+            productionDateTo: ""
         },
         list: {},
         queryUrl: "/Product/GetList"
@@ -105,13 +106,36 @@ var main = new Vue({
             this.queryEntity.categoryId = '';
             this.queryEntity.colorId = "";
             this.queryEntity.price = "";
-            this.queryEntity.productionDate = "";
+            this.queryEntity.productionDateFrom = "";
+            this.queryEntity.productionDateTo = "";
             $("#queryCategoryId").select2().val("").trigger("change");
             $("#queryColorId").select2().val("").trigger("change");
+            $('#queryPrice').spinbox('value',0);
         }
     }
 });
 
+//搜索栏初始化
+$("#queryCategoryId").select2().on("change", function (e) { main.queryEntity.categoryId = $("#queryCategoryId").val(); });
+$("#queryColorId").select2().on("change", function (e) { main.queryEntity.colorId = $("#queryColorId").val(); });
+$('#queryPrice').spinbox("value");
+$('#queryPrice').on('changed.fu.spinbox', function (e) {
+    main.queryEntity.price = $('#queryPrice').spinbox('value');
+});
+$('#queryProductionDate').daterangepicker(datepickerConfig, function (start, end, label) {
+    main.queryEntity.productionDateFrom = start.format('YYYY-MM-DD');
+    main.queryEntity.productionDateTo = end.format('YYYY-MM-DD');
+});
 
-$("#categoryId").select2().on("change", function (e) { main.$children[1].$children[0].item.CategoryId = $("#categoryId").val(); });
-$("#colorId").select2().on("change", function (e) { main.$children[1].$children[0].item.ColorId = $("#colorId").val(); });
+//对象编辑页初始化
+$("#categoryId").select2().on("change", function (e) { main.$children[3].$children[0].item.CategoryId = $("#categoryId").val(); });
+$("#colorId").select2().on("change", function (e) { main.$children[3].$children[0].item.ColorId = $("#colorId").val(); });
+$(' #itemPrice').spinbox();
+$('#itemPrice').on('changed.fu.spinbox', function (e) {
+    main.$children[3].$children[0].item.Price = $('#itemPrice').spinbox('value');
+});
+var productionDateConfig = $.extend({}, datepickerConfig, { "singleDatePicker": true});
+$('#productionDate').daterangepicker(productionDateConfig, function (start, end, label) {
+    main.$children[3].$children[0].item.ProductionDate = start.format('YYYY-MM-DD');
+});
+

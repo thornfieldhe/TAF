@@ -255,8 +255,10 @@
     <Content Include="Assets\js\datatable\ZeroClipboard.js" />
     <Content Include="Assets\js\datetime\bootstrap-datepicker.js" />
     <Content Include="Assets\js\datetime\bootstrap-timepicker.js" />
+    <Content Include="Assets\js\datetime\daterangepicker.css" />
     <Content Include="Assets\js\datetime\daterangepicker.js" />
     <Content Include="Assets\js\datetime\moment.js" />
+    <Content Include="Assets\js\datetime\moment.min.js" />
     <Content Include="Assets\js\director.min.js" />
     <Content Include="Assets\js\dropzone\dropzone.css" />
     <Content Include="Assets\js\dropzone\dropzone.js" />

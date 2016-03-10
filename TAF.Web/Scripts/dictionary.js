@@ -44,6 +44,7 @@
             $("#key").select2().val("").trigger("change");
         },
         postGet: function () {
+            console.log(333333333333);
             $("#key").select2().val(this.item.Key).trigger("change");
         },
         validate: function () {
