@@ -1,4 +1,4 @@
-﻿namespace TAF.Web.Models
+﻿namespace TAF.Web.Views
 {
     using System;
     using System.ComponentModel;

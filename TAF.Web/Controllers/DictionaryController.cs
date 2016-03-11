@@ -6,6 +6,7 @@ namespace TAF.Web.Controllers
     using TAF.Mvc;
     using TAF.Utility;
     using TAF.Web.Models;
+    using TAF.Web.Views;
 
     [Authorize]
     public class DictionaryController : BaseController<SystemDictionary, SystemDictionaryView, SystemDictionaryView>

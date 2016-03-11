@@ -1,6 +1,7 @@
 ﻿@using TAF.MVC
 @using TAF.Utility
 @using TAF.Web.Models
+@using TAF.Web.Views
 @model  List<Tuple<Guid,string,string>>
 <div class="row" id="main">
     <div class="col-xs-12 col-md-12">
@@ -76,7 +77,7 @@
                                     </div>
                                 </th>
                                 <th style="width: 220px">
- <span class="input-icon icon-right">
+                                        <span class="input-icon icon-right">
                                             <input type="text" class="form-control" id="queryProductionDate" placeholder="生产日期" readonly="readonly" />
                                             <i class="fa fa-calendar"></i>
                                         </span>

@@ -18,11 +18,15 @@
     },
     methods: {
         query: function (index) {
+            this.preQuery();
             var $this = this;
             $.get($this.queryUrl + "?pageSize=20&pageIndex=" + index, $this.queryEntity , function (e) {
                 $this.list = e.Data;
                 $this.$broadcast("onQuery", $this.list);
             });
+        },
+        preQuery:function() {
+            
         }
     }
 }
@@ -69,9 +73,7 @@ var itemMixin = {
 
 //日期选择器配置
 var datepickerConfig = {
-    "timePickerSeconds": true,
     "autoApply": true,
-    "alwaysShowCalendars": true,
     "minDate": "01/01/2000",
     "opens": "left",
     "locale": {

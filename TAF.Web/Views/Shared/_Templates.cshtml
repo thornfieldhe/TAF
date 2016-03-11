@@ -60,13 +60,13 @@
 </template>
 <template id="tableFoot">
     <tfoot>
-        <tr role="row">
+        <tr >
             <td colspan="{{colspan}}" class="DTTTFooter ">
                 <div class="col-sm-2">
                     <div class="dataTables_info" id="simpledatatable_info" role="status" aria-live="polite"> {{(list.PageIndex-1)*list.PageSize+1}} - {{(list.PageIndex-1)*list.PageSize+length}} / {{list.Total}} </div>
                 </div>
                 <div class="col-sm-10 ">
-                    <div class="dataTables_paginate paging_bootstrap right-align" id="simpledatatable_paginate">
+                    <div class="dataTables_paginate paging_bootstrap " id="simpledatatable_paginate">
                         <ul class="pagination">
                             <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)" v-on:click="query( list.FirstPage) "><<</a></li>
                             <li class="prev " v-bind:class="{ 'disabled': list.IsFirst }"><a href="javascript:void(0)" v-on:click="query(list.IsFirst?list.FirstPage:list.PageIndex-1) "><</a></li>

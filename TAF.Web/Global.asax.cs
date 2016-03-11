@@ -13,6 +13,7 @@ namespace TAF.Web
     using TAF.Utility;
     using TAF.Web.Businesses;
     using TAF.Web.Models;
+    using TAF.Web.Views;
 
     public class MvcApplication : System.Web.HttpApplication
     {

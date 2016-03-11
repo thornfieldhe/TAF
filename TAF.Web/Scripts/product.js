@@ -110,7 +110,16 @@ var main = new Vue({
             this.queryEntity.productionDateTo = "";
             $("#queryCategoryId").select2().val("").trigger("change");
             $("#queryColorId").select2().val("").trigger("change");
-            $('#queryPrice').spinbox('value',0);
+            $('#queryPrice').spinbox('value', 0);
+            $("#queryProductionDate").val("");
+        }
+    },
+    methods: {
+        preQuery:function() {
+            var dates = _.map($("#queryProductionDate").val().split("-"), _.trim);
+            console.log(dates);
+            this.queryEntity.productionDateFrom = dates[0];
+            this.queryEntity.productionDateTo = dates[1];
         }
     }
 });
@@ -126,6 +135,9 @@ $('#queryProductionDate').daterangepicker(datepickerConfig, function (start, end
     main.queryEntity.productionDateFrom = start.format('YYYY-MM-DD');
     main.queryEntity.productionDateTo = end.format('YYYY-MM-DD');
 });
+$('#queryProductionDate').next().click(function () {
+    $(this).prev().click();
+});
 
 //对象编辑页初始化
 $("#categoryId").select2().on("change", function (e) { main.$children[3].$children[0].item.CategoryId = $("#categoryId").val(); });
@@ -137,5 +149,8 @@ $('#itemPrice').on('changed.fu.spinbox', function (e) {
 var productionDateConfig = $.extend({}, datepickerConfig, { "singleDatePicker": true});
 $('#productionDate').daterangepicker(productionDateConfig, function (start, end, label) {
     main.$children[3].$children[0].item.ProductionDate = start.format('YYYY-MM-DD');
+});
+$('#productionDate').next().click(function () {
+    $(this).prev().click();
 });
 

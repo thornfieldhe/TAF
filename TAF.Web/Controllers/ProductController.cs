@@ -20,14 +20,15 @@ namespace TAF.Web.Controllers
 
         public ActionResult GetList(ProductQueryView query, int pageIndex, int pageSize = 20)
         {
-            Func<Product, bool> func =
-                r => (string.IsNullOrWhiteSpace(query.Name) || !string.IsNullOrWhiteSpace(query.Name) && r.Name.ToStr().Contains(query.Name.ToStr()))
-                     && (query.CategoryId == new Guid() || r.CategoryId == query.CategoryId)
-                     && (!query.ColorId.HasValue || query.ColorId == new Guid() || r.ColorId == query.ColorId.Value)
-                    && (query.Price == 0 || query.Price == r.Price)
-                    && ((query.ProductionDateFrom==query.ProductionDateTo && query.ProductionDateTo==DateTime.Today)
+            Func<Product, bool> func = r =>
+                    (string.IsNullOrWhiteSpace(query.Name) || (!string.IsNullOrWhiteSpace(query.Name) && r.Name.Contains(query.Name.ToStr())))
+                    && (query.CategoryId == new Guid() || query.CategoryId == r.CategoryId)
+                    && (!query.ColorId.HasValue || query.ColorId == new Guid() || query.ColorId == r.ColorId)
+                    && (query.Price == 0 || r.Price == query.Price)
+                    && ((query.ProductionDateFrom == query.ProductionDateTo && query.ProductionDateTo == DateTime.Today)
                     || (query.ProductionDateFrom == new DateTime(1, 1, 1) || query.ProductionDateFrom <= r.ProductionDate)
                     && (query.ProductionDateTo == new DateTime(1, 1, 1) || query.ProductionDateTo >= r.ProductionDate));
+
             return base.Pager(pageIndex, pageSize, func, r => r.CreatedDate);
         }
 

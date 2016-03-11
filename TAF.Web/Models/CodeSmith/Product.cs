@@ -1,6 +1,14 @@
-﻿namespace TAF.Web.Models
-{
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Product.cs" author="何翔华">
+//   
+// </copyright>
+// <summary>
+//   商品
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
+namespace TAF.Web.Models
+{
     using TAF;
     using TAF.Utility;
 
@@ -16,10 +24,13 @@
             base.AddDescriptions();
             AddDescription("Name:" + Name.ToStr());
             AddDescription("CategoryId:" + CategoryId.ToStr());
-            AddDescription("ProductionDate:" + ProductionDate.ToStr());
-            AddDescription("Price:" + Price.ToStr());
             AddDescription("ColorId:" + ColorId.ToStr());
+            AddDescription("Price:" + Price.ToStr());
+            AddDescription("ProductionDate:" + ProductionDate.ToStr());
         }
         #endregion
     }
 }
+
+
+
