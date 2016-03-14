@@ -76,17 +76,4 @@ namespace <%=ClassNamespace %>.Models
         return DbTypeCSharp[column.DataType.ToString()];
     }
 
-
-    /// <summary>
-    /// 列是否是Guid
-    /// </summary>
-    /// <param name="column"></param>
-    /// <returns></returns>
-    public  bool ColumnIsGuid(ColumnSchema column)
-    {
-       string type= GetCSharpVariableType(column) ;
-        return type=="Guid" ;
-    }
-
-
 </script>

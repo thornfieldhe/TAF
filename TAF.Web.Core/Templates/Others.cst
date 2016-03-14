@@ -1,0 +1,137 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ Template Language="C#" TargetLanguage="c#"  Debug="True" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="基本信息" Description="Table that the object is based on." %>
+<%@ Property Name="ClassNamespace" Type="System.String" Category="基本信息" Default="TAF.Web" Description="" %>
+<%@ Property Name="Description" Type="System.String" Category="基本信息" Default="商品" Description="" %>
+<%@ Assembly Name="System.ComponentModel"  %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
+<%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
+<%@ Assembly Name="TAF.Web"  Path="d:\WorkStation\TAF\TAF.Web\bin"%>
+<%@ Assembly Src="Common.cs" %>
+<%@ Import Namespace="TAF.Utility" %>  
+<%@ Import Namespace="TAF" %>  
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaMapper" %>
+<%@ Import Namespace="System" %> 
+<%@ Import Namespace="System.Linq" %> 
+<%@ Import Namespace="System.Reflection" %> 
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="TAF.Utility" %>
+<%@ Map Name="SqlCSharp" Src="Sql-CSharp" Description="System to C# Type Map" %>
+<%@ Map Name="DbDataReader" Src="DbType-DataReaderMethod" Description="DbType to DataReader Method Map" %>
+<%@ Map Name="SqlNativeSqlDb" Src="SqlNativeType-SqlDbType" Description="SqlNativeType to SqlDbType Map" %>
+<%@ Map Name="DbTypeCSharp" Src="DbType-CSharp" Description="DbType to CSharp Map" %>
+
+//_menu.cshtml
+<li id="menu<%=Common.GetClassName(SourceTable)%>">
+    <a href="#/<%=Extensions.ToCamel(Common.GetClassName(SourceTable))%>" >
+        <span class="menu-text"><%=Description%>管理</span>
+    </a>
+</li>
+
+
+//index.js
+var <%=Extensions.ToCamel(Common.GetClassName(SourceTable))%>Page = function () {
+    loadPage("/<%=Common.GetClassName(SourceTable)%>/Index", "<%=Description%>管理", "<%=Description%>列表", "#menu<%=Common.GetClassName(SourceTable)%>", false);
+}
+
+
+var routes = {
+    '/<%=Extensions.ToCamel(Common.GetClassName(SourceTable))%>': <%=Extensions.ToCamel(Common.GetClassName(SourceTable))%>Page
+};
+
+
+//Global.asax.cs
+private void InitMap()
+{
+    //<%=Description %>对象映射
+    <%var columns= SourceTable.NonPrimaryKeyColumns.Where(r=>!Common.IsSystemProperty(r)).ToList();%>
+    Mapper.CreateMap<<%=Common.GetClassName(SourceTable)%>, <%=Common.GetClassName(SourceTable)%>ItemView>()
+    <%for(int i=0;i<columns.Count;i++) {%>
+    <%if(ColumnIsDateTime(columns[i])){ %>
+    .ForMember(r => r.<%=columns[i].Name%>, m => m.MapFrom(n => n.<%=columns[i].Name%>.ToShortDateString()))<%if(i==columns.Count-1){%>;<%} %>
+    <%}} %>                
+    Mapper.CreateMap<<%=Common.GetClassName(SourceTable)%>ItemView, <%=Common.GetClassName(SourceTable)%>>()
+    <%for(int i=0;i<columns.Count;i++) {%>
+    <%if(ColumnIsDateTime(columns[i])){ %>
+    .ForMember(r => r.<%=columns[i].Name%>, m => m.MapFrom(n => n.<%=columns[i].Name%>.ToDate()))<%if(i==columns.Count-1){%>;<%} %>
+    <%}} %>    
+    Mapper.CreateMap<<%=Common.GetClassName(SourceTable)%>, <%=Common.GetClassName(SourceTable)%>ListView>()
+    <%for(int i=0;i<columns.Count;i++) {%>
+    <%if(ColumnIsDateTime(columns[i])){ %>
+    .ForMember(r => r.<%=columns[i].Name%>, m => m.MapFrom(n => n.<%=columns[i].Name%>.ToShortDateString()))<%if(i==columns.Count-1){%>;<%} %>
+    <%}else if(ColumnIsGuid(columns[i])){ %>          
+    .ForMember(r => r.<%=Common.RemoveLaseId(columns[i].Name)%>, m => m.MapFrom(n => n.<%=Common.RemoveLaseId(columns[i].Name)%>.Value))<%if(i==columns.Count-1){%>;<%} %>
+    <%}} %>
+}
+
+<script runat="template">
+
+    /// <summary>
+    /// 获取C#类型
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private  string GetCSharpVariableType(ColumnSchema column)
+    {
+        if (column.Name.EndsWith("TypeCode")){ return column.Name;}
+        else if(column.AllowDBNull){return DbTypeCSharp[column.DataType.ToString()]+"?";}
+        return DbTypeCSharp[column.DataType.ToString()];
+    }
+
+
+    /// <summary>
+    /// 列是否是DateTime
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  bool ColumnIsDateTime(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        return type.StartsWith("DateTime") ;
+    }
+
+    /// <summary>
+    /// 列是否是Guid
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  bool ColumnIsGuid(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+
+        return type.StartsWith("Guid") ;
+    }
+  
+    /// <summary>
+    /// DateTime列转string
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public string DateTimeToString(ColumnSchema column)
+    {
+       var type=GetCSharpVariableType(column);
+        if(type.StartsWith("DateTime")){return "string";}
+        return type;
+    }
+       
+    /// <summary>
+    /// Guid列转string
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public string GuidToString(ColumnSchema column)
+    {
+       var type=GetCSharpVariableType(column);
+        if(type.StartsWith("Guid")){return "string";}
+        return type;
+    } 
+    
+
+
+</script>

@@ -33,15 +33,15 @@ namespace TAF.Web
             Mapper.CreateMap<SystemDictionaryView, SystemDictionary>();
             Mapper.CreateMap<SystemDictionary, SystemDictionaryView>();
 
+            //商品对象映射
             Mapper.CreateMap<Product, ProductItemView>()
-                .ForMember(r => r.ProductionDate, m => m.MapFrom(n => n.ProductionDate.ToShortDateString()));
+            .ForMember(r => r.ProductionDate, m => m.MapFrom(n => n.ProductionDate.ToShortDateString()));
             Mapper.CreateMap<ProductItemView, Product>()
-                               .ForMember(r => r.ProductionDate, m => m.MapFrom(n => n.ProductionDate.ToDate()));
+            .ForMember(r => r.ProductionDate, m => m.MapFrom(n => n.ProductionDate.ToDate()));
             Mapper.CreateMap<Product, ProductListView>()
-                                .ForMember(r => r.Category, m => m.MapFrom(n => n.Category.Value))
-                                .ForMember(r => r.Color, m => m.MapFrom(n => n.Color.Value))
-                                .ForMember(r => r.ProductionDate, m => m.MapFrom(n => n.ProductionDate.ToShortDateString()))
-            ;
+            .ForMember(r => r.Category, m => m.MapFrom(n => n.Category.Value))
+            .ForMember(r => r.Color, m => m.MapFrom(n => n.Color.Value))
+            .ForMember(r => r.ProductionDate, m => m.MapFrom(n => n.ProductionDate.ToShortDateString()));
         }
     }
 }

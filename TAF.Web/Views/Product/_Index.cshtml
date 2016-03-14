@@ -2,7 +2,7 @@
 @using TAF.Utility
 @using TAF.Web.Models
 @using TAF.Web.Views
-@model  List<Tuple<Guid,string,string>>
+@model  List<Tuple<Guid, string, string>>
 <div class="row" id="main">
     <div class="col-xs-12 col-md-12">
         <div class="widget">
@@ -19,10 +19,10 @@
                             <thead>
                                 <tr role="row">
                                     <th>
-                                        商品名称
+                                        名称
                                     </th>
                                     <th>
-                                        商品类别
+                                        类别
                                     </th>
                                     <th>
                                         颜色
@@ -33,57 +33,57 @@
                                     <th>
                                         生产日期
                                     </th>
-                                    <th style="width: 180px;">
+                                    <th>
                                         操作
                                     </th>
                                 </tr>
-                            <tr role="row">
-                                <th>
-                                    <input type="text" class="form-control" placeholder="商品名称" v-model="queryEntity.name" />
-                                </th>
-                                <th style="width: 120px">
-                                    <select id="queryCategoryId" style="width: 100%" v-model="queryEntity.categoryId">
-                                        <option value="">请选择...</option>
-                                        @{
-                                            foreach (var item in Model.Where(r => r.Item2 == ((int)DictionaryKey.ProductCategory).ToString()))
-                                            {
-                                                <option value="@item.Item1">@item.Item3</option>
+                                <tr role="row">
+                                    <th>
+                                        <input type="text" class="form-control" placeholder="名称" v-model="queryEntity.name" />
+                                    </th>
+                                    <th style="width: 120px">
+                                        <select id="queryCategoryId" style="width: 100%" v-model="queryEntity.categoryId">
+                                            <option value="">请选择...</option>
+                                            @{
+                                                foreach (var item in Model.Where(r => r.Item2 == ((int)DictionaryKey.ProductCategory).ToString()))
+                                                {
+                                                    <option value="@item.Item1">@item.Item3</option>
+                                                }
                                             }
-                                        }
-                                    </select>
-                                </th>
-                                <th style="width: 120px">
-                                    <select id="queryColorId" style="width: 100%" v-model="queryEntity.colorId">
-                                        <option value="">请选择...</option>
-                                        @{
-                                            foreach (var item in Model.Where(r => r.Item2 == ((int)DictionaryKey.Color).ToString()))
-                                            {
-                                                <option value="@item.Item1">@item.Item3</option>
+                                        </select>
+                                    </th>
+                                    <th style="width: 120px">
+                                        <select id="queryColorId" style="width: 100%" v-model="queryEntity.colorId">
+                                            <option value="">请选择...</option>
+                                            @{
+                                                foreach (var item in Model.Where(r => r.Item2 == ((int)DictionaryKey.Color).ToString()))
+                                                {
+                                                    <option value="@item.Item1">@item.Item3</option>
+                                                }
                                             }
-                                        }
-                                    </select>
-                                </th>
-                                <th>
-                                    <div class="spinbox spinbox-horizontal spinbox-right" id="queryPrice">
-                                        <div class="spinbox-buttons	btn-group">
-                                            <button type="button" class="btn spinbox-down blueberry">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                            <button type="button" class="btn spinbox-up purple">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <div class="spinbox spinbox-horizontal spinbox-right" id="queryPrice">
+                                            <div class="spinbox-buttons	btn-group">
+                                                <button type="button" class="btn spinbox-down blueberry">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn spinbox-up purple">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                            <input type="text" class="spinbox-input form-control " placeholder="价格"  v-model="queryEntity.price" />
                                         </div>
-                                        <input type="text" class="spinbox-input form-control " placeholder="价格" name="price" v-model="queryEntity.price"/>
-                                    </div>
-                                </th>
-                                <th style="width: 220px">
+                                    </th>
+                                    <th style="width: 220px">
                                         <span class="input-icon icon-right">
                                             <input type="text" class="form-control" id="queryProductionDate" placeholder="生产日期" readonly="readonly" />
                                             <i class="fa fa-calendar"></i>
                                         </span>
-  </th>
-                                <th><search-command></search-command></th>
-                            </tr>
+                                    </th>
+                                    <th  style="width: 170px;"><search-command></search-command></th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr v-for=" it in list.Datas">
@@ -112,10 +112,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">商品名称</label>
+                    <label class="col-sm-2 control-label no-padding-right">名称</label>
                     <div class="col-sm-10">
                         <span class="input-icon icon-right">
-                            <input type="text" class="form-control " placeholder="商品名称" name="name" v-model="item.Name" />
+                            <input type="text" class="form-control " placeholder="名称" name="name" v-model="item.Name" />
                         </span>
                     </div>
                 </div>
@@ -124,9 +124,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label no-padding-right">商品类别</label>
+                    <label class="col-sm-2 control-label no-padding-right">类别</label>
                     <div class="col-sm-10">
-                        <select name="categoryId" id="categoryId" style="width: 100%" v-model="item.Category" style="width: 100%">
+                        <select id="categoryId" name="categoryId" style="width: 100%" v-model="item.categoryId">
                             <option value="">请选择...</option>
                             @{
                                 foreach (var item in Model.Where(r => r.Item2 == ((int)DictionaryKey.ProductCategory).ToString()))
@@ -144,7 +144,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label no-padding-right">颜色</label>
                     <div class="col-sm-10">
-                        <select name="colorId" id="colorId" style="width: 100%" v-model="item.Color" style="width: 100%">
+                        <select id="colorId" name="colorId" style="width: 100%" v-model="item.colorId">
                             <option value="">请选择...</option>
                             @{
                                 foreach (var item in Model.Where(r => r.Item2 == ((int)DictionaryKey.Color).ToString()))
@@ -171,9 +171,9 @@
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
-                                <input type="text" class="spinbox-input form-control "  placeholder="价格" name="price" v-model="item.Price" />
-                            </div>
+                            <input type="text" class="spinbox-input form-control " placeholder="价格" id="price" name="price" v-model="item.Price" />
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -184,7 +184,7 @@
                     <div class="col-sm-10">
                         <div class="input-group" style="width: 100%">
                             <span class="input-icon icon-right">
-                                <input type="text" class="form-control" id="productionDate" placeholder="生产日期" readonly="readonly" v-model="item.ProductionDate" />
+                                <input type="text" class="form-control" id="productionDate" name="productionDate" placeholder="生产日期"  v-model="item.ProductionDate" />
                                 <i class=" fa fa-calendar"></i>
                             </span>
                         </div>
@@ -195,3 +195,6 @@
     </form>
 </template>
 <script src="~/Scripts/product.js"></script>
+
+
+

@@ -1,0 +1,184 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ Template Language="C#" TargetLanguage="c#"  Debug="True" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="基本信息" Description="Table that the object is based on." %>
+<%@ Property Name="ClassNamespace" Type="System.String" Category="基本信息" Default="TAF.Web" Description="" %>
+<%@ Property Name="Description" Type="System.String" Category="基本信息" Default="商品" Description="" %>
+<%@ Assembly Name="System.ComponentModel"  %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
+<%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
+<%@ Assembly Name="TAF.Web"  Path="d:\WorkStation\TAF\TAF.Web\bin"%>
+<%@ Assembly Src="Common.cs" %>
+<%@ Import Namespace="TAF.Utility" %>  
+<%@ Import Namespace="TAF" %>  
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaMapper" %>
+<%@ Import Namespace="System" %> 
+<%@ Import Namespace="System.Linq" %> 
+<%@ Import Namespace="System.Reflection" %> 
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="TAF.Utility" %>
+<%@ Map Name="SqlCSharp" Src="Sql-CSharp" Description="System to C# Type Map" %>
+<%@ Map Name="DbDataReader" Src="DbType-DataReaderMethod" Description="DbType to DataReader Method Map" %>
+<%@ Map Name="SqlNativeSqlDb" Src="SqlNativeType-SqlDbType" Description="SqlNativeType to SqlDbType Map" %>
+<%@ Map Name="DbTypeCSharp" Src="DbType-CSharp" Description="DbType to CSharp Map" %>
+
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="<%=Common.GetClassName(SourceTable)%>View.cs" author="何翔华">
+//   
+// </copyright>
+// <summary>
+//   <%=Description%>
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+using System;
+namespace <%=ClassNamespace %>.Models
+{
+    using TAF.Core;
+
+    /// <summary>
+    /// <%=Description%>对象视图
+    /// </summary>
+    public class <%=Common.GetClassName(SourceTable)%>ItemView : IEntityBase
+    {
+        public Guid Id
+        {
+            get; set;
+        }
+        
+        <%foreach(var item in SourceTable.NonPrimaryKeyColumns.Where(r=>!Common.IsSystemProperty(r)).ToList()){ %>
+        public <%=DateTimeToString(item)%> <%=item.Name%>
+        {
+            get; set;
+        }
+        
+        <%} %>
+    }
+
+    /// <summary>
+    /// <%=Description%>列表视图
+    /// </summary>
+    public class <%=Common.GetClassName(SourceTable)%>ListView : IEntityBase
+    {
+        public Guid Id
+        {
+            get; set;
+        }
+        
+        <%foreach(var item in SourceTable.NonPrimaryKeyColumns.Where(r=>!Common.IsSystemProperty(r)).ToList()){ %>
+        <%if(ColumnIsDateTime(item)){ %>
+        public <%=DateTimeToString(item)%> <%= item.Name%>
+        {
+            get; set;
+        }
+        <%}else{ %>
+        public <%=GuidToString(item)%> <%= Common.RemoveLaseId(item.Name)%>
+        {
+            get; set;
+        }
+        <%}} %>
+    }
+    
+    /// <summary>
+    /// <%=Description%>查询视图
+    /// </summary>
+    public class <%=Common.GetClassName(SourceTable)%>QueryView 
+    {        
+        <%foreach(var item in SourceTable.NonPrimaryKeyColumns.Where(r=>!Common.IsSystemProperty(r)).ToList()){ %>
+        <%if(GetCSharpVariableType(item).StartsWith("DateTime")){ %>
+        
+        public <%=GetCSharpVariableType(item)%> <%=item.Name%>From
+        {
+            get; set;
+        }  
+        
+        public <%=GetCSharpVariableType(item)%> <%=item.Name%>To
+        {
+            get; set;
+        }  
+        <%}else{ %>
+        
+        public <%=GetCSharpVariableType(item)%> <%=item.Name%>
+        {
+            get; set;
+        }        
+        <%}} %>
+    }
+}
+
+
+
+
+<script runat="template">
+
+    /// <summary>
+    /// 获取C#类型
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private  string GetCSharpVariableType(ColumnSchema column)
+    {
+        if (column.Name.EndsWith("TypeCode")){ return column.Name;}
+        else if(column.AllowDBNull){return DbTypeCSharp[column.DataType.ToString()]+"?";}
+        return DbTypeCSharp[column.DataType.ToString()];
+    }
+
+
+    /// <summary>
+    /// 列是否是DateTime
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  bool ColumnIsDateTime(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        return type=="DateTime" ;
+    }
+
+    /// <summary>
+    /// 列是否是Guid
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  bool ColumnIsGuid(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        return type=="Guid" ;
+    }
+  
+    /// <summary>
+    /// DateTime列转string
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public string DateTimeToString(ColumnSchema column)
+    {
+       var type=GetCSharpVariableType(column);
+        if(type.StartsWith("DateTime")){return "string";}
+        return type;
+    }
+       
+    /// <summary>
+    /// Guid列转string
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public string GuidToString(ColumnSchema column)
+    {
+       var type=GetCSharpVariableType(column);
+        if(type.StartsWith("Guid")){return "string";}
+        return type;
+    } 
+    
+
+
+</script>
+
+
+
+
+

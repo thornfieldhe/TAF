@@ -7,9 +7,9 @@
                 Id: '00000000-0000-0000-0000-000000000000',
                 Name: '',
                 CategoryId: '',
-                ColorId: "",
-                Price: "",
-                ProductionDate: ""
+                ColorId: '',
+                Price: '',
+                ProductionDate: ''
             }
         };
     },
@@ -23,12 +23,12 @@
     },
     methods: {
         clearItem: function () {
-            this.item.Id='00000000-0000-0000-0000-000000000000';
+            this.item.Id = '00000000-0000-0000-0000-000000000000';
             this.item.Name = '';
-            this.item.CategoryId='';
-            this.item.ColorId = "";
-            this.item.Price = "";
-            this.item.ProductionDate = "";
+            this.item.CategoryId = '';
+            this.item.ColorId = '';
+            this.item.Price = '';
+            this.item.ProductionDate = '';
             $("#categoryId").select2().val("").trigger("change");
             $("#colorId").select2().val("").trigger("change");
             $('#itemPrice').spinbox('value', 0);
@@ -45,35 +45,36 @@
                     name: {
                         validators: {
                             notEmpty: {
-                                message: '商品名称不能为空'
+                                message: 'Name不能为空'
                             }
                         }
                     },
                     categoryId: {
                         validators: {
                             notEmpty: {
-                                message: '商品类别不能为空'
-                            }
-                        }
-                    },
-                    colorId: {
-                        validators: {
-                            notEmpty: {
-                                message: '颜色不能为空'
+                                message: 'CategoryId不能为空'
                             }
                         }
                     },
                     price: {
                         validators: {
                             notEmpty: {
-                                message: '价格不能为空'
+                                message: 'Price不能为空'
+                            },
+                            numeric: {
+                                message: 'price必须是数字'
+                            },
+                            greaterThan: {
+                                value: 0,
+                                inclusive: false,
+                                message: 'price必须大于0'
                             }
                         }
                     },
                     productionDate: {
                         validators: {
                             notEmpty: {
-                                message: '生产日期不能为空'
+                                message: 'ProductionDate不能为空'
                             }
                         }
                     }
@@ -91,11 +92,11 @@ var main = new Vue({
     data: {
         queryEntity: {
             name: '',
-           categoryId: '',
-           colorId: "",
-            price: 0,
-            productionDateFrom: "",
-            productionDateTo: ""
+            categoryId: '',
+            colorId: '',
+            price: '',
+            productionDateFrom: '',
+            productionDateTo: ''
         },
         list: {},
         queryUrl: "/Product/GetList"
@@ -104,10 +105,10 @@ var main = new Vue({
         'onResetSearch': function () {
             this.queryEntity.name = '';
             this.queryEntity.categoryId = '';
-            this.queryEntity.colorId = "";
-            this.queryEntity.price = "";
-            this.queryEntity.productionDateFrom = "";
-            this.queryEntity.productionDateTo = "";
+            this.queryEntity.colorId = '';
+            this.queryEntity.price = '';
+            this.queryEntity.productionDateFrom = '';
+            this.queryEntity.productionDateTo = '';
             $("#queryCategoryId").select2().val("").trigger("change");
             $("#queryColorId").select2().val("").trigger("change");
             $('#queryPrice').spinbox('value', 0);
@@ -115,11 +116,11 @@ var main = new Vue({
         }
     },
     methods: {
-        preQuery:function() {
-            var dates = _.map($("#queryProductionDate").val().split("-"), _.trim);
-            console.log(dates);
-            this.queryEntity.productionDateFrom = dates[0];
-            this.queryEntity.productionDateTo = dates[1];
+        preQuery: function () {
+            var dates0 = _.map($("#queryProductionDate").val().split("-"), _.trim);
+            this.queryEntity.ProductionDateFrom = dates0[0];
+            this.queryEntity.ProductionDateTo = dates0[1];
+
         }
     }
 });
@@ -127,7 +128,7 @@ var main = new Vue({
 //搜索栏初始化
 $("#queryCategoryId").select2().on("change", function (e) { main.queryEntity.categoryId = $("#queryCategoryId").val(); });
 $("#queryColorId").select2().on("change", function (e) { main.queryEntity.colorId = $("#queryColorId").val(); });
-$('#queryPrice').spinbox("value");
+$('#queryPrice').spinbox('value');
 $('#queryPrice').on('changed.fu.spinbox', function (e) {
     main.queryEntity.price = $('#queryPrice').spinbox('value');
 });
@@ -139,18 +140,30 @@ $('#queryProductionDate').next().click(function () {
     $(this).prev().click();
 });
 
+
 //对象编辑页初始化
+var productionDateConfig = $.extend({}, datepickerConfig, { "singleDatePicker": true });
 $("#categoryId").select2().on("change", function (e) { main.$children[3].$children[0].item.CategoryId = $("#categoryId").val(); });
 $("#colorId").select2().on("change", function (e) { main.$children[3].$children[0].item.ColorId = $("#colorId").val(); });
-$(' #itemPrice').spinbox();
+$('#itemPrice').spinbox();
 $('#itemPrice').on('changed.fu.spinbox', function (e) {
     main.$children[3].$children[0].item.Price = $('#itemPrice').spinbox('value');
+    $(form).data('bootstrapValidator').updateStatus('price', 'NOT_VALIDATED', null).validateField('price');
 });
-var productionDateConfig = $.extend({}, datepickerConfig, { "singleDatePicker": true});
 $('#productionDate').daterangepicker(productionDateConfig, function (start, end, label) {
     main.$children[3].$children[0].item.ProductionDate = start.format('YYYY-MM-DD');
 });
 $('#productionDate').next().click(function () {
     $(this).prev().click();
 });
+$('#productionDate').on('apply.daterangepicker', function (e) {
+    $(form).data('bootstrapValidator').updateStatus('productionDate', 'NOT_VALIDATED', null).validateField('productionDate');
+});
+
+
+
+
+
+
+
 

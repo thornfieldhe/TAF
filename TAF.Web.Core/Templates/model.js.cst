@@ -1,0 +1,313 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ Template Language="C#" TargetLanguage="c#"  Debug="True" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="基本信息" Description="Table that the object is based on." %>
+<%@ Property Name="ClassNamespace" Type="System.String" Category="基本信息" Default="TAF.Web" Description="" %>
+<%@ Property Name="Description" Type="System.String" Category="基本信息" Default="商品" Description="" %>
+<%@ Assembly Name="System.ComponentModel"  %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
+<%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
+<%@ Assembly Name="TAF.MVC"  Path="d:\WorkStation\TAF\TAF.Web.Core\bin\Release"%>
+<%@ Assembly Src="Common.cs" %>
+<%@ Import Namespace="TAF" %>  
+<%@ Import Namespace="TAF.Utility" %>  
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="SchemaMapper" %>
+<%@ Import Namespace="System" %> 
+<%@ Import Namespace="System.Linq" %> 
+<%@ Import Namespace="System.Reflection" %> 
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Map Name="SqlCSharp" Src="Sql-CSharp" Description="System to C# Type Map" %>
+<%@ Map Name="DbDataReader" Src="DbType-DataReaderMethod" Description="DbType to DataReader Method Map" %>
+<%@ Map Name="SqlNativeSqlDb" Src="SqlNativeType-SqlDbType" Description="SqlNativeType to SqlDbType Map" %>
+<%@ Map Name="DbTypeCSharp" Src="DbType-CSharp" Description="DbType to CSharp Map" %>
+
+Vue.component('form-body', {
+    mixins: [itemMixin],
+    template: '#productFormBody',
+    data: function () {
+        return {
+            item: {
+                Id: '00000000-0000-0000-0000-000000000000',
+                <%var items=SourceTable.NonPrimaryKeyColumns.Where(r=>!Common.IsSystemProperty(r)).ToList(); %>
+                <%for(int i=0;i<items.Count;i++ ){ %>
+                <%=items[i].Name%>:''<%if(i!=items.Count-1){%>,<%} %>
+                <%} %>
+            }
+        };
+    },
+    events: {
+        'onSaveItem': function () {
+            this.submit("/<%=Common.GetClassName(SourceTable)%>/Save");
+        },
+        'onGetItem': function (id) {
+            this.get("/<%=Common.GetClassName(SourceTable)%>/Get?id=" + id);
+        }
+    },
+    methods: {
+        clearItem: function () {
+            this.item.Id='00000000-0000-0000-0000-000000000000';
+            <%for(int i=0;i<items.Count;i++ ){ %>
+            this.item.<%=items[i].Name%>='';
+            <%} %>
+            <%for(int i=0;i<items.Count;i++ ){ %>
+            <%if(ColumnIsNumber(items[i])){%>
+            $('#item<%=items[i].Name%>').spinbox('value', 0);
+            <%}else if(ColumnIsGuid(items[i])){%>
+            $("#<%=Extensions.ToCamel(items[i].Name)%>").select2().val("").trigger("change");
+            <%}} %>
+        },
+        postGet: function () {
+            <%for(int i=0;i<items.Count;i++ ){ %>
+            <%if(ColumnIsNumber(items[i])){%>
+            $('#item<%=items[i].Name%>').spinbox('value', this.item.<%=items[i].Name%>);
+            <%}else if(ColumnIsGuid(items[i])){%>
+            $("#<%=Extensions.ToCamel(items[i].Name)%>").select2().val(this.item.<%=items[i].Name%>).trigger("change");
+            <%}} %>
+        },
+        validate: function () {
+            $("#form").bootstrapValidator({
+                message: '<%=Description%>验证未通过',
+                fields: {
+                    <%for(int i=0;i<items.Count;i++ ){ %>
+                    <%if(!items[i].AllowDBNull && ColumnIsNumber(items[i])){%>
+                    <%=Extensions.ToCamel(items[i].Name)%>: {
+                        validators: {
+                            notEmpty: {
+                                message: '<%=items[i].Name%>不能为空'
+                            },
+                            numeric: {
+	                            message: '<%=Extensions.ToCamel(items[i].Name)%>必须是数字'
+    	                    },
+    	                    greaterThan: {
+    	                        value: 0,
+    	                        inclusive: false,
+    	                        message: '<%=Extensions.ToCamel(items[i].Name)%>必须大于0'
+    	                    }
+                        }
+                    }<%if(i!=items.Count-1) {%>,<%}%>
+                    <%}else if(ColumnIsNumber(items[i])){%>                    
+                    <%=Extensions.ToCamel(items[i].Name)%>: {
+                        validators: {
+                            numeric: {
+	                            message: '<%=Extensions.ToCamel(items[i].Name)%>必须是数字'
+    	                    },
+    	                    greaterThan: {
+    	                        value: 0,
+    	                        inclusive: false,
+    	                        message: '<%=Extensions.ToCamel(items[i].Name)%>必须大于0'
+    	                    }
+                        }
+                    }<%if(i!=items.Count-1) {%>,<%}%>
+                    <%}else if(!items[i].AllowDBNull){%>                    
+                    <%=Extensions.ToCamel(items[i].Name)%>: {
+                        validators: {
+                            notEmpty: {
+                                message: '<%=items[i].Name%>不能为空'
+                            }
+                        }
+                    }<%if(i!=items.Count-1) {%>,<%}%>
+                    <%}} %> 
+                }
+            });
+        }
+    }
+});
+
+var main = new Vue({
+    mixins: [indexMixin],
+    ready: function () {
+        this.query(1);
+    },
+    data: {
+        queryEntity: {
+                <%for(int i=0;i<items.Count;i++ ){ %>
+                <%if(ColumnIsDateTime(items[i])){%>
+                <%=Extensions.ToCamel(items[i].Name)%>From:'',
+                <%=Extensions.ToCamel(items[i].Name)%>To:''<%if(i!=items.Count-1){%>,<%} %>
+                <%}else{ %>
+                <%=Extensions.ToCamel(items[i].Name)%>:''<%if(i!=items.Count-1){%>,<%} %>
+                <%}} %>
+        },
+        list: {},
+        queryUrl: "/<%=Common.GetClassName(SourceTable)%>/GetList"
+    },
+    events: {
+        'onResetSearch': function () {
+            <%for(int i=0;i<items.Count;i++ ){ %>
+            <%if(ColumnIsDateTime(items[i])){%>
+            this.queryEntity.<%=Extensions.ToCamel(items[i].Name)%>From='';
+            this.queryEntity.<%=Extensions.ToCamel(items[i].Name)%>To='';
+            <%}else{ %>
+            this.queryEntity.<%=Extensions.ToCamel(items[i].Name)%>='';
+            <%}} %>
+            <%for(int i=0;i<items.Count;i++ ){ %>
+            <%if(ColumnIsNumber(items[i])){%>
+            $('#query<%=items[i].Name%>').spinbox('value', 0);
+            <%}else if(ColumnIsGuid(items[i])){%>
+            $("#query<%=items[i].Name%>").select2().val("").trigger("change");
+            <%}else if(ColumnIsDateTime(items[i])){%>
+            $("#query<%=items[i].Name%>").val("");
+            <%}} %>
+        }
+    },
+    methods: {
+        preQuery:function() {
+            <%var j=0; %>
+            <%for(int i=0;i<items.Count;i++ ){ %>
+            <%if(ColumnIsDateTime(items[i])){%>
+            var dates<%=j%> = _.map($("#query<%=items[i].Name%>").val().split("-"), _.trim);
+            this.queryEntity.<%=items[i].Name%>From = dates<%=j%>[0];
+            this.queryEntity.<%=items[i].Name%>To = dates<%=j%>[1];
+            <%j++; %>
+            <%}} %>
+
+        }
+    }
+});
+
+//搜索栏初始化
+<%for(int i=0;i<items.Count;i++ ){ %>
+<%if(ColumnIsNumber(items[i])){%>
+$('#query<%=items[i].Name%>').spinbox('value');
+$('#query<%=items[i].Name%>').on('changed.fu.spinbox', function (e) {
+    main.queryEntity.<%=Extensions.ToCamel(items[i].Name)%> = $('#query<%=items[i].Name%>').spinbox('value');
+});
+<%}else if(ColumnIsGuid(items[i])){%>
+$("#query<%=items[i].Name%>").select2().on("change", function (e) { main.queryEntity.<%=Extensions.ToCamel(items[i].Name)%> = $("#query<%=items[i].Name%>").val(); });
+<%}else if(ColumnIsDateTime(items[i])){%>
+$('#query<%=items[i].Name%>').daterangepicker(datepickerConfig, function (start, end, label) {
+    main.queryEntity.<%=Extensions.ToCamel(items[i].Name)%>From = start.format('YYYY-MM-DD');
+    main.queryEntity.<%=Extensions.ToCamel(items[i].Name)%>To = end.format('YYYY-MM-DD');
+});
+$('#query<%=items[i].Name%>').next().click(function () {
+    $(this).prev().click();
+});
+<%}} %>
+
+
+//对象编辑页初始化
+<%var hasDate=false; %>
+<%for(int i=0;i<items.Count;i++){%>
+<%if(ColumnIsDateTime(items[i])){hasDate=true;}} %>
+<%if(hasDate){%>
+var productionDateConfig = $.extend({}, datepickerConfig, { "singleDatePicker": true});
+<%} %>
+<%for(int i=0;i<items.Count;i++ ){ %>
+<%if(ColumnIsNumber(items[i])){%>
+$('#item<%=items[i].Name%>').spinbox();
+$('#item<%=items[i].Name%>').on('changed.fu.spinbox', function (e) {
+    main.$children[3].$children[0].item.<%=items[i].Name%> = $('#item<%=items[i].Name%>').spinbox('value');
+    $(form).data('bootstrapValidator').updateStatus('<%=Extensions.ToCamel(items[i].Name)%>', 'NOT_VALIDATED', null).validateField('<%=Extensions.ToCamel(items[i].Name)%>');
+});
+<%}else if(ColumnIsGuid(items[i])){%>
+$("#<%=Extensions.ToCamel(items[i].Name)%>").select2().on("change", function (e) { main.$children[3].$children[0].item.<%=items[i].Name%> = $("#<%=Extensions.ToCamel(items[i].Name)%>").val(); });
+<%}else if(ColumnIsDateTime(items[i])){%>
+$('#<%=Extensions.ToCamel(items[i].Name)%>').daterangepicker(productionDateConfig, function (start, end, label) {
+    main.$children[3].$children[0].item.<%=items[i].Name%> = start.format('YYYY-MM-DD');
+});
+$('#<%=Extensions.ToCamel(items[i].Name)%>').next().click(function () {
+    $(this).prev().click();
+});
+$('#<%=Extensions.ToCamel(items[i].Name)%>').on('apply.daterangepicker', function (e) {
+    $(form).data('bootstrapValidator').updateStatus('<%=Extensions.ToCamel(items[i].Name)%>', 'NOT_VALIDATED', null).validateField('<%=Extensions.ToCamel(items[i].Name)%>');
+});
+<%}} %>
+
+<script runat="template">
+
+    /// <summary>
+    /// 获取C#类型
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private  string GetCSharpVariableType(ColumnSchema column)
+    {
+        if (column.Name.EndsWith("TypeCode")) return column.Name;
+        return DbTypeCSharp[column.DataType.ToString()];
+    }
+
+
+    /// <summary>
+    /// 列是否是Guid
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  bool ColumnIsGuid(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        return type.StartsWith("Guid") ;
+    }
+
+    /// <summary>
+    /// 列是否是数字
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private bool ColumnIsNumber(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        return type=="int" ||type=="double"||type=="decimal";
+    }
+    
+    /// <summary>
+    /// 列是否是日期
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private bool ColumnIsDateTime(ColumnSchema column)
+    {
+       string type= GetCSharpVariableType(column) ;
+        Debug.Write(type=="DateTime");
+        return type.StartsWith("DateTime") ;
+    }
+    
+    /// <summary>
+    /// 列是否是Guid
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    private bool ColumnContainsGuid(TableSchema table)
+    {
+        var result=false;
+       foreach (var column in table.Columns)
+       {
+           if(ColumnIsGuid(column))result=true;
+       }
+       return result;
+    }
+    
+    /// <summary>
+    /// 获取查询字符串
+    /// </summary>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    public  string GetQueryFunc()
+    {
+       var funStr="";
+       foreach(var item in SourceTable.Columns.Where(r=>!Common.IsSystemProperty(r))){
+           if(ColumnIsGuid(item)){
+               if(!item.AllowDBNull){
+                   funStr+="\t\t\t && "+"(query."+item.Name+"==new Guid()||query."+item.Name+"== r."+item.Name+")\r\n" ;
+               }else{
+                  funStr+="\t\t\t && "+"(!query."+item.Name+".HasValue||query."+item.Name+" ==new Guid()||query."+item.Name+"== r."+item.Name+")\r\n" ; 
+               }               
+           }else if(ColumnIsNumber(item)){
+               funStr+="\t\t\t && "+" (query."+item.Name+"==0|| r."+item.Name+"== query."+item.Name+")\r\n";
+           }else if(ColumnIsDateTime(item)){
+               funStr+="\t\t\t && "+"((query."+item.Name+"From==query."+item.Name+"To && query."+item.Name+"To== DateTime.Today)\r\n" ; 
+               funStr+="\t\t\t || "+"(query."+item.Name+"From==new DateTime(1, 1, 1) || query."+item.Name+"From<= r."+item.Name+")\r\n" ; 
+               funStr+="\t\t\t && "+"(query."+item.Name+"To==new DateTime(1, 1, 1) || query."+item.Name+"To>= r."+item.Name+"))\r\n" ; 
+           } else {
+               funStr+="\t\t\t && "+"(string.IsNullOrWhiteSpace(query."+item.Name+")||(!string.IsNullOrWhiteSpace(query."+item.Name+") && r."+item.Name+".Contains(query."+item.Name+".ToStr())))\r\n";
+           }
+       }
+       funStr=funStr.ReplaceFirst("\t\t\t &&","").ReplaceLast("\r\n",";");
+       return funStr;
+    }
+
+</script>

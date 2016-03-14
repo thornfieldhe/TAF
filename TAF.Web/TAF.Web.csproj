@@ -641,8 +641,8 @@
     <Compile Include="Models\CodeSmith\SystemDictionary.cs" />
     <Compile Include="Models\CodeSmith\Product.cs" />
     <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ViewModels\ProductView.cs" />
-    <Compile Include="Models\ViewModels\SystemDictionaryView.cs" />
+    <Compile Include="ViewModels\ProductView.cs" />
+    <Compile Include="ViewModels\SystemDictionaryView.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
