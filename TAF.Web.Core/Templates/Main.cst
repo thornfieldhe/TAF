@@ -32,6 +32,7 @@ Description:
 <%@ Register Name="Others" Template="Others.cst" MergeProperties="Flase" ExcludeProperties=""%>
 <%@ Register Name="Index" Template="_Index.cshtml.cst" MergeProperties="Flase" ExcludeProperties=""%>
 <%@ Register Name="ViewModel" Template="ViewModels.cs.cst" MergeProperties="Flase" ExcludeProperties=""%>
+<%@ Register Name="Controller" Template="Controller.cs.cst" MergeProperties="Flase" ExcludeProperties=""%>
 <% GenerateEntityClasses(); %>
 
 
@@ -44,6 +45,7 @@ private void GenerateEntityClasses()
     RenderViewModelFile();
     RenderIndexFile();
     RenderOthersFile();
+    RenderControllerFile();
 }
 
 private void RenderModelCsFile()
@@ -93,6 +95,16 @@ private void RenderOthersFile()
     item.Description=Description;
     item.SourceTable=SourceTable;
     var fileDirectory=OutputDirectory +"\\Web\\Others.txt";
+    item.RenderToFile(fileDirectory,true);
+}
+
+private void RenderControllerFile()
+{
+    var item=new Controller();
+    item.ClassNamespace=ClassNamespace;
+    item.Description=Description;
+    item.SourceTable=SourceTable;
+    var fileDirectory=OutputDirectory +"\\Web\\Controllers\\"+Common.GetClassName(item.SourceTable)+"Controller.cs";
     item.RenderToFile(fileDirectory,true);
 }
 

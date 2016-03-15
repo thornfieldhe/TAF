@@ -17,6 +17,11 @@
             get; set;
         }
 
+        public DbSet<Article> Articles
+        {
+            get; set;
+        }
+
         public new static WebDbContext Create()
         {
             return new WebDbContext();

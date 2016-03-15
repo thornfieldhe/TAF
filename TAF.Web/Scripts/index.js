@@ -53,13 +53,18 @@
     var productPage = function () {
         loadPage("/Product/Index", "商品管理", "商品列表", "#menuProduct", false);
     }
+    var articlePage = function () {
+        loadPage("/Article/Index", "文章管理", "文章列表", "#menuArticle", false);
+    }
+
     var routes = {
         '/': homePage,
         '/home': homePage,
         '/users': usersPage,
         '/changePw': changePwPage,
         '/dictionary': dictionaryPage,
-        '/product': productPage
+        '/product': productPage,
+        '/article': articlePage
     };
     var router = Router(routes);
     router.init();

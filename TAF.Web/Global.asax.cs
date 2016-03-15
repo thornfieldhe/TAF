@@ -42,6 +42,15 @@ namespace TAF.Web
             .ForMember(r => r.Category, m => m.MapFrom(n => n.Category.Value))
             .ForMember(r => r.Color, m => m.MapFrom(n => n.Color.Value))
             .ForMember(r => r.ProductionDate, m => m.MapFrom(n => n.ProductionDate.ToShortDateString()));
+
+            //文章对象映射
+            Mapper.CreateMap<Article, ArticleItemView>()
+            .ForMember(r => r.PublishDate, m => m.MapFrom(n => n.PublishDate.ToShortDateString()));
+            Mapper.CreateMap<ArticleItemView, Article>()
+            .ForMember(r => r.PublishDate, m => m.MapFrom(n => n.PublishDate.ToDate()));
+            Mapper.CreateMap<Article, ArticleListView>()
+            .ForMember(r => r.PublishDate, m => m.MapFrom(n => n.PublishDate.ToShortDateString()))
+            .ForMember(r => r.Category, m => m.MapFrom(n => n.Category.Value));
         }
     }
 }

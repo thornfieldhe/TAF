@@ -28,7 +28,7 @@ Description:
 
 Vue.component('form-body', {
     mixins: [itemMixin],
-    template: '#productFormBody',
+    template: '#<%=Extensions.ToCamel(Common.GetClassName(SourceTable))%>FormBody',
     data: function () {
         return {
             item: {

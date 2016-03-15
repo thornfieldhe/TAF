@@ -109,10 +109,6 @@ namespace <%=ClassNamespace %>.Models
         <%}} %>
     }
 }
-
-
-
-
 <script runat="template">
 
     /// <summary>
@@ -122,8 +118,9 @@ namespace <%=ClassNamespace %>.Models
     /// <returns></returns>
     private  string GetCSharpVariableType(ColumnSchema column)
     {
+        Debug.Write(column.DataType);
         if (column.Name.EndsWith("TypeCode")){ return column.Name;}
-        else if(column.AllowDBNull){return DbTypeCSharp[column.DataType.ToString()]+"?";}
+        else if(column.AllowDBNull && column.DataType!=DbType.String){return DbTypeCSharp[column.DataType.ToString()]+"?";}
         return DbTypeCSharp[column.DataType.ToString()];
     }
 

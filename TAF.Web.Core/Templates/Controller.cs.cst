@@ -61,7 +61,7 @@ namespace <%=ClassNamespace %>.Controllers
         }
     
     <%}%> 
-        public ActionResult List(<%=Common.GetClassName(SourceTable)%>QueryView query, int pageIndex, int pageSize = 20)
+        public ActionResult GetList(<%=Common.GetClassName(SourceTable)%>QueryView query, int pageIndex, int pageSize = 20)
         {
             Func<<%=Common.GetClassName(SourceTable)%>,bool> func = r => 
             <%=GetQueryFunc()%>

@@ -62,7 +62,7 @@ Description:
                                     <select id="query<%=item.Name%>" style="width: 100%" v-model="queryEntity.<%=Extensions.ToCamel(item.Name)%>">
                                         <option value="">请选择...</option>
                                         @{
-                                            foreach (var item in Model
+                                            foreach (var item in Model)
                                             {
                                                 <option value="@item.Item1">@item.Item3</option>
                                             }
@@ -131,7 +131,7 @@ Description:
                         <select id="<%=Extensions.ToCamel(item.Name)%>" name="<%=Extensions.ToCamel(item.Name)%>" style="width: 100%" v-model="item.<%=Extensions.ToCamel(item.Name)%>">
                             <option value="">请选择...</option>
                             @{
-                                foreach (var item in Model
+                                foreach (var item in Model)
                                 {
                                     <option value="@item.Item1">@item.Item3</option>
                                 }

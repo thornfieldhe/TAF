@@ -86,6 +86,8 @@
         ProductCategory,
         [Description("颜色")]
         Color,
+        [Description("文章分类")]
+        ArticleCategory,
     }
 
 }

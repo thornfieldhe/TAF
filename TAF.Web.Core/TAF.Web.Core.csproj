@@ -169,7 +169,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Templates\Model.cs.cst" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TAF.Business\TAF.Business.csproj">
@@ -181,7 +180,9 @@
       <Name>TAF.Utility</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Templates\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
