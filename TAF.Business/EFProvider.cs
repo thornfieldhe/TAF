@@ -1,12 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EFEntity.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   Defines the EFEntity type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-namespace TAF
+﻿namespace TAF
 {
     using System;
     using System.Collections.Generic;
@@ -14,37 +6,28 @@ namespace TAF
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
-    using Core;
+
     using EntityFramework.Caching;
     using EntityFramework.Extensions;
+
     using TAF.Utility;
 
     /// <summary>
-    /// The ef entity.
+    /// EF数据提供者
     /// </summary>
     /// <typeparam name="K">
     /// </typeparam>
-    public class EfBusiness<K> : BaseBusiness<K>, IDbAction where K : EfBusiness<K>, IBusinessBase, new()
+    public class EFProvider<K> : IDbProvider<K>
+        where K : EfBusiness<K>, new()
     {
         #region 构造函数
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EfBusiness{K}"/> class.
         /// </summary>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        protected EfBusiness(Guid id)
-            : base(id)
+        protected EFProvider()
         {
             this.DbContext = Ioc.Create<DbContext>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EfBusiness{K}"/> class.
-        /// </summary>
-        protected EfBusiness() : this(Guid.NewGuid())
-        {
         }
 
         #endregion
@@ -62,7 +45,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="List"/>.
         /// </returns>
-        public static List<K> GetAll(bool useCache = false)
+        public List<K> GetAll(bool useCache = false)
         {
             return Query(r => true, useCache);
         }
@@ -78,7 +61,7 @@ namespace TAF
         /// </param>
         /// <returns>
         /// </returns>
-        public static List<K> Get(Expression<Func<K, bool>> func, bool useCache = false)
+        public List<K> Get(Expression<Func<K, bool>> func, bool useCache = false)
         {
             return Query(func, useCache);
         }
@@ -111,7 +94,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="pager"/>.
         /// </returns>
-        public static Pager<T> Pages<R, T>(
+        public Pager<T> Pages<R, T>(
             Pager<T> pager,
             Func<K, bool> whereFunc,
             Func<K, R> orderByFunc,
@@ -137,7 +120,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        public static K Find(Guid id, bool useCache = false)
+        public K Find(Guid id, bool useCache = false)
         {
             return QuerySingle(i => i.Id == id, useCache);
         }
@@ -154,7 +137,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        public static K Find(Expression<Func<K, bool>> func, bool useCache = false)
+        public K Find(Expression<Func<K, bool>> func, bool useCache = false)
         {
             return QuerySingle(func, useCache);
         }
@@ -162,7 +145,6 @@ namespace TAF
         /// <summary>
         /// 查询对象列表
         /// </summary>
-        /// <param name="dbContext"></param>
         /// <param name="query">
         /// The func.
         /// </param>
@@ -171,7 +153,7 @@ namespace TAF
         /// </param>
         /// <returns>
         /// </returns>
-        private static List<K> Query(Expression<Func<K, bool>> query, bool useCache = false)
+        private List<K> Query(Expression<Func<K, bool>> query, bool useCache = false)
         {
             var dbContext = Ioc.Create<DbContext>();
             var items = useCache
@@ -180,7 +162,7 @@ namespace TAF
             items.ForEach(
                 i =>
                 {
-                    i.DbContext = dbContext;
+                    i.DbProvider = this;
                     i.MarkOld();
                 });
             return items;
@@ -198,7 +180,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        private static K QuerySingle(Expression<Func<K, bool>> func, bool useCache = false)
+        private K QuerySingle(Expression<Func<K, bool>> func, bool useCache = false)
         {
             var dbContext = Ioc.Create<DbContext>();
             var query = dbContext.Set<K>();
@@ -208,7 +190,7 @@ namespace TAF
             item.IfNotNull(
           i =>
           {
-              i.DbContext = dbContext;
+              i.DbProvider = this;
               i.MarkOld();
           });
             return item;
@@ -225,7 +207,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public static bool Exist(Expression<Func<K, bool>> func)
+        public bool Exist(Expression<Func<K, bool>> func)
         {
             return Ioc.Create<DbContext>().Set<K>().Any(func);
         }
@@ -239,7 +221,7 @@ namespace TAF
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static int Count(Expression<Func<K, bool>> func)
+        public int Count(Expression<Func<K, bool>> func)
         {
             return Ioc.Create<DbContext>().Set<K>().Count(func);
         }
@@ -248,7 +230,7 @@ namespace TAF
         /// 根据对象Id删除对象
         /// </summary>
         /// <param name="id"></param>
-        public static void Delete(Guid id)
+        public void Delete(Guid id)
         {
             Ioc.Create<DbContext>().Set<K>().Where(r => r.Id == id).Delete();
         }
@@ -257,7 +239,7 @@ namespace TAF
         /// 根据条件删除对象
         /// </summary>
         /// <param name="func"></param>
-        public static void Delete(Expression<Func<K, bool>> func)
+        public void Delete(Expression<Func<K, bool>> func)
         {
             Ioc.Create<DbContext>().Set<K>().Where(func).Delete();
         }
@@ -267,13 +249,13 @@ namespace TAF
         /// </summary>
         /// <param name="func"></param>
         /// <param name="update"></param>
-        public static void Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update)
+        public void Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update)
         {
             Ioc.Create<DbContext>().Set<K>().Where(func).Update(update);
         }
 
         #endregion
-        
+
         #region 实例方法
 
         /// <summary>
@@ -451,6 +433,16 @@ namespace TAF
             this.DbContext = context;
         }
 
+        List<K> IDbProvider<K>.Query(Expression<Func<K, bool>> query, bool useCache)
+        {
+            throw new NotImplementedException();
+        }
+
+        K IDbProvider<K>.QuerySingle(Expression<Func<K, bool>> func, bool useCache)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// EF数据库对象
         /// </summary>
@@ -460,7 +452,7 @@ namespace TAF
             get; set;
         }
 
-        public override bool IsClean
+        public bool IsClean
         {
             get
             {

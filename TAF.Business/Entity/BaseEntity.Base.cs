@@ -12,415 +12,441 @@ namespace TAF
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Linq.Expressions;
 
-    using TAF.Core;
-    using TAF.Entity;
+    using EntityFramework.Caching;
+    using EntityFramework.Extensions;
+
     using TAF.Utility;
-
-    using Validation;
 
     /// <summary>
     /// The base business.
     /// </summary>
     /// <typeparam name="T">
     /// </typeparam>
-    public abstract partial class BaseBusiness<T> : StatusDescription,
-                                                    IEqualityComparer<T>,
-                                                    IComparable<IBusinessBase>,
-                                                    IValidationEntity
-        where T : class, IBusinessBase
+    public abstract partial class BaseBusiness<T>
     {
-        #region 基本状态
-        protected bool _isNew = false;
-        protected bool _isDirty = false;
-        protected bool _isDelete = false;
-
-        /// <summary>
-        /// 新建数据，未录入数据库
-        /// </summary>
-        [NotMapped]
-        public bool IsNew
+        protected BaseBusiness(IDbProvider<T> dbProvider)
         {
-            get
-            {
-                return this._isNew;
-            }
-            protected set
-            {
-                this._isNew = value;
-            }
+            this.DbProvider = dbProvider;
         }
 
-        /// <summary>
-        /// 从数据库中读取出来标志删除数据
-        /// </summary>
-        [NotMapped]
-        public bool IsDelete
+        public IDbProvider<T> DbProvider
         {
-            get
-            {
-                return this._isDelete;
-            }
-            protected set
-            {
-                this._isDelete = value;
-            }
+            get; set;
+        }
+
+
+        #region 静态方法
+
+        #region 查询
+
+        /// <summary>
+        /// 查询所有数据
+        /// </summary>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// The <see cref="List{T}"/>.
+        /// </returns>
+        public static List<T> GetAll(bool useCache = false)
+        {
+            return Ioc.Create<IDbProvider<T>>().Query(r => true, useCache);
         }
 
         /// <summary>
-        /// 从数据库中读取出来已修改数据
+        /// 条件查询数据
         /// </summary>
-        [NotMapped]
-        public bool IsDirty
+        /// <param name="func">
+        /// 过滤条件
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static List<T> Get(Expression<Func<T, bool>> func, bool useCache = false)
         {
-            get
-            {
-                return this._isDirty;
-            }
-            protected set
-            {
-                this._isDirty = value;
-            }
+            return Ioc.Create<IDbProvider<T>>().Query(func, useCache);
         }
 
         /// <summary>
-        /// 从数据库中读取出来未修改的数据
+        /// 分页查询数据
+        /// 转换成对象T的列表
         /// </summary>
-        [NotMapped]
-        public virtual bool IsClean
+        /// <param name="pager">
+        /// 分页对象
+        /// </param>
+        /// <param name="whereFunc">
+        /// 过滤条件
+        /// </param>
+        /// <param name="orderByFunc">
+        /// 排序属性
+        /// </param>
+        /// <param name="isAsc">
+        /// 是否是顺序
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <typeparam name="R">
+        /// 排序对象
+        /// </typeparam>
+        /// <typeparam name="T">
+        /// 结果转换为List<T>输出
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="pager"/>.
+        /// </returns>
+        public static Pager<T> Pages<R, T>(
+            Pager<T> pager,
+            Func<T, bool> whereFunc,
+            Func<T, R> orderByFunc,
+            bool isAsc = true,
+            bool useCache = false) where T : new()
         {
-            get
-            {
-                return !this._isDirty && !this._isNew;
-            }
-        }
-
-
-        protected virtual void MarkNew()
-        {
-            this._isNew = true;
-            this.MarkDirty();
-        }
-
-        protected virtual void MarkOld()
-        {
-            this._isNew = false;
-            this.MarkClean();
-        }
-
-        protected virtual void MarkClean()
-        {
-            this._isDirty = false;
-        }
-
-        protected virtual void MarkDirty()
-        {
-            this._isDirty = true;
+            return Ioc.Create<IDbProvider<T>>().Pages(pager, whereFunc, orderByFunc, isAsc, useCache);
         }
 
         /// <summary>
-        /// 标记删除
+        /// 根据主键查询单条数据
         /// </summary>
-        public virtual void MarkDelete()
-        {
-            this._isDelete = true;
-            this.MarkDirty();
-        }
-
-        #endregion
-
-        #region 克隆操作
-
-        /// <summary>
-        /// 创建浅表副本
-        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
         /// <returns>
         /// The <see cref="T"/>.
         /// </returns>
-        public T GetShallowCopy()
+        public static T Find(Guid id, bool useCache = false)
         {
-            return (T)MemberwiseClone();
+            var provider = Ioc.Create<IDbProvider<T>>();
+            var item = provider.Find(id, useCache);
+            item.DbProvider = provider;
+            return item;
         }
 
         /// <summary>
-        /// 深度克隆
+        /// 条件查询单条数据
         /// </summary>
+        /// <param name="func">
+        /// The id.
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
         /// <returns>
         /// The <see cref="T"/>.
         /// </returns>
-        public T Clone()
+        public static T Find(Expression<Func<T, bool>> func, bool useCache = false)
         {
-            var graph = this.SerializeObjectToString();
-            return graph.DeserializeStringToObject<T>();
+            var provider = Ioc.Create<IDbProvider<T>>();
+            var item = provider.QuerySingle(func, useCache);
+            item.DbProvider = provider;
+            return item;
         }
 
-        #endregion
-
-        #region IComparable<IBusinessBase> 成员
-
         /// <summary>
-        /// The compare to.
+        /// 查询对象列表
         /// </summary>
-        /// <param name="other">
-        /// The other.
+        /// <param name="query">
+        /// The func.
+        /// </param>
+        /// <param name="useCache">
+        /// The use cache.
         /// </param>
         /// <returns>
-        /// The <see cref="int"/>.
         /// </returns>
-        public int CompareTo(IBusinessBase other)
+        private static List<T> Query(Expression<Func<T, bool>> query, bool useCache = false)
         {
-            return Id.CompareTo(other.Id);
+            var provider = Ioc.Create<IDbProvider<T>>();
+            var items = provider.Query(query, useCache);
+            items.ForEach(
+                i =>
+                {
+                    i.DbProvider = provider;
+                    i.MarkOld();
+                });
+            return items;
+        }
+
+        /// <summary>
+        /// 条件查询单一对象
+        /// </summary>
+        /// <param name="func">
+        /// The func.
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// The <see cref="T"/>.
+        /// </returns>
+        private static T QuerySingle(Expression<Func<T, bool>> func, bool useCache = false)
+        {
+            var dbContext = Ioc.Create<DbContext>();
+            var query = dbContext.Set<T>();
+            var item = useCache
+                ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().FirstOrDefault(func)
+                : query.FirstOrDefault(func);
+            item.IfNotNull(
+          i =>
+          {
+              i.DbContext = dbContext;
+              i.MarkOld();
+          });
+            return item;
         }
 
         #endregion
 
-        #region 重载相等判断
-
         /// <summary>
-        /// The equals.
+        /// 是否存在满足条件的对象
         /// </summary>
-        /// <param name="x">
-        /// The x.
-        /// </param>
-        /// <param name="y">
-        /// The y.
+        /// <param name="func">
+        /// The func.
         /// </param>
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        public bool Equals(T x, T y)
+        public static bool Exist(Expression<Func<T, bool>> func)
         {
-            return x.Id == y.Id;
+            return Ioc.Create<DbContext>().Set<T>().Any(func);
         }
 
         /// <summary>
-        /// The get hash code.
+        /// 查询列表数量
         /// </summary>
-        /// <param name="obj">
-        /// The obj.
+        /// <param name="func">
+        /// 过滤条件
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int GetHashCode(T obj)
+        public static int Count(Expression<Func<T, bool>> func)
         {
-            return obj.Id.ToString().GetHashCode();
+            return Ioc.Create<DbContext>().Set<T>().Count(func);
         }
 
         /// <summary>
-        /// The equals.
+        /// 根据对象Id删除对象
         /// </summary>
-        /// <param name="obj">
-        /// The obj.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        public override bool Equals(object obj)
+        /// <param name="id"></param>
+        public static void Delete(Guid id)
         {
-            return ToString() == obj.ToString();
+            Ioc.Create<DbContext>().Set<T>().Where(r => r.Id == id).Delete();
         }
 
         /// <summary>
-        /// The get hash code.
+        /// 根据条件删除对象
+        /// </summary>
+        /// <param name="func"></param>
+        public static void Delete(Expression<Func<T, bool>> func)
+        {
+            Ioc.Create<DbContext>().Set<T>().Where(func).Delete();
+        }
+
+        /// <summary>
+        /// 根据条件更新对象
+        /// </summary>
+        /// <param name="func"></param>
+        /// <param name="update"></param>
+        public static void Update(Expression<Func<T, bool>> func, Expression<Func<T, T>> update)
+        {
+            Ioc.Create<DbContext>().Set<T>().Where(func).Update(update);
+        }
+
+        #endregion
+
+        #region 实例方法
+
+        /// <summary>
+        /// 创建一个对象
         /// </summary>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public override int GetHashCode()
+        public int Create()
         {
-            return Id.GetHashCode();
-        }
-
-        //        /// <summary>
-        //        /// The to string.
-        //        /// </summary>
-        //        /// <returns>
-        //        /// The <see cref="string"/>.
-        //        /// </returns>
-        //        public override string ToString()
-        //        {
-        //            return Id.ToString();
-        //        }
-
-        /// <summary>
-        /// The ==.
-        /// </summary>
-        /// <param name="lhs">
-        /// The lhs.
-        /// </param>
-        /// <param name="rhs">
-        /// The rhs.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static bool operator ==(BaseBusiness<T> lhs, BaseBusiness<T> rhs)
-        {
-            if ((lhs as object) != null && (rhs as object) != null)
-            {
-                return lhs.Id == rhs.Id;
-            }
-
-            if ((lhs as object) == null && (rhs as object) == null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// The !=.
-        /// </summary>
-        /// <param name="lhs">
-        /// The lhs.
-        /// </param>
-        /// <param name="rhs">
-        /// The rhs.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public static bool operator !=(BaseBusiness<T> lhs, BaseBusiness<T> rhs)
-        {
-            if ((lhs as object) != null && (rhs as object) != null)
-            {
-                return !(lhs.Id == rhs.Id);
-            }
-
-            if ((lhs as object) == null && (rhs as object) == null)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region 属性验证
-
-        #region 字段
-
-        /// <summary>
-        /// 验证规则集合
-        /// </summary>
-        protected readonly List<IValidationRule> rules;
-
-        /// <summary>
-        /// 验证处理器
-        /// </summary>
-        protected IValidationHandler validateionHandler;
-
-        #endregion
-
-        #region SetValidationHandler(设置验证处理器)
-
-        /// <summary>
-        /// 设置验证处理器
-        /// </summary>
-        /// <param name="handler">
-        /// 验证处理器
-        /// </param>
-        public void SetValidationHandler(IValidationHandler handler)
-        {
-            if (handler == null)
-            {
-                return;
-            }
-
-            this.validateionHandler = handler;
-        }
-
-        #endregion
-
-        #region AddValidationRule(添加验证规则)
-
-        /// <summary>
-        /// 添加验证规则
-        /// </summary>
-        /// <param name="rule">
-        /// 验证规则
-        /// </param>
-        public virtual void AddValidationRule(IValidationRule rule)
-        {
-            if (rule == null)
-            {
-                return;
-            }
-
-            rules.Add(rule);
-        }
-
-        #endregion
-
-        #region Validate(验证)
-
-        /// <summary>
-        /// 验证
-        /// </summary>
-        public virtual void Validate()
-        {
-            var result = GetValidationResult();
-            HandleValidationResult(result);
-        }
-
-        /// <summary>
-        /// The is validated.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        public bool IsValidated()
-        {
-            return GetValidationResult().IsValid;
-        }
-
-        /// <summary>
-        /// 验证并添加到验证结果集合
-        /// </summary>
-        /// <param name="results">
-        /// 验证结果集合
-        /// </param>
-        protected virtual void Validate(ValidationResultCollection results)
-        {
-        }
-
-        /// <summary>
-        /// 获取验证结果
-        /// </summary>
-        /// <returns>
-        /// The <see cref="ValidationResultCollection"/>.
-        /// </returns>
-        private ValidationResultCollection GetValidationResult()
-        {
-            var result = Ioc.Create<IValidator>().Validate(this);
-            Validate(result);
-            foreach (var rule in rules)
-            {
-                result.Add(rule.Validate());
-            }
-
+            var result = 0;
+            PreInsert();
+            Validate();
+            result += Insert();
+            result += PostInsert();
             return result;
         }
 
         /// <summary>
-        /// 处理验证结果
+        /// 更新一个对象
         /// </summary>
-        /// <param name="results">
-        /// The results.
-        /// </param>
-        private void HandleValidationResult(ValidationResultCollection results)
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public int Save()
         {
-            if (results.IsValid)
-            {
-                return;
-            }
+            var result = 0;
+            PreUpdate();
+            Validate();
+            result += Update();
+            result += PostUpdate();
+            return result;
+        }
 
-            this.validateionHandler.Handle(results);
+
+        /// <summary>
+        /// 删除一个对象
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public int Delete()
+        {
+            var result = 0;
+            PreRemove();
+            result += this.Remove();
+            result += PostRemove();
+            return result;
+        }
+
+
+        #region 继承方法
+
+        #region 插入
+
+        /// <summary>
+        /// 在插入之前给对象赋值
+        /// </summary>
+        protected virtual void PreInsert()
+        {
+            this.Id = Guid.NewGuid();
+            this.CreatedDate = DateTime.Now;
+            this.ChangedDate = DateTime.Now;
+            this.MarkNew();
+        }
+
+        /// <summary>
+        /// 插入对象到数据库
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        protected virtual int Insert()
+        {
+            this.DbContext.Set<T>().Add(this as T);
+            return this.DbContext.SaveChanges();
+        }
+
+
+        /// <summary>
+        /// 在插入之后操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PostInsert()
+        {
+            return 0;
         }
 
         #endregion
 
+        #region 更新
+
+        /// <summary>
+        /// 更新之前给对象赋值
+        /// </summary>
+        protected virtual void PreUpdate()
+        {
+            ChangedDate = DateTime.Now;
+            this.MarkDirty();
+        }
+
+        /// <summary>
+        /// 更新对象到数据库
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        protected virtual int Update()
+        {
+            return !IsClean ? this.DbContext.SaveChanges() : 0;
+        }
+
+        /// <summary>
+        /// 更新对象到数据库后执行操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PostUpdate()
+        {
+            return 0;
+        }
+
         #endregion
+
+        #region 移除
+
+        /// <summary>
+        /// 数据库移除对象前执行操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PreRemove()
+        {
+            this.MarkDelete();
+            return 0;
+        }
+
+        /// <summary>
+        /// 从数据库移除对象
+        /// </summary>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        protected virtual int Remove()
+        {
+            //软删除
+            //            this.Status = -1;
+            //            DbContext.SaveChanges();
+            //硬删除
+            this.DbContext.Set<T>().Remove(this as T);
+            return this.DbContext.SaveChanges();
+        }
+
+
+        /// <summary>
+        /// 数据库移除对象后执行操作
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        protected virtual int PostRemove()
+        {
+            return 0;
+        }
+
+        #endregion
+
+
+        #endregion
+
+        #endregion
+
+        public void LoadDbContext(DbContext context)
+        {
+            this.DbContext = context;
+        }
+
+        /// <summary>
+        /// EF数据库对象
+        /// </summary>
+        [NotMapped]
+        protected DbContext DbContext
+        {
+            get; set;
+        }
     }
 }

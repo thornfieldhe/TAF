@@ -87,7 +87,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -118,12 +120,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dapper\DapperCollectionBase.cs" />
+    <Compile Include="Dapper\DapperBusiness.cs" />
+    <Compile Include="Dapper\Dapper.cs" />
+    <Compile Include="Dapper\ExpressionTurn\Base\ExpressionVisitor.cs" />
+    <Compile Include="Dapper\ExpressionTurn\Base\ExpressionWriterSql.cs" />
+    <Compile Include="Dapper\ExpressionTurn\Base\PartialEvaluator.cs" />
+    <Compile Include="Dapper\ExpressionTurn\Base\ReflectionExtensions.cs" />
+    <Compile Include="Dapper\ExpressionTurn\Base\TypeHelper.cs" />
+    <Compile Include="Dapper\ExpressionTurn\ExpConditions.cs" />
+    <Compile Include="Dapper\IBaseStatus.cs" />
+    <Compile Include="Dapper\ICollectionBase.cs" />
+    <Compile Include="Dapper\ReadOnlyBase.cs" />
     <Compile Include="DP\NotifyPropertyChanged.cs" />
     <Compile Include="DP\NotifyPropertyChangedInterceptor.cs" />
     <Compile Include="Core\CallHandlerEventArgs.cs" />
     <Compile Include="Core\CoRHandlerBase.cs" />
     <Compile Include="DP\Proxy.cs" />
+    <Compile Include="EFProvider.cs" />
+    <Compile Include="Entity\BaseEntity.Db.cs" />
     <Compile Include="Entity\Pager.cs" />
+    <Compile Include="IDbProvider.cs" />
     <Compile Include="Logs\LogManager.cs" />
     <Compile Include="Entity\BaseEntity.Base.cs" />
     <Compile Include="Entity\BaseEntity.cs" />

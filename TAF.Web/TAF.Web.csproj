@@ -645,6 +645,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\CodeSmith\Article.cs" />
+    <Compile Include="Models\Product2.cs" />
     <Compile Include="Models\SystemDictionary.cs" />
     <Compile Include="Models\CodeSmith\SystemDictionary.cs" />
     <Compile Include="Models\CodeSmith\Product.cs" />
