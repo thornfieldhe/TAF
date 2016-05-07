@@ -6,17 +6,28 @@
         {
             get;
         }
+
         bool IsDirty
-        {
-            get; set;
-        }
-        bool IsValid
         {
             get;
         }
+
+        bool IsDelete
+        {
+            get;
+        }
+
+        bool IsNew
+        {
+            get;
+        }
+
         void MarkClean();
+
         void MarkDirty();
+
         void MarkNew();
-        void MarkOld();
+
+        void MarkDelete();
     }
 }

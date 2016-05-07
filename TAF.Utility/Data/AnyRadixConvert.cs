@@ -92,6 +92,12 @@
         /// <summary>
         /// 16进制字符串转换为10进制数字
         /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
         public static int _16To10(string value)
         {
             value = value.ToUpper();

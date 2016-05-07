@@ -8,11 +8,18 @@
         {
             get; set;
         }
+
         /// <summary>
         /// 获取配置文件配置
         /// </summary>
-        /// <param name="nameSpace">命名空间</param>
-        /// <param name="name">名</param>
+        /// <typeparam name="K">
+        /// </typeparam>
+        /// <param name="nameSpace">
+        /// 命名空间
+        /// </param>
+        /// <param name="name">
+        /// 名
+        /// </param>
         /// <returns>
         /// 值
         /// </returns>

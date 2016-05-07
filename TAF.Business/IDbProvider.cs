@@ -4,15 +4,13 @@
     using System.Collections.Generic;
     using System.Linq.Expressions;
 
-    using TAF.Core;
-
     /// <summary>
     /// 数据库提供者接口
     /// </summary>
     /// <typeparam name="K">
     /// 泛型对象
     /// </typeparam>
-    public interface IDbProvider<K> : IDbAction
+    public interface IDbProvider<K>
         where K : new()
     {
         /// <summary>
@@ -26,7 +24,7 @@
         /// </param>
         /// <returns>
         /// </returns>
-        List<K> Query(Expression<Func<K, bool>> query, bool useCache = false);
+        List<K> Get(Expression<Func<K, bool>> query, bool useCache = false);
 
         /// <summary>
         /// 查询单条数据
@@ -34,20 +32,7 @@
         /// <param name="func">过滤条件</param>
         /// <param name="useCache">是否从缓存中查询</param>
         /// <returns></returns>
-        K QuerySingle(Expression<Func<K, bool>> func, bool useCache = false);
-
-        /// <summary>
-        /// 查询单条数据
-        /// </summary>
-        /// <param name="id">
-        /// 主键
-        /// </param>
-        /// <param name="useCache">
-        /// 是否从缓存中查询
-        /// </param>
-        /// <returns>
-        /// </returns>
-        K Find(Guid id, bool useCache = false);
+        K Find(Expression<Func<K, bool>> func, bool useCache = false);
 
         /// <summary>
         /// 分页查询
@@ -94,22 +79,53 @@
         /// <summary>
         /// 删除数据
         /// </summary>
-        /// <param name="id"></param>
-        void Delete(Guid id);
+        /// <param name="id">
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        int Delete(Guid id);
+
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="func">
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        int Delete(Expression<Func<K, bool>> func);
 
         /// <summary>
         /// 更新数据
         /// </summary>
-        /// <param name="func">过滤条件</param>
-        /// <param name="update">创建匿名对象，包含字段用于更新</param>
-        void Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update);
+        /// <param name="func">
+        /// 过滤条件
+        /// </param>
+        /// <param name="update">
+        /// 创建匿名对象，包含字段用于更新
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        int Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update);
 
         /// <summary>
-        /// 对象是否更改
+        /// 新增数据
         /// </summary>
-        bool IsClean
-        {
-            get;
-        }
+        /// <param name="item">
+        /// 对象
+        /// </param>
+        /// <param name="commit"></param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        int Add(K item, bool commit);
+
+        /// <summary>
+        /// 提交更新
+        /// </summary>
+        /// <returns></returns>
+        int Commit();
     }
 }

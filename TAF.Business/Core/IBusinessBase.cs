@@ -15,9 +15,10 @@ namespace TAF.Core
     /// <summary>
     /// 确保是业务类
     /// </summary>
-    public interface IBusinessBase : IEntityBase
+    public interface IBusinessBase : IEntityBase, IBaseStatus
     {
-        DateTime CreatedDate
+           
+            DateTime CreatedDate
         {
             get;
         }

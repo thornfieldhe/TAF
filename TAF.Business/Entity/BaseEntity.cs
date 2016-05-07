@@ -45,7 +45,17 @@ namespace TAF
 
             rules = new List<IValidationRule>();
             this.validateionHandler = Ioc.Create<IValidationHandler>();
+            this.DbProvider = Ioc.Create<IDbProvider<T>>();
             MarkNew();
+
+            var type = this.GetType();
+            foreach (var pi in type.GetProperties())
+            {
+                properties.Add(pi.Name, pi.GetValue(this, null));
+            }
+
+            this.CurrentValues = new PropertyValues(properties);
+            this.OriginalValues = new PropertyValues(properties);
         }
 
         /// <summary>
@@ -170,7 +180,7 @@ namespace TAF
         {
             if (Equals(storage, value))
                 return;
-            OnSetProperty(ref storage, value);
+            OnSetProperty(ref storage, value, propertyName);
 
             this.OnPropertyChanged(propertyName);
         }
@@ -181,9 +191,11 @@ namespace TAF
         /// <typeparam name="T"></typeparam>
         /// <param name="storage"></param>
         /// <param name="value"></param>
-        protected virtual void OnSetProperty<T>(ref T storage, T value)
+        protected virtual void OnSetProperty<T>(ref T storage, T value, string propertyName)
         {
             storage = value;
+            CurrentValues.Update(propertyName, storage);
+            CheckPropertyChange();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -192,6 +204,45 @@ namespace TAF
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        /// <summary>
+        /// 检查对象属性值是否与初始值一致
+        /// </summary>
+        /// <returns></returns>
+        protected bool CheckPropertyChange()
+        {
+            var valuesX = this.CurrentValues;
+            var valuesY = this.CurrentValues;
+            foreach (var property in valuesX.PropertyNames)
+            {
+                if (valuesX.GetValue(property) != valuesY.GetValue(property))
+                {
+                    return true;
+                }
+            }
+            return true;
+        }
+
+        #region 存储属性变更状态
+
+        protected static readonly Dictionary<string, object> properties;
+
+        /// <summary>
+        /// 当前属性值列表
+        /// </summary>
+        public PropertyValues CurrentValues
+        {
+            get; protected set;
+        }
+
+        /// <summary>
+        /// 初始属性值列表
+        /// </summary>
+        public PropertyValues OriginalValues
+        {
+            get; protected set;
+        }
+        #endregion
 
         #endregion
 
@@ -208,4 +259,6 @@ namespace TAF
             AddDescription("ChangedDate:" + ChangedDate);
         }
     }
+
+    public delegate void FileWatchEventHandler(object sender, EventArgs e);
 }

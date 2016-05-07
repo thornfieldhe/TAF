@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
@@ -25,46 +24,14 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="EfBusiness{K}"/> class.
         /// </summary>
-        protected EFProvider()
+        public EFProvider()
         {
             this.DbContext = Ioc.Create<DbContext>();
         }
 
         #endregion
 
-        #region 静态方法
-
         #region 查询
-
-        /// <summary>
-        /// 查询所有数据
-        /// </summary>
-        /// <param name="useCache">
-        /// 是否使用缓存
-        /// </param>
-        /// <returns>
-        /// The <see cref="List"/>.
-        /// </returns>
-        public List<K> GetAll(bool useCache = false)
-        {
-            return Query(r => true, useCache);
-        }
-
-        /// <summary>
-        /// 条件查询数据
-        /// </summary>
-        /// <param name="func">
-        /// 过滤条件
-        /// </param>
-        /// <param name="useCache">
-        /// 是否使用缓存
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public List<K> Get(Expression<Func<K, bool>> func, bool useCache = false)
-        {
-            return Query(func, useCache);
-        }
 
         /// <summary>
         /// 分页查询数据
@@ -109,40 +76,6 @@
         }
 
         /// <summary>
-        /// 根据主键查询单条数据
-        /// </summary>
-        /// <param name="id">
-        /// The id.
-        /// </param>
-        /// <param name="useCache">
-        /// 是否使用缓存
-        /// </param>
-        /// <returns>
-        /// The <see cref="K"/>.
-        /// </returns>
-        public K Find(Guid id, bool useCache = false)
-        {
-            return QuerySingle(i => i.Id == id, useCache);
-        }
-
-        /// <summary>
-        /// 条件查询单条数据
-        /// </summary>
-        /// <param name="func">
-        /// The id.
-        /// </param>
-        /// <param name="useCache">
-        /// 是否使用缓存
-        /// </param>
-        /// <returns>
-        /// The <see cref="K"/>.
-        /// </returns>
-        public K Find(Expression<Func<K, bool>> func, bool useCache = false)
-        {
-            return QuerySingle(func, useCache);
-        }
-
-        /// <summary>
         /// 查询对象列表
         /// </summary>
         /// <param name="query">
@@ -153,18 +86,12 @@
         /// </param>
         /// <returns>
         /// </returns>
-        private List<K> Query(Expression<Func<K, bool>> query, bool useCache = false)
+        public List<K> Get(Expression<Func<K, bool>> query, bool useCache = false)
         {
             var dbContext = Ioc.Create<DbContext>();
             var items = useCache
                 ? dbContext.Set<K>().Where(query).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).ToList()
                 : dbContext.Set<K>().Where(query).ToList();
-            items.ForEach(
-                i =>
-                {
-                    i.DbProvider = this;
-                    i.MarkOld();
-                });
             return items;
         }
 
@@ -180,19 +107,13 @@
         /// <returns>
         /// The <see cref="K"/>.
         /// </returns>
-        private K QuerySingle(Expression<Func<K, bool>> func, bool useCache = false)
+        public K Find(Expression<Func<K, bool>> func, bool useCache = false)
         {
             var dbContext = Ioc.Create<DbContext>();
             var query = dbContext.Set<K>();
             var item = useCache
                 ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().FirstOrDefault(func)
                 : query.FirstOrDefault(func);
-            item.IfNotNull(
-          i =>
-          {
-              i.DbProvider = this;
-              i.MarkOld();
-          });
             return item;
         }
 
@@ -227,237 +148,82 @@
         }
 
         /// <summary>
+        /// 插入对象到数据库
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="commit">是否提交</param>
+        /// <returns></returns>
+        public int Add(K item, bool commit)
+        {
+            this.DbContext.Set<K>().Add(item);
+            if (commit)
+            {
+                return this.DbContext.SaveChanges();
+            }
+            return 0;
+        }
+
+        /// <summary>
         /// 根据对象Id删除对象
         /// </summary>
-        /// <param name="id"></param>
-        public void Delete(Guid id)
+        /// <param name="id">
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public int Delete(Guid id)
         {
-            Ioc.Create<DbContext>().Set<K>().Where(r => r.Id == id).Delete();
+            return Ioc.Create<DbContext>().Set<K>().Where(r => r.Id == id).Delete();
         }
 
         /// <summary>
         /// 根据条件删除对象
         /// </summary>
-        /// <param name="func"></param>
-        public void Delete(Expression<Func<K, bool>> func)
+        /// <param name="func">
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public int Delete(Expression<Func<K, bool>> func)
         {
-            Ioc.Create<DbContext>().Set<K>().Where(func).Delete();
+            return Ioc.Create<DbContext>().Set<K>().Where(func).Delete();
         }
 
         /// <summary>
         /// 根据条件更新对象
         /// </summary>
-        /// <param name="func"></param>
-        /// <param name="update"></param>
-        public void Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update)
-        {
-            Ioc.Create<DbContext>().Set<K>().Where(func).Update(update);
-        }
-
-        #endregion
-
-        #region 实例方法
-
-        /// <summary>
-        /// 创建一个对象
-        /// </summary>
+        /// <param name="func">
+        /// </param>
+        /// <param name="update">
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Create()
+        public int Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update)
         {
-            var result = 0;
-            PreInsert();
-            Validate();
-            result += Insert();
-            result += PostInsert();
-            return result;
+            return Ioc.Create<DbContext>().Set<K>().Where(func).Update(update);
         }
 
         /// <summary>
-        /// 更新一个对象
+        /// 提交到数据库
         /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        public int Save()
+        /// <returns></returns>
+        public int Commit()
         {
-            var result = 0;
-            PreUpdate();
-            Validate();
-            result += Update();
-            result += PostUpdate();
-            return result;
-        }
-
-
-        /// <summary>
-        /// 删除一个对象
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        public int Delete()
-        {
-            var result = 0;
-            PreRemove();
-            result += this.Remove();
-            result += PostRemove();
-            return result;
-        }
-
-
-        #region 继承方法
-
-        #region 插入
-
-        /// <summary>
-        /// 在插入之前给对象赋值
-        /// </summary>
-        protected virtual void PreInsert()
-        {
-            this.Id = Guid.NewGuid();
-            this.CreatedDate = DateTime.Now;
-            this.ChangedDate = DateTime.Now;
-            this.MarkNew();
-        }
-
-        /// <summary>
-        /// 插入对象到数据库
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        protected virtual int Insert()
-        {
-            this.DbContext.Set<K>().Add(this as K);
             return this.DbContext.SaveChanges();
         }
-
-
-        /// <summary>
-        /// 在插入之后操作
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PostInsert()
-        {
-            return 0;
-        }
-
-        #endregion
-
-        #region 更新
-
-        /// <summary>
-        /// 更新之前给对象赋值
-        /// </summary>
-        protected virtual void PreUpdate()
-        {
-            ChangedDate = DateTime.Now;
-            this.MarkDirty();
-        }
-
-        /// <summary>
-        /// 更新对象到数据库
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        protected virtual int Update()
-        {
-            return !IsClean ? this.DbContext.SaveChanges() : 0;
-        }
-
-        /// <summary>
-        /// 更新对象到数据库后执行操作
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PostUpdate()
-        {
-            return 0;
-        }
-
-        #endregion
-
-        #region 移除
-
-        /// <summary>
-        /// 数据库移除对象前执行操作
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PreRemove()
-        {
-            this.MarkDelete();
-            return 0;
-        }
-
-        /// <summary>
-        /// 从数据库移除对象
-        /// </summary>
-        /// <returns>
-        /// The <see cref="int"/>.
-        /// </returns>
-        protected virtual int Remove()
-        {
-            //软删除
-            //            this.Status = -1;
-            //            DbContext.SaveChanges();
-            //硬删除
-            this.DbContext.Set<K>().Remove(this as K);
-            return this.DbContext.SaveChanges();
-        }
-
-
-        /// <summary>
-        /// 数据库移除对象后执行操作
-        /// </summary>
-        /// <returns>
-        /// </returns>
-        protected virtual int PostRemove()
-        {
-            return 0;
-        }
-
-        #endregion
-
-
-        #endregion
-
-        #endregion
 
         public void LoadDbContext(DbContext context)
         {
             this.DbContext = context;
         }
 
-        List<K> IDbProvider<K>.Query(Expression<Func<K, bool>> query, bool useCache)
-        {
-            throw new NotImplementedException();
-        }
-
-        K IDbProvider<K>.QuerySingle(Expression<Func<K, bool>> func, bool useCache)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// EF数据库对象
         /// </summary>
-        [NotMapped]
-        protected DbContext DbContext
+        public DbContext DbContext
         {
             get; set;
-        }
-
-        public bool IsClean
-        {
-            get
-            {
-                return this.DbContext.Entry<K>(this as K).State == EntityState.Unchanged;
-            }
         }
     }
 }

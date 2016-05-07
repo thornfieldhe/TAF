@@ -120,6 +120,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseBusinessEntry.cs" />
     <Compile Include="Dapper\DapperCollectionBase.cs" />
     <Compile Include="Dapper\DapperBusiness.cs" />
     <Compile Include="Dapper\Dapper.cs" />
@@ -138,11 +139,11 @@
     <Compile Include="Core\CoRHandlerBase.cs" />
     <Compile Include="DP\Proxy.cs" />
     <Compile Include="EFProvider.cs" />
-    <Compile Include="Entity\BaseEntity.Db.cs" />
+    <Compile Include="Entity\BaseEntity.Base.cs" />
     <Compile Include="Entity\Pager.cs" />
     <Compile Include="IDbProvider.cs" />
     <Compile Include="Logs\LogManager.cs" />
-    <Compile Include="Entity\BaseEntity.Base.cs" />
+    <Compile Include="Entity\BaseEntity.Db.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Core\IBusinessBase.cs" />
     <Compile Include="Core\IDbAction.cs" />

@@ -181,7 +181,7 @@ namespace TAF
                 i =>
                 {
                     i.DbContext = dbContext;
-                    i.MarkOld();
+                    i.MarkClean();
                 });
             return items;
         }
@@ -209,7 +209,7 @@ namespace TAF
           i =>
           {
               i.DbContext = dbContext;
-              i.MarkOld();
+              i.MarkClean();
           });
             return item;
         }
@@ -273,7 +273,7 @@ namespace TAF
         }
 
         #endregion
-        
+
         #region 实例方法
 
         /// <summary>
@@ -460,11 +460,11 @@ namespace TAF
             get; set;
         }
 
-        public override bool IsClean
+        public bool IsClean
         {
             get
             {
-                return this.DbContext.Entry<K>(this as K).State == EntityState.Unchanged;
+                return this.DbContext.Entry<K>(this as K).State == System.Data.Entity.EntityState.Unchanged;
             }
         }
     }

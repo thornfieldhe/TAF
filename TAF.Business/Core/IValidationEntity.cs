@@ -33,6 +33,9 @@ namespace TAF.Core
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        bool IsValidated();
+        bool IsValidated
+        {
+            get;
+        }
     }
 }

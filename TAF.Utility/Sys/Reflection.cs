@@ -368,7 +368,7 @@ namespace TAF.Utility
         {
             var result = new List<Tuple<string, string>>();
             var type = typeof(T);
-            var members = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var members = type.GetProperties(BindingFlags.Instance | BindingFlags.Public );
             members.IfNotNull(
                               r =>
                               {

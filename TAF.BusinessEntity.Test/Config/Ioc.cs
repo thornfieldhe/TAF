@@ -22,6 +22,7 @@ namespace TAF.BusinessEntity.Test
             builder.RegisterType<Validator>().As<IValidator>();
             builder.RegisterType<ValidationHandler>().As<IValidationHandler>();
             builder.RegisterType<TestDbContext>().As<DbContext>();
+//            builder.RegisterType<EFProvider<K>>().As<IDbProvider<K>>();
         }
     }
 }

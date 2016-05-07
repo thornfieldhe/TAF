@@ -103,7 +103,7 @@ namespace TAF.Test
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
-        [Required(ErrorMessage = "姓名不能为空")]
+        [Required(ErrorMessage = @"姓名不能为空")]
         public string Name
         {
             get; set;
