@@ -14,6 +14,7 @@ namespace TAF
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.CompilerServices;
+    using System.Text.RegularExpressions;
 
     using Core;
 
@@ -31,7 +32,7 @@ namespace TAF
         #region 构造函数
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseBusiness{T}"/> class.
+        /// Initializes a new instance of the <see cref="BaseBusiness"/> class.
         /// </summary>
         /// <param name="id">
         /// The id.
@@ -42,20 +43,12 @@ namespace TAF
             Status = 0;
             CreatedDate = DateTime.Now;
             ChangedDate = DateTime.Now;
+            InitProperties();
 
             rules = new List<IValidationRule>();
             this.validateionHandler = Ioc.Create<IValidationHandler>();
-            this.DbProvider = Ioc.Create<IDbProvider<T>>();
+            this.DbProvider = Ioc.Create<IDbProvider>();
             MarkNew();
-
-            var type = this.GetType();
-            foreach (var pi in type.GetProperties())
-            {
-                properties.Add(pi.Name, pi.GetValue(this, null));
-            }
-
-            this.CurrentValues = new PropertyValues(properties);
-            this.OriginalValues = new PropertyValues(properties);
         }
 
         /// <summary>
@@ -194,7 +187,7 @@ namespace TAF
         protected virtual void OnSetProperty<T>(ref T storage, T value, string propertyName)
         {
             storage = value;
-            CurrentValues.Update(propertyName, storage);
+            this.CurrentValues[propertyName] = value.ToStr();
             CheckPropertyChange();
         }
 
@@ -205,58 +198,69 @@ namespace TAF
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        /// <summary>
-        /// 检查对象属性值是否与初始值一致
-        /// </summary>
-        /// <returns></returns>
-        protected bool CheckPropertyChange()
-        {
-            var valuesX = this.CurrentValues;
-            var valuesY = this.CurrentValues;
-            foreach (var property in valuesX.PropertyNames)
-            {
-                if (valuesX.GetValue(property) != valuesY.GetValue(property))
-                {
-                    return true;
-                }
-            }
-            return true;
-        }
-
         #region 存储属性变更状态
-
-        protected static readonly Dictionary<string, object> properties;
 
         /// <summary>
         /// 当前属性值列表
         /// </summary>
-        public PropertyValues CurrentValues
+        public Dictionary<string, string> CurrentValues
         {
-            get; protected set;
+            get; private set;
         }
 
         /// <summary>
         /// 初始属性值列表
         /// </summary>
-        public PropertyValues OriginalValues
+        public Dictionary<string, string> OriginalValues
         {
-            get; protected set;
+            get; private set;
         }
-        #endregion
+
+        private void InitProperties()
+        {
+            var descriptions = this.ToString();
+            var reg = new Regex(@"(.*?):'(.*?)',");
+            var matches = reg.Matches(descriptions);
+            CurrentValues = new Dictionary<string, string>();
+            OriginalValues = new Dictionary<string, string>();
+            foreach (Match match in matches)
+            {
+                CurrentValues.Add(match.Groups[1].Value, match.Groups[2].Value);
+                OriginalValues.Add(match.Groups[1].Value, match.Groups[2].Value);
+            }
+        }
+
+        /// <summary>
+        /// 检查对象属性值是否与初始值一致
+        /// </summary>
+        /// <returns></returns>
+        protected void CheckPropertyChange()
+        {
+            var valuesX = this.CurrentValues;
+            var valuesY = this.CurrentValues;
+            foreach (var property in valuesX)
+            {
+                if (property.Value != valuesY[property.Key])
+                {
+                    MarkDirty();
+                }
+            }
+        }
 
         #endregion
 
+        #endregion
 
         /// <summary>
         /// The add descriptions.
         /// </summary>
         protected override void AddDescriptions()
         {
-            AddDescription("Id:" + Id);
-            AddDescription("Status:" + Status);
-            AddDescription("Note:" + Note.ToStr());
-            AddDescription("CreatedDate:" + CreatedDate);
-            AddDescription("ChangedDate:" + ChangedDate);
+            AddDescription(nameof(Id), Id.ToStr());
+            AddDescription(nameof(Status), Status.ToStr());
+            AddDescription(nameof(Note), Note.ToStr());
+            AddDescription(nameof(CreatedDate), CreatedDate.ToStr());
+            AddDescription(nameof(ChangedDate), ChangedDate.ToStr());
         }
     }
 

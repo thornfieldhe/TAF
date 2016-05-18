@@ -6,8 +6,6 @@
 
     using AutoMapper;
 
-    using Core;
-
     using EntityFramework.Extensions;
     using EntityFramework.Future;
 
@@ -120,7 +118,7 @@
         /// <typeparam name="K">查询对象</typeparam>
         /// <param name="query">查询表达式</param>
         /// <param name="isAsc">是否是顺序</param>
-        public void Load<K>(IEnumerable<K> query, bool isAsc) where K : EfBusiness<K>, IBusinessBase, new()
+        public void Load<K>(IEnumerable<K> query, bool isAsc) where K : BaseBusiness<K>, new()
         {
             Total = query.AsQueryable().FutureCount();
             FutureQuery<K> result;
@@ -157,7 +155,7 @@
         /// <param name="orderByFunc">排序表达式</param>
         /// <param name="isAsc">是否是顺序</param>
         public void Load<R, K>(IEnumerable<K> query, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc)
-            where K : EfBusiness<K>, IBusinessBase, new()
+            where K : BaseBusiness<K>, new()
         {
             Total = query.Where(whereFunc).Count();
             List<K> result;

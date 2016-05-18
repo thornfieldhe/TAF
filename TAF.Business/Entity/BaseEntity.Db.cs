@@ -22,12 +22,12 @@ namespace TAF
     /// </typeparam>
     public abstract partial class BaseBusiness<T> : IDbAction
     {
-        protected BaseBusiness(IDbProvider<T> dbProvider)
+        protected BaseBusiness(IDbProvider dbProvider)
         {
             this.DbProvider = dbProvider;
         }
 
-        public IDbProvider<T> DbProvider
+        public IDbProvider DbProvider
         {
             get; set;
         }
@@ -48,8 +48,8 @@ namespace TAF
         /// </returns>
         public static List<T> GetAll(bool useCache = false)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
-            var result = provider.Get(r => true, useCache);
+            var provider = Ioc.Create<IDbProvider>();
+            var result = provider.Get<T>(r => true, useCache);
             result.ForEach(
                 r =>
                 {
@@ -72,7 +72,7 @@ namespace TAF
         /// </returns>
         public static List<T> Get(Expression<Func<T, bool>> func, bool useCache = false)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
+            var provider = Ioc.Create<IDbProvider>();
             var result = provider.Get(func, useCache);
             result.ForEach(
                 r =>
@@ -118,7 +118,7 @@ namespace TAF
             bool isAsc = true,
             bool useCache = false) where T : BaseBusiness<T>, new()
         {
-            return Ioc.Create<IDbProvider<T>>().Pages(pager, whereFunc, orderByFunc, isAsc, useCache);
+            return Ioc.Create<IDbProvider>().Pages(pager, whereFunc, orderByFunc, isAsc, useCache);
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace TAF
         /// </returns>
         public static T Find(Guid id, bool useCache = false)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
-            var item = provider.Find(r => r.Id == id, useCache);
+            var provider = Ioc.Create<IDbProvider>();
+            var item = provider.Find<T>(r => r.Id == id, useCache);
             if (item == null)
             {
                 return null;
@@ -161,7 +161,7 @@ namespace TAF
         /// </returns>
         public static T Find(Expression<Func<T, bool>> func, bool useCache = false)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
+            var provider = Ioc.Create<IDbProvider>();
             var item = provider.Find(func, useCache);
             if (item == null)
             {
@@ -186,7 +186,7 @@ namespace TAF
         /// </returns>
         public static bool Exist(Expression<Func<T, bool>> func)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
+            var provider = Ioc.Create<IDbProvider>();
             return provider.Exist(func);
         }
 
@@ -201,7 +201,7 @@ namespace TAF
         /// </returns>
         public static int Count(Expression<Func<T, bool>> func)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
+            var provider = Ioc.Create<IDbProvider>();
             return provider.Count(func);
         }
 
@@ -215,8 +215,8 @@ namespace TAF
         /// </returns>
         public static int Delete(Guid id)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
-            return provider.Delete(id);
+            var provider = Ioc.Create<IDbProvider>();
+            return provider.Delete<T>(id);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace TAF
         /// </returns>
         public static int Delete(Expression<Func<T, bool>> func)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
+            var provider = Ioc.Create<IDbProvider>();
             return provider.Delete(func);
         }
 
@@ -245,7 +245,7 @@ namespace TAF
         /// </returns>
         public static int Update(Expression<Func<T, bool>> func, Expression<Func<T, T>> update)
         {
-            var provider = Ioc.Create<IDbProvider<T>>();
+            var provider = Ioc.Create<IDbProvider>();
             return provider.Update(func, update);
         }
 
@@ -398,7 +398,7 @@ namespace TAF
         /// </returns>
         protected virtual int Remove()
         {
-            this.DbProvider.Delete(this.id);
+            this.DbProvider.Delete<T>(this.id);
             return this.DbProvider.Commit();
         }
 

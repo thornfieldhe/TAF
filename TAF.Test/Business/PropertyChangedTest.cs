@@ -65,7 +65,7 @@
         protected override void AddDescriptions()
         {
             base.AddDescriptions();
-            AddDescription("Name" + Name.ToStr());
+            AddDescription(nameof(Name), Name.ToStr());
         }
 
 

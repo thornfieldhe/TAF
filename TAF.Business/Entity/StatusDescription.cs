@@ -37,17 +37,19 @@ namespace TAF.Entity
         /// <summary>
         /// 添加描述
         /// </summary>
-        /// <param name="desc">
-        /// The desc.
+        /// <param name="title">
+        /// The title.
         /// </param>
-        protected void AddDescription(string desc)
+        /// <param name="value">
+        /// </param>
+        protected void AddDescription(string title, string value)
         {
-            if (desc.IsEmpty())
+            if (title.IsEmpty() || value.IsEmpty())
             {
                 return;
             }
 
-            description.Append(desc);
+            description.Append(string.Format("{title}:'{value}',"));
         }
 
         /// <summary>
@@ -68,7 +70,7 @@ namespace TAF.Entity
                 return;
             }
 
-            description.AppendFormat("{0}:{1},", name, value);
+            description.AppendFormat("{0}:'{1}',", name, value.ToStr());
         }
     }
 }

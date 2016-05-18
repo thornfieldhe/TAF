@@ -11,7 +11,6 @@ namespace TAF.Test
     using System;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using Entity;
     using TAF.Core;
     using TAF.Utility;
     using Validation;
@@ -124,9 +123,12 @@ namespace TAF.Test
         /// <summary>
         /// The add descriptions.
         /// </summary>
+        /// <param name="isDefault">
+        /// The is Default.
+        /// </param>
         protected override void AddDescriptions()
         {
-            this.AddDescription("Name:" + this.Name + ",");
+            this.AddDescription(nameof(Name), this.Name);
         }
     }
 

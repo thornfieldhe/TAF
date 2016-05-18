@@ -7,15 +7,13 @@
     /// <summary>
     /// 数据库提供者接口
     /// </summary>
-    /// <typeparam name="K">
-    /// 泛型对象
-    /// </typeparam>
-    public interface IDbProvider<K>
-        where K : new()
+    public interface IDbProvider
     {
         /// <summary>
         /// 查询数据列表
         /// </summary>
+        /// <typeparam name="K">
+        /// </typeparam>
         /// <param name="query">
         /// 过滤条件
         /// </param>
@@ -24,21 +22,34 @@
         /// </param>
         /// <returns>
         /// </returns>
-        List<K> Get(Expression<Func<K, bool>> query, bool useCache = false);
+        List<K> Get<K>(Expression<Func<K, bool>> query, bool useCache = false) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 查询单条数据
         /// </summary>
-        /// <param name="func">过滤条件</param>
-        /// <param name="useCache">是否从缓存中查询</param>
-        /// <returns></returns>
-        K Find(Expression<Func<K, bool>> func, bool useCache = false);
+        /// <typeparam name="K">
+        /// </typeparam>
+        /// <param name="func">
+        /// 过滤条件
+        /// </param>
+        /// <param name="useCache">
+        /// 是否从缓存中查询
+        /// </param>
+        /// <returns>
+        /// </returns>
+        K Find<K>(Expression<Func<K, bool>> func, bool useCache = false) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 分页查询
         /// </summary>
-        /// <typeparam name="R">排序对象</typeparam>
-        /// <typeparam name="T">结果转换为T的列表输出</typeparam>
+        /// <typeparam name="K">
+        /// </typeparam>
+        /// <typeparam name="R">
+        /// 排序对象
+        /// </typeparam>
+        /// <typeparam name="T">
+        /// 结果转换为T的列表输出
+        /// </typeparam>
         /// <param name="pager">
         /// 分页对象
         /// </param>
@@ -54,51 +65,68 @@
         /// <param name="useCache">
         /// 是否从缓存中读取
         /// </param>
-        /// <returns></returns>
-        Pager<T> Pages<R, T>(
+        /// <returns>
+        /// </returns>
+        Pager<T> Pages<K, R, T>(
             Pager<T> pager,
             Func<K, bool> whereFunc,
             Func<K, R> orderByFunc,
             bool isAsc = true,
-            bool useCache = false) where T : new();
+            bool useCache = false) where K : BaseBusiness<K>, new() where T : new();
 
         /// <summary>
         /// 是否存在
         /// </summary>
-        /// <param name="func">过滤条件</param>
-        /// <returns></returns>
-        bool Exist(Expression<Func<K, bool>> func);
+        /// <typeparam name="K">
+        /// </typeparam>
+        /// <param name="func">
+        /// 过滤条件
+        /// </param>
+        /// <returns>
+        /// </returns>
+        bool Exist<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 查询数据条数
         /// </summary>
-        /// <param name="func">过滤条件</param>
-        /// <returns></returns>
-        int Count(Expression<Func<K, bool>> func);
+        /// <typeparam name="K">
+        /// </typeparam>
+        /// <param name="func">
+        /// 过滤条件
+        /// </param>
+        /// <returns>
+        /// </returns>
+        int Count<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 删除数据
         /// </summary>
+        /// <typeparam name="K">
+        /// </typeparam>
         /// <param name="id">
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        int Delete(Guid id);
+        int Delete<K>(Guid id) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 删除数据
         /// </summary>
+        /// <typeparam name="K">
+        /// </typeparam>
         /// <param name="func">
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        int Delete(Expression<Func<K, bool>> func);
+        int Delete<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 更新数据
         /// </summary>
+        /// <typeparam name="K">
+        /// </typeparam>
         /// <param name="func">
         /// 过滤条件
         /// </param>
@@ -108,19 +136,22 @@
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        int Update(Expression<Func<K, bool>> func, Expression<Func<K, K>> update);
+        int Update<K>(Expression<Func<K, bool>> func, Expression<Func<K, K>> update) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 新增数据
         /// </summary>
+        /// <typeparam name="K">
+        /// </typeparam>
         /// <param name="item">
         /// 对象
         /// </param>
-        /// <param name="commit"></param>
+        /// <param name="commit">
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        int Add(K item, bool commit);
+        int Add<K>(K item, bool commit) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 提交更新

@@ -22,11 +22,11 @@ namespace TAF.Web.Models
         protected override void AddDescriptions()
         {
             base.AddDescriptions();
-            AddDescription("Name:" + Name.ToStr());
-            AddDescription("CategoryId:" + CategoryId.ToStr());
-            AddDescription("ColorId:" + ColorId.ToStr());
-            AddDescription("Price:" + Price.ToStr());
-            AddDescription("ProductionDate:" + ProductionDate.ToStr());
+            AddDescription(nameof(Name), Name.ToStr());
+            AddDescription(nameof(CategoryId), CategoryId.ToStr());
+            AddDescription(nameof(ColorId), ColorId.ToStr());
+            AddDescription(nameof(Price), Price.ToStr());
+            AddDescription(nameof(ProductionDate), ProductionDate.ToStr());
         }
         #endregion
     }

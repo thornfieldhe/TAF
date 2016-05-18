@@ -12,6 +12,7 @@ namespace TAF
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Runtime.Serialization;
 
     using TAF.Core;
     using TAF.Entity;
@@ -39,7 +40,7 @@ namespace TAF
         /// <summary>
         /// 新建数据，未录入数据库
         /// </summary>
-        [NotMapped]
+        [IgnoreDataMember]
         public bool IsNew
         {
             get
@@ -182,34 +183,6 @@ namespace TAF
         public bool Equals(T x, T y)
         {
             return x.Id == y.Id;
-        }
-
-        /// <summary>
-        /// 深度比较两个对象的属性是否一致
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        public bool DeepEqual(T x, T y)
-        {
-            var valuesX = x.CurrentValues;
-            var valuesY = y.CurrentValues;
-            foreach (var property in valuesX.PropertyNames)
-            {
-                if (valuesX.GetValue(property) != valuesY.GetValue(property))
-                {
-                    return false;
-                }
-            }
-
-            foreach (var property in valuesY.PropertyNames)
-            {
-                if (valuesX.GetValue(property) != valuesY.GetValue(property))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         /// <summary>

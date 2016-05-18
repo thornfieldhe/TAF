@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class User : EfBusiness<User>
+    public class User : BaseBusiness<User>
     {
         public string Name
         {
@@ -11,7 +11,7 @@
         }
     }
 
-    public class Student : EfBusiness<Student>
+    public class Student : BaseBusiness<Student>
     {
         public int Age
         {
