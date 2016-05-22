@@ -1,4 +1,4 @@
-﻿namespace TAF
+﻿namespace TAF.Data
 {
     using System;
     using System.Collections.Generic;
@@ -9,13 +9,11 @@
     using EntityFramework.Caching;
     using EntityFramework.Extensions;
 
-    using TAF.Utility;
 
     /// <summary>
     /// EF数据提供者
     /// </summary>
     public class EFProvider : IDbProvider
-       
     {
         #region 构造函数
 
@@ -60,17 +58,16 @@
         /// <returns>
         /// The <see cref="pager"/>.
         /// </returns>
-        public Pager<T> Pages<K,R, T>(
+        public Pager<T> Pages<K, R, T>(
             Pager<T> pager,
             Func<K, bool> whereFunc,
             Func<K, R> orderByFunc,
             bool isAsc = true,
             bool useCache = false) where K : BaseBusiness<K>, new() where T : new()
         {
-            var context = Ioc.Create<DbContext>();
-            var set = context.Set<K>();
-            var query = useCache ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable() : set;
-            pager.Load(query.AsEnumerable(), whereFunc, orderByFunc, isAsc);
+            var set = this.DbContext.Set<K>();
+            var query = useCache ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().Where(r => !r.IsDelete) : set;
+            pager.Load(query.AsEnumerable().Where(r => !r.IsDelete), whereFunc, orderByFunc, isAsc);
             return pager;
         }
 
@@ -89,10 +86,9 @@
         /// </returns>
         public List<K> Get<K>(Expression<Func<K, bool>> query, bool useCache = false) where K : BaseBusiness<K>, new()
         {
-            var dbContext = Ioc.Create<DbContext>();
             var items = useCache
-                ? dbContext.Set<K>().Where(query).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).ToList()
-                : dbContext.Set<K>().Where(query).ToList();
+                ? this.DbContext.Set<K>().Where(query).FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).ToList()
+                : this.DbContext.Set<K>().Where(query).ToList();
             return items;
         }
 
@@ -112,11 +108,10 @@
         /// </returns>
         public K Find<K>(Expression<Func<K, bool>> func, bool useCache = false) where K : BaseBusiness<K>, new()
         {
-            var dbContext = Ioc.Create<DbContext>();
-            var query = dbContext.Set<K>();
+            var query = this.DbContext.Set<K>();
             var item = useCache
-                ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().FirstOrDefault(func)
-                : query.FirstOrDefault(func);
+                ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().Where(r => !r.IsDelete).FirstOrDefault(func)
+                : query.Where(r => !r.IsDelete).FirstOrDefault(func);
             return item;
         }
 
@@ -135,7 +130,7 @@
         /// </returns>
         public bool Exist<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new()
         {
-            return Ioc.Create<DbContext>().Set<K>().Any(func);
+            return this.DbContext.Set<K>().Where(r => !r.IsDelete).Any(func);
         }
 
         /// <summary>
@@ -151,7 +146,7 @@
         /// </returns>
         public int Count<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new()
         {
-            return Ioc.Create<DbContext>().Set<K>().Count(func);
+            return this.DbContext.Set<K>().Where(r => !r.IsDelete).Count(func);
         }
 
         /// <summary>
@@ -173,6 +168,7 @@
             {
                 return this.DbContext.SaveChanges();
             }
+
             return 0;
         }
 
@@ -183,12 +179,33 @@
         /// </typeparam>
         /// <param name="id">
         /// </param>
+        /// <param name="allowCommit"></param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Delete<K>(Guid id) where K : BaseBusiness<K>, new()
+        public int Delete<K>(Guid id, bool allowCommit) where K : BaseBusiness<K>, new()
         {
-            return Ioc.Create<DbContext>().Set<K>().Where(r => r.Id == id).Delete();
+            return this.DbContext.Set<K>().Where(r => r.Id == id).Delete();
+        }
+
+        /// <summary>
+        /// 根据对象Id删除对象
+        /// </summary>
+        /// <typeparam name="K">
+        /// </typeparam>
+        /// <param name="item"></param>
+        /// <param name="allowCommit"></param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public int Delete<K>(K item, bool allowCommit = true) where K : BaseBusiness<K>, new()
+        {
+            this.DbContext.Set<K>().Remove(item);
+            if (allowCommit)
+            {
+                return this.DbContext.SaveChanges();
+            }
+            return 0;
         }
 
         /// <summary>
@@ -203,7 +220,7 @@
         /// </returns>
         public int Delete<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new()
         {
-            return Ioc.Create<DbContext>().Set<K>().Where(func).Delete();
+            return this.DbContext.Set<K>().Where(func).Delete();
         }
 
         /// <summary>
@@ -220,7 +237,7 @@
         /// </returns>
         public int Update<K>(Expression<Func<K, bool>> func, Expression<Func<K, K>> update) where K : BaseBusiness<K>, new()
         {
-            return Ioc.Create<DbContext>().Set<K>().Where(func).Update(update);
+            return this.DbContext.Set<K>().Where(func).Update(update);
         }
 
         /// <summary>

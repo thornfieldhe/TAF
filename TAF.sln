@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAF.Utility", "TAF.Utility\TAF.Utility.csproj", "{6AB3C277-A165-4327-B0FD-2C131DFB9A9D}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAF.Web", "TAF.Web\TAF.Web.csproj", "{81F53ED8-6DF6-419E-BFC8-0AFB48991D00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAF.Web.Core", "TAF.Web.Core\TAF.Web.Core.csproj", "{3E6C3290-DE02-4E69-AFC7-136D7B743196}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TAF.Data", "TAF.Data\TAF.Data.csproj", "{D01033B2-578E-43DC-8F67-F6254AC33286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{3E6C3290-DE02-4E69-AFC7-136D7B743196}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E6C3290-DE02-4E69-AFC7-136D7B743196}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E6C3290-DE02-4E69-AFC7-136D7B743196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D01033B2-578E-43DC-8F67-F6254AC33286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D01033B2-578E-43DC-8F67-F6254AC33286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D01033B2-578E-43DC-8F67-F6254AC33286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D01033B2-578E-43DC-8F67-F6254AC33286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,5 +68,6 @@ Global
 		{6F3C89F4-AD90-4E01-9C34-3ED56A19332A} = {6DE7C0A0-2B88-420D-8281-812A9FB65DCE}
 		{81F53ED8-6DF6-419E-BFC8-0AFB48991D00} = {024C0203-CDE1-4B96-9297-82B5EA89AE9D}
 		{3E6C3290-DE02-4E69-AFC7-136D7B743196} = {024C0203-CDE1-4B96-9297-82B5EA89AE9D}
+		{D01033B2-578E-43DC-8F67-F6254AC33286} = {5EBFD2A7-A903-4A4D-9478-87E2EC20FC22}
 	EndGlobalSection
 EndGlobal

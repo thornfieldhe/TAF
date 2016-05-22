@@ -9,6 +9,7 @@
 
 namespace TAF.BusinessEntity.Test
 {
+    using TAF.Data;
     using TAF.Entity;
 
     /// <summary>

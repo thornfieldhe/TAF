@@ -49,7 +49,7 @@ namespace TAF.Entity
                 return;
             }
 
-            description.Append(string.Format("{title}:'{value}',"));
+            description.Append($"{title}:'{value}',");
         }
 
         /// <summary>

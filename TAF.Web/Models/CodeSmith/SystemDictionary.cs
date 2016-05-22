@@ -7,7 +7,7 @@
     /// <summary>
     /// 商品
     /// </summary>
-    public partial class SystemDictionary : EfBusiness<SystemDictionary>
+    public partial class SystemDictionary : BaseBusiness<SystemDictionary>
     {
         #region 覆写基类方法
 

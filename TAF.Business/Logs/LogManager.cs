@@ -8,6 +8,7 @@
     public class LogManager : SingletonBase<LogManager>
     {
         private Logger _logger;
+
         public Logger Logger
         {
             get
@@ -19,7 +20,5 @@
                 return _logger;
             }
         }
-
     }
-
 }

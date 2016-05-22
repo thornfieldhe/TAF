@@ -67,6 +67,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
@@ -102,6 +103,10 @@
     <ProjectReference Include="..\TAF.Business\TAF.Business.csproj">
       <Project>{f264abb3-3d0f-4d27-bc98-59d177baeafd}</Project>
       <Name>TAF.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TAF.Data\TAF.Data.csproj">
+      <Project>{d01033b2-578e-43dc-8f67-f6254ac33286}</Project>
+      <Name>TAF.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\TAF.Utility\TAF.Utility.csproj">
       <Project>{6ab3c277-a165-4327-b0fd-2c131dfb9a9d}</Project>

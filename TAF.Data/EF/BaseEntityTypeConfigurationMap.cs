@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF.Entity
+namespace TAF.Data
 {
     using System.Data.Entity.ModelConfiguration;
 

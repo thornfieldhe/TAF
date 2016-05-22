@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net451": {
+      "bin": {
+        "assembly": "../../../../My Works/CafErp/packages/Microsoft.AspNet.WebPages.3.2.3/lib/net45/System.Web.WebPages.dll"
+      },
+      "dependencies": {
+        "System.Web.WebPages.Deployment": "1.0.0-*"
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@ namespace TAF.Web.Models
     /// <summary>
     /// 商品
     /// </summary>
-    public partial class Product : EfBusiness<Product>
+    public partial class Product : BaseBusiness<Product>
     {
         #region 覆写基类方法
 

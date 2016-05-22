@@ -27,7 +27,7 @@ namespace TAF.Test.Utility.Extensions
     }
 
     [System.ComponentModel.Description("测试名称")]
-    public class TestDesc : EfBusiness<TestDesc>
+    public class TestDesc : BaseBusiness<TestDesc>
     {
         [System.ComponentModel.Description("名称")]
         public string Name

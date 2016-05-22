@@ -2,10 +2,10 @@ namespace TAF.Core
 {
     public interface IDbAction
     {
-        int Create();
+        int Create(bool commit);
 
-        int Save();
+        int Save(bool commit);
 
-        int Delete();
+        int Delete(bool commit);
     }
 }

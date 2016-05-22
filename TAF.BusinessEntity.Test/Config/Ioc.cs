@@ -5,6 +5,7 @@ namespace TAF.BusinessEntity.Test
     using Autofac;
 
     using TAF.Core;
+    using TAF.Data;
     using TAF.Validation;
 
     /// <summary>

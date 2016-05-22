@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net451": {
+      "wrappedProject": "../../TAF.Utility/TAF.Utility.csproj",
+      "bin": {
+        "assembly": "../../TAF.Utility/obj/{configuration}/TAF.Utility.dll",
+        "pdb": "../../TAF.Utility/obj/{configuration}/TAF.Utility.pdb"
+      },
+      "dependencies": {
+        "Newtonsoft.Json": "7.0.1",
+        "Roslyn.Compilers.Common": "1.2.20906.2",
+        "Roslyn.Compilers.CSharp": "1.2.20906.2",
+        "sharpconfig": "1.4.8"
+      }
+    }
+  }
+}

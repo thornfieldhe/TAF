@@ -1,20 +1,36 @@
-﻿using System;
-/* 作者：道法自然  
+﻿/* 作者：道法自然  
  * 个人邮件：myyangbin@sina.cn
  * 2014-10-1
  */
-using System.Linq;
-using System.Linq.Expressions;
 
-namespace TAF
+namespace TAF.Data
 {
+    using System;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     using TAF.TAFExpression;
 
     internal enum ExpUnion : byte
     {
+        /// <summary>
+        /// The and.
+        /// </summary>
         And,
+
+        /// <summary>
+        /// The or.
+        /// </summary>
         Or,
+
+        /// <summary>
+        /// The order by.
+        /// </summary>
         OrderBy,
+
+        /// <summary>
+        /// The select.
+        /// </summary>
         Select
     }
 

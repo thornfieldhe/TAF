@@ -210,13 +210,14 @@ namespace TAF
         /// </summary>
         /// <param name="id">
         /// </param>
+        /// <param name="commit"></param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static int Delete(Guid id)
+        public static int Delete(Guid id, bool commit)
         {
             var provider = Ioc.Create<IDbProvider>();
-            return provider.Delete<T>(id);
+            return provider.Delete<T>(id, commit);
         }
 
         /// <summary>
@@ -256,15 +257,18 @@ namespace TAF
         /// <summary>
         /// 创建一个对象
         /// </summary>
+        /// <param name="commit">
+        /// The commit.
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Create()
+        public int Create(bool commit = true)
         {
             var result = 0;
             PreInsert();
             Validate();
-            result += Insert();
+            result += Insert(commit);
             PostInsert();
             return result;
         }
@@ -272,15 +276,18 @@ namespace TAF
         /// <summary>
         /// 更新一个对象
         /// </summary>
+        /// <param name="commit">
+        /// The commit.
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Save()
+        public int Save(bool commit = true)
         {
             var result = 0;
             PreUpdate();
             Validate();
-            result += Update();
+            result += Update(commit);
             PostUpdate();
             return result;
         }
@@ -288,14 +295,17 @@ namespace TAF
         /// <summary>
         /// 删除一个对象
         /// </summary>
+        /// <param name="commit">
+        /// The commit.
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int SoftDelete()
+        public int SoftDelete(bool commit = true)
         {
             var result = 0;
             PreRemove();
-            result += SoftRemove();
+            result += SoftRemove(commit);
             PostRemove();
             return result;
         }
@@ -303,17 +313,48 @@ namespace TAF
         /// <summary>
         /// 删除一个对象
         /// </summary>
+        /// <param name="commit">
+        /// The commit.
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Delete()
+        public int Delete(bool commit = true)
         {
             var result = 0;
             PreRemove();
-            result += Remove();
+            result += Remove(commit);
             PostRemove();
             return result;
         }
+
+        /// <summary>
+        /// 直接提交一个对象，不用考虑是新增还是更新还是删除
+        /// </summary>
+        /// <param name="commit">
+        /// The commit.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public int Submit(bool commit = true)
+        {
+            if (this.IsNew)
+            {
+                Create(commit);
+            }
+            else if (this.IsDirty)
+            {
+                Update(commit);
+            }
+            else if (IsDelete)
+            {
+                SoftDelete(commit);
+            }
+
+            return 0;
+        }
+
 
         #region 继承方法
 
@@ -324,7 +365,10 @@ namespace TAF
         /// </summary>
         protected virtual void PreInsert()
         {
-            this.Id = Guid.NewGuid();
+            if (this.Id == Guid.Empty)
+            {
+                this.Id = Guid.NewGuid();
+            }
             this.CreatedDate = DateTime.Now;
             this.ChangedDate = DateTime.Now;
             this.MarkNew();
@@ -333,12 +377,15 @@ namespace TAF
         /// <summary>
         /// 插入对象到数据库
         /// </summary>
+        /// <param name="commit">
+        /// The commit.
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        protected virtual int Insert()
+        protected virtual int Insert(bool commit = true)
         {
-            return this.DbProvider.Add(this as T, true);
+            return this.DbProvider.Add(this as T, commit);
         }
 
 
@@ -364,12 +411,13 @@ namespace TAF
         /// <summary>
         /// 更新对象到数据库
         /// </summary>
+        /// <param name="commit"></param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        protected virtual int Update()
+        protected virtual int Update(bool commit = true)
         {
-            return this.IsDirty ? this.DbProvider.Commit() : 0;
+            return (this.IsDirty && commit) ? this.DbProvider.Commit() : 0;
         }
 
         /// <summary>
@@ -393,25 +441,39 @@ namespace TAF
         /// <summary>
         /// 从数据库移除对象
         /// </summary>
+        /// <param name="commit"></param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        protected virtual int Remove()
+        protected virtual int Remove(bool commit = true)
         {
-            this.DbProvider.Delete<T>(this.id);
-            return this.DbProvider.Commit();
+            this.DbProvider.Delete(this as T, commit);
+            if (commit)
+            {
+                return this.DbProvider.Commit();
+            }
+
+            MarkDelete();
+            return 0;
         }
 
         /// <summary>
         /// 从数据库移除对象
         /// </summary>
+        /// <param name="commit"></param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        protected virtual int SoftRemove()
+        protected virtual int SoftRemove(bool commit = true)
         {
             this.Status = -1;
-            return this.DbProvider.Commit();
+            if (commit)
+            {
+                return this.DbProvider.Commit();
+            }
+
+            MarkDelete();
+            return 0;
         }
 
         /// <summary>

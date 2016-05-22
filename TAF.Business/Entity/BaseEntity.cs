@@ -39,6 +39,8 @@ namespace TAF
         /// </param>
         protected BaseBusiness(Guid id)
         {
+            CurrentValues = new Dictionary<string, string>();
+            OriginalValues = new Dictionary<string, string>();
             Id = id;
             Status = 0;
             CreatedDate = DateTime.Now;
@@ -171,10 +173,7 @@ namespace TAF
 
         protected void SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
-            if (Equals(storage, value))
-                return;
             OnSetProperty(ref storage, value, propertyName);
-
             this.OnPropertyChanged(propertyName);
         }
 
@@ -216,16 +215,52 @@ namespace TAF
             get; private set;
         }
 
+        /// <summary>
+        /// 已改变属性值列表
+        /// </summary>
+        /// <remarks>键，原值，现值</remarks>
+        public List<Tuple<string, string, string>> ChangedValues
+        {
+            get
+            {
+                var valuesX = this.CurrentValues;
+                var valuesY = this.OriginalValues;
+
+                var changedValues = new List<Tuple<string, string, string>>();
+                foreach (var property in valuesX)
+                {
+                    if (!valuesY.ContainsKey(property.Key))
+                    {
+                        changedValues.Add(new Tuple<string, string, string>(property.Key, null, property.Value));
+                    }
+                    else if (property.Value != valuesY[property.Key])
+                    {
+                        changedValues.Add(new Tuple<string, string, string>(property.Key, valuesY[property.Key], property.Value));
+                    }
+                }
+                foreach (var property in valuesY)
+                {
+                    if (!valuesX.ContainsKey(property.Key))
+                    {
+                        changedValues.Add(new Tuple<string, string, string>(property.Key, property.Value, null));
+                    }
+                    else if (property.Value != valuesX[property.Key])
+                    {
+                        changedValues.Add(new Tuple<string, string, string>(property.Key, property.Value, valuesY[property.Key]));
+                    }
+                }
+                return changedValues;
+            }
+        }
+
         private void InitProperties()
         {
             var descriptions = this.ToString();
-            var reg = new Regex(@"(.*?):'(.*?)',");
-            var matches = reg.Matches(descriptions);
-            CurrentValues = new Dictionary<string, string>();
             OriginalValues = new Dictionary<string, string>();
+            var reg = new Regex(@"(.*?):'(.*?)',?");
+            var matches = reg.Matches(descriptions);
             foreach (Match match in matches)
             {
-                CurrentValues.Add(match.Groups[1].Value, match.Groups[2].Value);
                 OriginalValues.Add(match.Groups[1].Value, match.Groups[2].Value);
             }
         }
@@ -236,15 +271,7 @@ namespace TAF
         /// <returns></returns>
         protected void CheckPropertyChange()
         {
-            var valuesX = this.CurrentValues;
-            var valuesY = this.CurrentValues;
-            foreach (var property in valuesX)
-            {
-                if (property.Value != valuesY[property.Key])
-                {
-                    MarkDirty();
-                }
-            }
+
         }
 
         #endregion

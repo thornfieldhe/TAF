@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>何翔华</authors>
+    <owners>何翔华</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>自己用的业务类</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>业务基类</tags>
+  </metadata>
+</package>
+

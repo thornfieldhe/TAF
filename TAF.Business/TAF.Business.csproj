@@ -57,10 +57,6 @@
       <HintPath>..\packages\Castle.Core.1.2.0\lib\Castle.Services.Logging.NLogIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ClaySharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ClaySharp.1.0.0\lib\ClaySharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -125,25 +121,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseBusinessEntry.cs" />
-    <Compile Include="Dapper\DapperCollectionBase.cs" />
-    <Compile Include="Dapper\DapperBusiness.cs" />
-    <Compile Include="Dapper\Dapper.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\ExpressionVisitor.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\ExpressionWriterSql.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\PartialEvaluator.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\ReflectionExtensions.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\TypeHelper.cs" />
-    <Compile Include="Dapper\ExpressionTurn\ExpConditions.cs" />
-    <Compile Include="Dapper\IBaseStatus.cs" />
-    <Compile Include="Dapper\ICollectionBase.cs" />
-    <Compile Include="Dapper\ReadOnlyBase.cs" />
+    <Compile Include="Core\IBaseStatus.cs" />
+    <Compile Include="Core\ICollectionBase.cs" />
     <Compile Include="DP\NotifyPropertyChanged.cs" />
     <Compile Include="DP\NotifyPropertyChangedInterceptor.cs" />
     <Compile Include="Core\CallHandlerEventArgs.cs" />
     <Compile Include="Core\CoRHandlerBase.cs" />
     <Compile Include="DP\Proxy.cs" />
-    <Compile Include="EFProvider.cs" />
     <Compile Include="Entity\BaseEntity.Base.cs" />
     <Compile Include="Entity\Pager.cs" />
     <Compile Include="IDbProvider.cs" />
@@ -156,8 +140,6 @@
     <Compile Include="DI\Container.cs" />
     <Compile Include="DI\IDependency.cs" />
     <Compile Include="DI\IOC.cs" />
-    <Compile Include="EfBusiness.cs" />
-    <Compile Include="Entity\BaseEntityTypeConfigurationMap.cs" />
     <Compile Include="Entity\StatusDescription.cs" />
     <Compile Include="Validations\DataAnnotations\BaseRegValidateAttribute.cs" />
     <Compile Include="Validations\DataAnnotations\DateTimeRequiredAttribute.cs" />

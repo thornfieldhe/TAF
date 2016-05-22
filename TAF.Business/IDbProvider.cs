@@ -105,10 +105,11 @@
         /// </typeparam>
         /// <param name="id">
         /// </param>
+        /// <param name="allowCommit"></param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        int Delete<K>(Guid id) where K : BaseBusiness<K>, new();
+        int Delete<K>(Guid id, bool allowCommit = true) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 删除数据
@@ -121,6 +122,15 @@
         /// The <see cref="int"/>.
         /// </returns>
         int Delete<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new();
+
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <typeparam name="K"></typeparam>
+        /// <param name="item"></param>
+        /// <param name="allowCommit"></param>
+        /// <returns></returns>
+        int Delete<K>(K item, bool allowCommit) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 更新数据

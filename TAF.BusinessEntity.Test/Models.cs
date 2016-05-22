@@ -1,8 +1,5 @@
 ﻿namespace TAF.BusinessEntity.Test
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-
     public class User : BaseBusiness<User>
     {
         public string Name

@@ -36,7 +36,7 @@ namespace TAF.Mvc
     /// </typeparam>
     [Authorize]
     public class BaseController<K, T, L> : BaseTAFController
-        where K : EfBusiness<K>, new() where T : class, IEntityBase, new() where L : new()
+        where K : BaseBusiness<K>, new() where T : class, IEntityBase, new() where L : new()
     {
         /// <summary>
         /// 首页
@@ -60,7 +60,7 @@ namespace TAF.Mvc
         /// </returns>
         public virtual ActionResult Get(Guid id)
         {
-            var item = EfBusiness<K>.Find(id);
+            var item = BaseBusiness<K>.Find(id);
             if (item is T)
             {
                 return this.Json(new ActionResultData<T>(item as T), JsonRequestBehavior.AllowGet);
@@ -79,7 +79,7 @@ namespace TAF.Mvc
         /// </returns>
         public ActionResult GetAll()
         {
-            var items = EfBusiness<K>.GetAll();
+            var items = BaseBusiness<K>.GetAll();
             if (items is List<L>)
             {
                 return this.Json(new ActionResultData<List<L>>(items as List<L>), JsonRequestBehavior.AllowGet);
@@ -103,7 +103,7 @@ namespace TAF.Mvc
         {
             try
             {
-                var item = EfBusiness<K>.Find(value.Id);
+                var item = BaseBusiness<K>.Find(value.Id);
 
                 if (item == null)
                 {
@@ -144,7 +144,7 @@ namespace TAF.Mvc
         {
             try
             {
-                EfBusiness<K>.Delete(id);
+                BaseBusiness<K>.Delete(r => r.Id == id);
                 return this.Json(new ActionResultStatus());
             }
             catch (DbEntityValidationException ex)
@@ -182,8 +182,8 @@ namespace TAF.Mvc
         /// </returns>
         protected virtual ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc = true)
         {
-            var pager = EfBusiness<K>.Pages(new Pager<L> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
-            return this.Json(new ActionResultData<Pager<L>>(pager), JsonRequestBehavior.AllowGet);
+            var pager = BaseBusiness<K>.Pages(new Pager<K> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
+            return this.Json(new ActionResultData<Pager<K>>(pager), JsonRequestBehavior.AllowGet);
         }
     }
 }

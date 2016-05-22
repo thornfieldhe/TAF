@@ -1,0 +1,9 @@
+10:09:59: [Error]System.Web.HttpException (0x80004005): 服务器无法在已发送 HTTP 标头之后设置状态。
+   在 System.Web.HttpResponse.set_StatusCode(Int32 value)
+   在 System.Web.HttpResponseWrapper.set_StatusCode(Int32 value)
+   在 System.Web.Mvc.HttpStatusCodeResult.ExecuteResult(ControllerContext context)
+   在 System.Web.Mvc.ControllerActionInvoker.InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<>c__DisplayClass29.<BeginInvokeAction>b__1b()
+   在 System.Web.Mvc.Async.AsyncControllerActionInvoker.<>c__DisplayClass21.<BeginInvokeAction>b__1e(IAsyncResult asyncResult)   stacktrace: [32]ControllerActionInvoker.InvokeExceptionFilters => Controller.System.Web.Mvc.IExceptionFilter.OnException => BaseTAFController.OnException
+     exception: 服务器无法在已发送 HTTP 标头之后设置状态。
+--------------------------------------------  

@@ -80,7 +80,33 @@ namespace TAF
         {
             get
             {
-                return this._isDirty;
+                var valuesX = this.CurrentValues;
+                var valuesY = this.OriginalValues;
+                var isChanged = false;
+                foreach (var property in valuesX)
+                {
+                    if (!valuesY.ContainsKey(property.Key))
+                    {
+                        isChanged = true;
+                    }
+                    else if (property.Value != valuesY[property.Key])
+                    {
+                        isChanged = true;
+                    }
+                }
+                foreach (var property in valuesY)
+                {
+                    if (!valuesX.ContainsKey(property.Key))
+                    {
+                        isChanged = true;
+                    }
+                    else if (property.Value != valuesX[property.Key])
+                    {
+                        isChanged = true;
+                    }
+                }
+
+                return isChanged;
             }
         }
 
@@ -98,11 +124,12 @@ namespace TAF
             this._isClean = true;
             this._isDirty = false;
             this._isDelete = false;
+            this.InitProperties();
         }
 
         public virtual void MarkDirty()
         {
-            this._isNew = false;
+
             this._isClean = false;
             this._isDirty = true;
             this._isDelete = false;
