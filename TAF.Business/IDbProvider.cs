@@ -50,9 +50,7 @@
         /// <typeparam name="T">
         /// 结果转换为T的列表输出
         /// </typeparam>
-        /// <param name="pager">
-        /// 分页对象
-        /// </param>
+        /// <param name="pager"></param>
         /// <param name="whereFunc">
         /// 过滤条件
         /// </param>
@@ -72,7 +70,32 @@
             Func<K, bool> whereFunc,
             Func<K, R> orderByFunc,
             bool isAsc = true,
-            bool useCache = false) where K : BaseBusiness<K>, new() where T : new();
+            bool useCache = false) where K : BaseBusiness<K>, new() where T : new() where R : new();
+
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <typeparam name="K">
+        /// </typeparam>
+        /// <typeparam name="R">
+        /// 排序对象
+        /// </typeparam>
+        /// <param name="pager">
+        /// </param>
+        /// <param name="whereFunc">
+        /// 过滤条件
+        /// </param>
+        /// <param name="orderByFunc">
+        /// 排序条件
+        /// </param>
+        /// <param name="isAsc">
+        /// 是否是顺序
+        /// </param>
+        /// <param name="useCache">
+        /// </param>
+        /// <returns>
+        /// </returns>
+        Pager<K> Pages<K, R>(Pager<K> pager, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc = true, bool useCache = false) where K : BaseBusiness<K>, new();
 
         /// <summary>
         /// 是否存在

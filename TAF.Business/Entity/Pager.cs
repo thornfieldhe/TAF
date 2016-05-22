@@ -6,9 +6,6 @@
 
     using AutoMapper;
 
-    using EntityFramework.Extensions;
-    using EntityFramework.Future;
-
     /// <summary>
     /// The pager.
     /// </summary>
@@ -40,7 +37,7 @@
         /// <summary>
         /// Gets or sets the datas.
         /// </summary>
-        public IList<T> Datas
+        public List<T> Datas
         {
             get; set;
         }
@@ -112,73 +109,7 @@
             get; set;
         }
 
-        /// <summary>
-        /// 分页查询对象列表
-        /// </summary>
-        /// <typeparam name="K">查询对象</typeparam>
-        /// <param name="query">查询表达式</param>
-        /// <param name="isAsc">是否是顺序</param>
-        public void Load<K>(IEnumerable<K> query, bool isAsc) where K : BaseBusiness<K>, new()
-        {
-            Total = query.AsQueryable().FutureCount();
-            FutureQuery<K> result;
-            if (isAsc)
-            {
-                result =
-                    query.OrderBy(r => r.CreatedDate)
-                        .Skip(PageSize * (PageIndex - 1))
-                        .Take(PageSize)
-                        .AsQueryable()
-                        .Future();
-            }
-            else
-            {
-                result =
-                    query.OrderBy(r => r.CreatedDate)
-                        .Skip(PageSize * (PageIndex - 1))
-                        .Take(PageSize)
-                        .AsQueryable()
-                        .Future();
-            }
-
-            Datas = Mapper.Map<List<T>>(result);
-            GetShowIndex();
-        }
-
-        /// <summary>
-        /// 分页查询对象列表
-        /// </summary>
-        /// <typeparam name="R">排序字段类型</typeparam>
-        /// <typeparam name="K">查询对象</typeparam>
-        /// <param name="query">查询表达式</param>
-        /// <param name="whereFunc">条件表达式</param>
-        /// <param name="orderByFunc">排序表达式</param>
-        /// <param name="isAsc">是否是顺序</param>
-        public void Load<R, K>(IEnumerable<K> query, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc)
-            where K : BaseBusiness<K>, new()
-        {
-            Total = query.Where(whereFunc).Count();
-            List<K> result;
-            if (isAsc)
-            {
-                result =
-                    query.Where(whereFunc).OrderBy(orderByFunc).Skip(PageSize * (PageIndex - 1)).Take(PageSize).ToList();
-            }
-            else
-            {
-                result =
-                    query.Where(whereFunc)
-                        .OrderByDescending(orderByFunc)
-                        .Skip(PageSize * (PageIndex - 1))
-                        .Take(PageSize)
-                        .ToList();
-            }
-
-            Datas = Mapper.Map<List<T>>(result);
-            GetShowIndex();
-        }
-
-        /// <summary>
+      /// <summary>
         /// The get show index.
         /// </summary>
         public void GetShowIndex()

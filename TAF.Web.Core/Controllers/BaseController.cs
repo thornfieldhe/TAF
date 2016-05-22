@@ -180,7 +180,7 @@ namespace TAF.Mvc
         /// <returns>
         /// The <see cref="ActionResult"/>.
         /// </returns>
-        protected virtual ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc = true)
+        protected virtual ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc = true) 
         {
             var pager = BaseBusiness<K>.Pages(new Pager<K> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
             return this.Json(new ActionResultData<Pager<K>>(pager), JsonRequestBehavior.AllowGet);

@@ -6,9 +6,11 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using AutoMapper;
+
     using EntityFramework.Caching;
     using EntityFramework.Extensions;
-
+    using EntityFramework.Future;
 
     /// <summary>
     /// EF数据提供者
@@ -63,11 +65,144 @@
             Func<K, bool> whereFunc,
             Func<K, R> orderByFunc,
             bool isAsc = true,
-            bool useCache = false) where K : BaseBusiness<K>, new() where T : new()
+            bool useCache = false) where K : BaseBusiness<K>, new() where T : new() where R : new()
         {
             var set = this.DbContext.Set<K>();
             var query = useCache ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().Where(r => !r.IsDelete) : set;
-            pager.Load(query.AsEnumerable().Where(r => !r.IsDelete), whereFunc, orderByFunc, isAsc);
+            return Load<R, K, T>(pager, query, whereFunc, orderByFunc, isAsc);
+        }
+
+        /// <summary>
+        /// 分页查询对象列表
+        /// </summary>
+        /// <typeparam name="K">
+        /// 查询对象
+        /// </typeparam>
+        /// <typeparam name="R">
+        /// </typeparam>
+        /// <param name="pager">
+        /// The pager.
+        /// </param>
+        /// <param name="whereFunc">
+        /// The where Func.
+        /// </param>
+        /// <param name="orderByFunc">
+        /// The order By Func.
+        /// </param>
+        /// <param name="isAsc">
+        /// 是否是顺序
+        /// </param>
+        /// <param name="useCache">
+        /// The use Cache.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Pager"/>.
+        /// </returns>
+        public Pager<K> Pages<K, R>(Pager<K> pager, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc = true, bool useCache = false) where K : BaseBusiness<K>, new()
+        {
+            var set = this.DbContext.Set<K>();
+            var query = useCache
+                            ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1)))
+                                  .AsQueryable()
+                                  .Where(r => !r.IsDelete)
+                            : set;
+            return Load<K, R>(pager, query.AsEnumerable(), whereFunc, orderByFunc, isAsc);
+        }
+
+        /// <summary>
+        /// 分页查询对象列表
+        /// </summary>
+        /// <typeparam name="R">
+        /// 排序字段类型
+        /// </typeparam>
+        /// <typeparam name="K">
+        /// 查询对象
+        /// </typeparam>
+        /// <typeparam name="T">
+        /// </typeparam>
+        /// <param name="pager">
+        /// </param>
+        /// <param name="query">
+        /// The query.
+        /// </param>
+        /// <param name="whereFunc">
+        /// 条件表达式
+        /// </param>
+        /// <param name="orderByFunc">
+        /// 排序表达式
+        /// </param>
+        /// <param name="isAsc">
+        /// 是否是顺序
+        /// </param>
+        /// <returns>
+        /// The <see cref="Pager"/>.
+        /// </returns>
+        private Pager<T> Load<R, K, T>(Pager<T> pager, IEnumerable<K> query, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc) where K : BaseBusiness<K>, new() where R : new() where T : new()
+        {
+
+            var pagerK = new Pager<K>(pager.PageIndex, pager.PageSize);
+            pagerK = Load<K, R>(pagerK, query, whereFunc, orderByFunc, isAsc);
+            pager = Mapper.Map<Pager<T>>(pagerK);
+            pager.Datas = Mapper.Map<List<T>>(pagerK.Datas);
+
+            //            pagerT.Total = pagerK.Total;
+            //            pagerT.PageIndex = pagerK.PageIndex;
+            //            pagerT.PageSize = pagerK.PageSize;
+            //            pagerT.ShowIndex = pagerK.ShowIndex;
+
+            return pager;
+        }
+
+        /// <summary>
+        /// 分页查询对象列表
+        /// </summary>
+        /// <typeparam name="K">
+        /// 查询对象
+        /// </typeparam>
+        /// <typeparam name="R">
+        /// </typeparam>
+        /// <param name="pager">
+        /// </param>
+        /// <param name="query">
+        /// 查询表达式
+        /// </param>
+        /// <param name="whereFunc">
+        /// The where Func.
+        /// </param>
+        /// <param name="orderByFunc">
+        /// The order By Func.
+        /// </param>
+        /// <param name="isAsc">
+        /// 是否是顺序
+        /// </param>
+        /// <returns>
+        /// The <see cref="Pager"/>.
+        /// </returns>
+        public Pager<K> Load<K, R>(Pager<K> pager, IEnumerable<K> query, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc) where K : BaseBusiness<K>, new()
+        {
+            pager.Total = query.AsQueryable().FutureCount();
+            FutureQuery<K> result;
+            if (isAsc)
+            {
+                result =
+                    query.Where(whereFunc).OrderBy(orderByFunc)
+                        .Skip(pager.PageSize * (pager.PageIndex - 1))
+                        .Take(pager.PageSize)
+                        .AsQueryable()
+                        .Future();
+            }
+            else
+            {
+                result =
+                    query.Where(whereFunc).OrderBy(orderByFunc)
+                        .Skip(pager.PageSize * (pager.PageIndex - 1))
+                        .Take(pager.PageSize)
+                        .AsQueryable()
+                        .Future();
+            }
+
+            pager.Datas = result.ToList();
+            pager.GetShowIndex();
             return pager;
         }
 
