@@ -112,9 +112,13 @@
     <Compile Include="Core\CallHandlerEventArgs.cs" />
     <Compile Include="Core\CoRHandlerBase.cs" />
     <Compile Include="DP\Proxy.cs" />
+    <Compile Include="Entity\ActionResult\ActionResultData.cs" />
+    <Compile Include="Entity\ActionResult\ActionResultStatus.cs" />
+    <Compile Include="Entity\ActionResult\ActionStatuses.cs" />
+    <Compile Include="Entity\ActionResult\InventoryAccess.cs" />
     <Compile Include="Entity\BaseEntity.Base.cs" />
     <Compile Include="Entity\Pager.cs" />
-    <Compile Include="IDbProvider.cs" />
+    <Compile Include="Entity\IDbProvider.cs" />
     <Compile Include="Logs\LogManager.cs" />
     <Compile Include="Entity\BaseEntity.Db.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
@@ -125,6 +129,7 @@
     <Compile Include="DI\IDependency.cs" />
     <Compile Include="DI\IOC.cs" />
     <Compile Include="Entity\StatusDescription.cs" />
+    <Compile Include="Serialization\SerializationContentAccessor.cs" />
     <Compile Include="Validations\DataAnnotations\BaseRegValidateAttribute.cs" />
     <Compile Include="Validations\DataAnnotations\DateTimeRequiredAttribute.cs" />
     <Compile Include="Validations\DataAnnotations\EqualToAttribute.cs" />

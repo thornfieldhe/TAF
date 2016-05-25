@@ -25,7 +25,7 @@ namespace TAF.Data
         where T : class, IBusinessBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseEntityTypeConfigurationMap{T}"/> class.
+        /// Initializes a new instance of the <see cref="BaseEntityTypeConfigurationMap"/> class.
         /// </summary>
         public BaseEntityTypeConfigurationMap()
         {
@@ -35,5 +35,4 @@ namespace TAF.Data
             this.Filter("Status", i => i.Condition(l => l.Status != -1));
         }
     }
-
 }

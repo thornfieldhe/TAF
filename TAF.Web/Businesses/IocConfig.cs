@@ -4,6 +4,7 @@
 
     using Autofac;
 
+    using TAF.Data;
     using TAF.MVC.Businesses;
 
     /// <summary>
@@ -14,6 +15,7 @@
         protected override void LoadDb(ContainerBuilder builder)
         {
             builder.RegisterType<WebDbContext>().As<DbContext>();
+            builder.RegisterType<EFProvider>().As<IDbProvider>();
         }
     }
 }

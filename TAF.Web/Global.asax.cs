@@ -22,8 +22,7 @@ namespace TAF.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Database.SetInitializer(new BaseDbInitializer());
-            //            Database.SetInitializer(new DbInitializer());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<WebDbContext, Migrations.Configuration>());
             Ioc.RegisterMvc(Assembly.GetExecutingAssembly(), new IocConfig());
             InitMap();
         }

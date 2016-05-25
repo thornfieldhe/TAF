@@ -626,21 +626,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201601251217040_init.cs" />
-    <Compile Include="Migrations\201601251217040_init.Designer.cs">
-      <DependentUpon>201601251217040_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603021341475_addTable_dictionary.cs" />
-    <Compile Include="Migrations\201603021341475_addTable_dictionary.Designer.cs">
-      <DependentUpon>201603021341475_addTable_dictionary.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603081505002_createTable_product.cs" />
-    <Compile Include="Migrations\201603081505002_createTable_product.Designer.cs">
-      <DependentUpon>201603081505002_createTable_product.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201603141343419_addTable_Article.cs" />
-    <Compile Include="Migrations\201603141343419_addTable_Article.Designer.cs">
-      <DependentUpon>201603141343419_addTable_Article.cs</DependentUpon>
+    <Compile Include="Migrations\201605251504578_init.cs" />
+    <Compile Include="Migrations\201605251504578_init.Designer.cs">
+      <DependentUpon>201605251504578_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Article.cs" />
@@ -718,6 +706,10 @@
       <Project>{f264abb3-3d0f-4d27-bc98-59d177baeafd}</Project>
       <Name>TAF.Business</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TAF.Data\TAF.Data.csproj">
+      <Project>{d01033b2-578e-43dc-8f67-f6254ac33286}</Project>
+      <Name>TAF.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TAF.Utility\TAF.Utility.csproj">
       <Project>{6ab3c277-a165-4327-b0fd-2c131dfb9a9d}</Project>
       <Name>TAF.Utility</Name>
@@ -728,17 +720,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201601251217040_init.resx">
-      <DependentUpon>201601251217040_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603021341475_addTable_dictionary.resx">
-      <DependentUpon>201603021341475_addTable_dictionary.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603081505002_createTable_product.resx">
-      <DependentUpon>201603081505002_createTable_product.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201603141343419_addTable_Article.resx">
-      <DependentUpon>201603141343419_addTable_Article.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201605251504578_init.resx">
+      <DependentUpon>201605251504578_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

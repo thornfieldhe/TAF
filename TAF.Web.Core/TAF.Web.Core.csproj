@@ -160,7 +160,6 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BaseTAFController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Models\ActionResultData.cs" />
     <Compile Include="Models\ApplicationUser\ApplicationUser.cs" />
     <Compile Include="Models\ApplicationUser\UserViews.cs" />
     <Compile Include="Models\KeyValueEntity.cs" />

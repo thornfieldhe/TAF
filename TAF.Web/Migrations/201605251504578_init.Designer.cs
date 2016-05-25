@@ -6,14 +6,14 @@ namespace TAF.Web.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
+    [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
     public sealed partial class init : IMigrationMetadata
     {
         private readonly ResourceManager Resources = new ResourceManager(typeof(init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201601251217040_init"; }
+            get { return "201605251504578_init"; }
         }
         
         string IMigrationMetadata.Source
