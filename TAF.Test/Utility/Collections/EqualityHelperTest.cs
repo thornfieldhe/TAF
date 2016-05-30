@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TAF.Test.Utility.Collections
+namespace TAF.Test
 {
     using System.Linq;
 

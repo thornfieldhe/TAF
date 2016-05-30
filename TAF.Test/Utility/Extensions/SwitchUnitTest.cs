@@ -6,7 +6,7 @@
 //   SwitchUnitTest 的摘要说明
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace TAF.Test.Utility
+namespace TAF.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

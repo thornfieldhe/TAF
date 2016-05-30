@@ -14,7 +14,7 @@ namespace TAF.Test
     public class ChineseCalendarTest
     {
         /// <summary>
-        /// 验证空值
+        /// 农历
         /// </summary>
         [TestMethod]
         public void TestChineseCalendar()
@@ -35,6 +35,8 @@ namespace TAF.Test
             dayInfo.Append("星座：" + c.Constellation + "\r\n");
             Console.Write(dayInfo.ToString());
             Assert.IsTrue(true);
-        }
+
+
+            }
     }
 }

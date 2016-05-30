@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace CAF.Test
+namespace TAF.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -19,7 +19,6 @@ namespace TAF
     using Autofac.Core;
 
     using TAF.DI;
-    using TAF.Utility;
 
     using Container = DI.Container;
 
@@ -70,24 +69,11 @@ namespace TAF
         /// 对应映射接口的类型
         /// </param>
         /// <returns></returns>
-        public static T Create<T>(string type) where T : class
+        public static T Create<T>(string type)
         {
             return Container.Create<T>(type);
         }
 
-
-        /// <summary>
-        /// 为测试环境注册依赖
-        /// </summary>
-        /// <param name="modules">
-        /// 依赖配置
-        /// </param>
-        public static void Register(params IModule[] modules)
-        {
-            var path = Web.GetPhysicalPath(AppDomain.CurrentDomain.BaseDirectory);
-            var assemblies = Reflection.GetAssemblies(path);
-            Container.Init(builder => RegisterTypes(assemblies, builder), modules);
-        }
 
         /// <summary>
         /// 注册程序集列表中所有实现了IDependency的类型
@@ -130,16 +116,13 @@ namespace TAF
         /// <summary>
         /// 为Mvc注册依赖
         /// </summary>
-        /// <param name="mvcAssembly">
-        /// mvc项目所在的程序集
-        /// </param>
         /// <param name="modules">
         /// 依赖配置
         /// </param>
-        public static void RegisterMvc(Assembly mvcAssembly, params IModule[] modules)
+        public static void RegisterMvc(params IModule[] modules)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            Container.RegisterMvc(mvcAssembly, builder => RegisterTypes(assemblies, builder), modules);
+            Container.RegisterMvc(builder => RegisterTypes(assemblies, builder), modules);
         }
     }
 }

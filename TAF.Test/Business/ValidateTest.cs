@@ -10,7 +10,6 @@
 namespace TAF.Test
 {
     using System;
-    using CAF.Tests.Domains.Validations;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TAF;
     using TAF.Validation;
@@ -32,7 +31,7 @@ namespace TAF.Test
         [TestInitialize]
         public void TestInit()
         {
-            Ioc.Register(new IocConfig());
+            Ioc.RegisterMvc(new IocConfig());
             this.user = new User2();
         }
 

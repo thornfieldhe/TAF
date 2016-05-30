@@ -38,7 +38,7 @@ namespace TAF.BusinessEntity.Test
         [TestInitialize]
         public void TestInit()
         {
-            Ioc.Register(new IocConfig());
+            Ioc.RegisterMvc(new IocConfig());
         }
     }
 }

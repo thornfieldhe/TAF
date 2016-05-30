@@ -23,7 +23,7 @@ namespace TAF.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<WebDbContext, Migrations.Configuration>());
-            Ioc.RegisterMvc(Assembly.GetExecutingAssembly(), new IocConfig());
+            Ioc.RegisterMvc(new IocConfig());
             InitMap();
         }
 

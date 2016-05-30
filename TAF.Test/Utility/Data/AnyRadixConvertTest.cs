@@ -1,9 +1,10 @@
 ﻿using System;
 
-namespace TAF.Test.Utility.Data
+namespace TAF.Test
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using TAF.Utility;
 
     /// <summary>
     /// AnyRadixConvertTest 的摘要说明

@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="Extensions\Ectensions.Lambda.cs" />
     <Compile Include="Extensions\Extensions.Object.cs" />
+    <Compile Include="Extensions\Extensions.Dictionary.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

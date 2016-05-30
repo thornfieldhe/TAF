@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TAF.Test.Utility.Collections
+namespace TAF.Test
 {
     using System;
     using System.Linq;
@@ -28,7 +28,9 @@ namespace TAF.Test.Utility.Collections
                                        };
 
             var comparer = TAF.Utility.Comparison<TestInfo>.CreateComparer(m => m.Name);
+            
             list1.Sort(comparer);
+            list1.OrderBy(r => r.Id).AsQueryable();
             Assert.AreEqual(list1[0].Name, "a");
         }
 

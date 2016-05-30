@@ -174,6 +174,7 @@ namespace TAF.Utility
 
 
         #region 从字符串里随机得到，规定个数的字符串.
+
         /// <summary>
         /// 从字符串里随机得到，规定个数的字符串.
         /// </summary>
@@ -186,7 +187,8 @@ namespace TAF.Utility
             {
                 allChar = "123456789ABCDEFGHiJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             }
-            var randomCode = "";
+
+            var randomCode = string.Empty;
             var temp = -1;
             var rand = new Random(Guid.NewGuid().GetHashCode());
             for (var i = 0; i < codeCount; i++)
@@ -242,7 +244,7 @@ namespace TAF.Utility
             }
 
             var cLen = cChar.Length;
-            var sRet = "";
+            var sRet = string.Empty;
             var rnd = new Random(Guid.NewGuid().GetHashCode());
             for (var i = 0; i < n; i++)
             {
@@ -293,6 +295,15 @@ namespace TAF.Utility
         /// <summary>
         /// 生成随机字符串
         /// </summary>
+        /// <param name="maxLength">
+        /// The max Length.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
         private async static Task<string> Generate(int maxLength, string text)
         {
             var length = GetRandomInt(1, maxLength);
@@ -303,13 +314,10 @@ namespace TAF.Utility
                 {
                     var index = GetRandomInt(1, text.Length);
                     result.Append(text[index].ToString());
-
                 });
-
             }
+
             return result.ToString();
         }
-
-
     }
 }

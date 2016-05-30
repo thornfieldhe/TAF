@@ -102,6 +102,7 @@
     <Compile Include="Business\CorTest.cs" />
     <Compile Include="Business\Ioc.cs" />
     <Compile Include="Business\CastleTest.cs" />
+    <Compile Include="Business\BuildTest.cs" />
     <Compile Include="Business\ValidateTest.cs" />
     <Compile Include="Utility\CNDateTest .cs" />
     <Compile Include="Utility\Collections\ComparisonHelperTest.cs" />
@@ -137,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

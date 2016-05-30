@@ -1,4 +1,4 @@
-﻿namespace TAF.Test.Utility.Data
+﻿namespace TAF.Utility
 {
     using System;
     using System.Globalization;
@@ -6,6 +6,9 @@
 
     using TAF.Utility;
 
+    /// <summary>
+    /// 进制转换器
+    /// </summary>
     public static class AnyRadixConvert
     {
         private const string BaseChar = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

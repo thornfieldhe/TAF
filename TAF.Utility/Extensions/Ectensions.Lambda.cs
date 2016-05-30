@@ -17,7 +17,7 @@ namespace TAF.Utility
     /// <summary>
     /// The where if extension.
     /// </summary>
-    public static class LambdaEctensions
+    public static partial class Extensions
     {
         /// <summary>
         /// The where if.

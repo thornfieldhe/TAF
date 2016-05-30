@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TAF.Utility;
-namespace TAF.Test.Utility.Extensions
+namespace TAF.Test
 {
     using System;
 

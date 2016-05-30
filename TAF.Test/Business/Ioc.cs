@@ -1,5 +1,5 @@
 ﻿
-namespace CAF.Tests.Domains.Validations
+namespace TAF.Test
 {
 
     using Autofac;
