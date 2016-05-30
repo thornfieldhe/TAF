@@ -19,6 +19,7 @@ namespace TAF.Mvc
 
 
     using TAF;
+    using TAF.Business;
     using TAF.Core;
     using TAF.Utility;
 
@@ -63,11 +64,11 @@ namespace TAF.Mvc
             var item = BaseBusiness<K>.Find(id);
             if (item is T)
             {
-                return this.Json(new ActionResultData<T>(item as T), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultData<T>(7,item as T), JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return this.Json(new ActionResultData<T>(Mapper.Map<T>(item)), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultData<T>(7,Mapper.Map<T>(item)), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -82,11 +83,11 @@ namespace TAF.Mvc
             var items = BaseBusiness<K>.GetAll();
             if (items is List<L>)
             {
-                return this.Json(new ActionResultData<List<L>>(items as List<L>), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultData<List<L>>(7,items as List<L>), JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return this.Json(new ActionResultData<List<L>>(Mapper.Map<List<L>>(items)), JsonRequestBehavior.AllowGet);
+                return this.Json(new ActionResultData<List<L>>(7,Mapper.Map<List<L>>(items)), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -115,18 +116,18 @@ namespace TAF.Mvc
                     Mapper.Map(value, item);
                     item.Save();
                 }
-                return this.Json(new ActionResultStatus());
+                return this.Json(new ActionResultStatus(7));
             }
             catch (DbEntityValidationException ex)
             {
                 LogManager.Instance.Logger.Error(ex);
-                return this.Json(new ActionResultStatus(100,
+                return this.Json(new ActionResultStatus(7,100,
                     $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
             }
             catch (Exception ex)
             {
 
-                return this.Json(new ActionResultStatus(ex));
+                return this.Json(new ActionResultStatus(0,ex));
             }
         }
 
@@ -145,16 +146,16 @@ namespace TAF.Mvc
             try
             {
                 BaseBusiness<K>.Delete(r => r.Id == id);
-                return this.Json(new ActionResultStatus());
+                return this.Json(new ActionResultStatus(7));
             }
             catch (DbEntityValidationException ex)
             {
-                return this.Json(new ActionResultStatus(100,
+                return this.Json(new ActionResultStatus(0,100,
                     $"{ex.EntityValidationErrors.First().Entry.ToStr()}:{ex.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage}"));
             }
             catch (Exception ex)
             {
-                return this.Json(new ActionResultStatus(ex));
+                return this.Json(new ActionResultStatus(0,ex));
             }
         }
 
@@ -183,7 +184,7 @@ namespace TAF.Mvc
         protected virtual ActionResult Pager<R>(int pageIndex, int pageSize, Func<K, bool> where, Func<K, R> orderBy, bool isAsc = true) 
         {
             var pager = BaseBusiness<K>.Pages(new Pager<K> { PageIndex = pageIndex, PageSize = pageSize }, where, orderBy, isAsc);
-            return this.Json(new ActionResultData<Pager<K>>(pager), JsonRequestBehavior.AllowGet);
+            return this.Json(new ActionResultData<Pager<K>>(7,pager), JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -46,7 +46,6 @@ namespace TAF.Utility
         public static void GetRandomArray<T>(T[] arr)
         {
             //对数组进行随机排序的算法:随机选择两个位置，将两个位置上的值交换
-
             //交换的次数,这里使用数组的长度作为交换次数
             var count = arr.Length;
 
@@ -57,11 +56,8 @@ namespace TAF.Utility
                 var randomNum1 = GetRandomInt(0, arr.Length);
                 var randomNum2 = GetRandomInt(0, arr.Length);
 
-                //定义临时变量
-                T temp;
-
                 //交换两个随机数位置的值
-                temp = arr[randomNum1];
+                var temp = arr[randomNum1];
                 arr[randomNum1] = arr[randomNum2];
                 arr[randomNum2] = temp;
             }

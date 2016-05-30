@@ -24,6 +24,7 @@ namespace TAF.MVC
 
     using Newtonsoft.Json;
 
+    using TAF.Business;
     using TAF.Mvc;
     using TAF.MVC.Models;
     using TAF.Utility;
@@ -154,9 +155,9 @@ namespace TAF.MVC
             switch (result)
             {
                 case SignInStatus.Success:
-                    return Json(new ActionResultData<string>("/Home/Index"), JsonRequestBehavior.AllowGet);
+                    return Json(new ActionResultData<string>(7,"/Home/Index"), JsonRequestBehavior.AllowGet);
                 default:
-                    return Json(new ActionResultStatus(10, "用户名或密码错误"), JsonRequestBehavior.AllowGet);
+                    return Json(new ActionResultStatus(0,10, "用户名或密码错误"), JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -211,7 +212,7 @@ namespace TAF.MVC
             };
             pager.GetShowIndex();
 
-            return Json(new ActionResultData<Pager<UserInfoView>>(pager), JsonRequestBehavior.AllowGet);
+            return Json(new ActionResultData<Pager<UserInfoView>>(7,pager), JsonRequestBehavior.AllowGet);
         }
 
         [Authorize(Roles = "系统管理员组")]
@@ -229,7 +230,7 @@ namespace TAF.MVC
                                                       ",",
                                       roles.Where(r => user.Roles.Select(ur => ur.RoleId).Contains(r.Id)).Select(r => r.Name).ToList())
             };
-            return Json(new ActionResultData<UserInfoView>(result), JsonRequestBehavior.AllowGet);
+            return Json(new ActionResultData<UserInfoView>(7,result), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -239,7 +240,7 @@ namespace TAF.MVC
                                                          User.Identity.GetUserId(),
                         changedPassword.CurrentPassword,
                         changedPassword.NewPassword);
-            return Json(result.Succeeded ? new ActionResultData<string>("密码修改成功！") : new ActionResultStatus(10, result.Errors.First()), JsonRequestBehavior.AllowGet);
+            return Json(result.Succeeded ? new ActionResultData<string>(7,"密码修改成功！") : new ActionResultStatus(7,10, result.Errors.First()), JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -264,7 +265,7 @@ namespace TAF.MVC
             var user = UserManager.FindByName(item.LoginName);
             if (user != null)
             {
-                return Json(new ActionResultStatus(10, "用户已存在！"));
+                return Json(new ActionResultStatus(0,10, "用户已存在！"));
             }
             user = new ApplicationUser
             {
@@ -280,7 +281,7 @@ namespace TAF.MVC
             }
             item.Password = "11111111";
             UserManager.Create(user, item.Password);
-            return Json(new ActionResultStatus());
+            return Json(new ActionResultStatus(7));
         }
 
         /// <summary>
@@ -293,7 +294,7 @@ namespace TAF.MVC
             var user = UserManager.FindByName(infoView.LoginName);
             if (user == null)
             {
-                return Json(new ActionResultStatus(10, "用户不存在！"));
+                return Json(new ActionResultStatus(0,10, "用户不存在！"));
             }
             user.UserName = infoView.LoginName;
             user.FullName = infoView.FullName;
@@ -319,7 +320,7 @@ namespace TAF.MVC
             //                        JsonRequestBehavior.AllowGet);
             //            }
 
-            return Json(new ActionResultStatus());
+            return Json(new ActionResultStatus(7));
         }
 
         /// <summary>
@@ -336,10 +337,10 @@ namespace TAF.MVC
             var user = UserManager.FindById(id);
             if (user == null)
             {
-                return Json(new ActionResultStatus(10, "用户不存在！"), JsonRequestBehavior.AllowGet);
+                return Json(new ActionResultStatus(7,10, "用户不存在！"), JsonRequestBehavior.AllowGet);
             }
             UserManager.Delete(user);
-            return Json(new ActionResultStatus(), JsonRequestBehavior.AllowGet);
+            return Json(new ActionResultStatus(7), JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

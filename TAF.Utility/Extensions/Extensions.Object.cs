@@ -7,6 +7,9 @@
 
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// The extensions.
+    /// </summary>
     public partial class Extensions
     {
         #region 公共方法

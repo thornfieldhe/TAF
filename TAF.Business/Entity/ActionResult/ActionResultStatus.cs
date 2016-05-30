@@ -44,7 +44,7 @@
         /// <param name="ex">
         /// 异常
         /// </param>
-        public ActionResultStatus(int authority, Exception ex = null)
+        public ActionResultStatus(int authority, Exception ex)
         {
             if (authority == 0)
             {

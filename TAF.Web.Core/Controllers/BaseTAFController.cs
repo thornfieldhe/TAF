@@ -13,6 +13,8 @@ namespace TAF.Mvc
     using System.Web.Mvc;
     using System.Web.Mvc.Filters;
 
+    using TAF.Business;
+
     /// <summary>
     /// The BasicAuthorizeController controller.
     /// </summary>
@@ -30,7 +32,7 @@ namespace TAF.Mvc
         protected override void OnException(ExceptionContext filterContext)
         {
             LogManager.Instance.Logger.Error(filterContext.Exception);
-            filterContext.Result = new JsonResult { Data = new ActionResultStatus(filterContext.Exception), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            filterContext.Result = new JsonResult { Data = new ActionResultStatus(0, filterContext.Exception), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }
 }
