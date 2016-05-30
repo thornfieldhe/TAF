@@ -1,8 +1,5 @@
-﻿using System.Web;
-
-namespace TAF.Utility
+﻿namespace TAF.Utility
 {
-
     /// <summary>
     /// 单例基类
     /// </summary>
@@ -16,37 +13,6 @@ namespace TAF.Utility
         /// <summary>
         /// 默认实例
         /// </summary>
-        public static T Instance
-        {
-            get
-            {
-                if (GenericContex.CheckWhetherIsWeb())
-                {
-                    var instance = (T)HttpContext.Current.Items[typeof(T).FullName];
-                    if (instance == null)
-                    {
-                        instance = SinglentonCreator.instance;
-                        HttpContext.Current.Items[typeof(T).FullName] = instance;
-                    }
-                    return instance;
-                }
-                else
-                {
-                    return SinglentonCreator.instance;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 创建一个实例
-        /// </summary>
-        private class SinglentonCreator
-        {
-            static SinglentonCreator()
-            {
-            }
-
-            internal static readonly T instance = new T();
-        }
+        public static readonly T Instance = new T();
     }
 }

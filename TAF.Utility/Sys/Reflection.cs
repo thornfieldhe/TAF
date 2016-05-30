@@ -15,8 +15,6 @@ namespace TAF.Utility
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using System.Reflection;
-    using Files;
-    using Utility;
 
     /// <summary>
     /// 反射操作
@@ -99,20 +97,6 @@ namespace TAF.Utility
             return assembly.GetTypes()
                 .Where(t => typeInterface.IsAssignableFrom(t) && t != typeInterface && t.IsAbstract == false)
                 .Select(t => CreateInstance<T>(t)).ToList();
-        }
-
-        #endregion
-
-        #region GetAssemblies(从目录中获取所有程序集)
-
-        /// <summary>
-        /// 从目录中获取所有程序集
-        /// </summary>
-        /// <param name="directoryPath">目录绝对路径</param>
-        public static List<Assembly> GetAssemblies(string directoryPath)
-        {
-            var filePaths = File.GetAllFiles(directoryPath).Where(t => t.EndsWith(".exe") || t.EndsWith(".dll"));
-            return filePaths.Select(Assembly.LoadFile).ToList();
         }
 
         #endregion
@@ -368,7 +352,7 @@ namespace TAF.Utility
         {
             var result = new List<Tuple<string, string>>();
             var type = typeof(T);
-            var members = type.GetProperties(BindingFlags.Instance | BindingFlags.Public );
+            var members = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             members.IfNotNull(
                               r =>
                               {

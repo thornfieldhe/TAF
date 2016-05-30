@@ -227,8 +227,6 @@ namespace TAF.Utility
         /// </returns>
         public static bool IsGenericAssignableFrom(this Type genericType, Type type)
         {
-            genericType.CheckNotNull("genericType");
-            type.CheckNotNull("type");
             if (!genericType.IsGenericType)
             {
                 throw new ArgumentException("该功能只支持泛型类型的调用，非泛型类型可使用 IsAssignableFrom 方法。");

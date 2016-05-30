@@ -18,9 +18,6 @@
         /// <returns>等效于value的数值的64位有符号整数</returns>
         public static ulong X2H(string value, int fromRadix)
         {
-            value.CheckNotNullOrEmpty("value");
-            fromRadix.CheckBetween("fromRadix", 2, 62, true, true);
-
             value = value.Trim();
             string baseChar = BaseChar.Substring(0, fromRadix);
             ulong result = 0;
@@ -44,7 +41,6 @@
         /// <returns>指定基数的数值的字符串形式</returns>
         public static string H2X(ulong value, int toRadix)
         {
-            toRadix.CheckBetween("fromRadix", 2, 62, true, true);
             if (value == 0)
             {
                 return "0";
@@ -69,10 +65,6 @@
         /// <returns></returns>
         public static string X2X(string value, int fromRadix, int toRadix)
         {
-            value.CheckNotNullOrEmpty("value");
-            fromRadix.CheckBetween("fromRadix", 2, 62, true, true);
-            toRadix.CheckBetween("toRadix", 2, 62, true, true);
-
             ulong num = X2H(value, fromRadix);
             return H2X(num, toRadix);
         }
@@ -84,7 +76,6 @@
         /// <returns>16进制数的字符串</returns>
         public static string _10To16(int value)
         {
-            value.CheckGreaterThan("value", 0, true);
             string str = X2X(value.ToString(CultureInfo.InvariantCulture), 10, 16);
             return str.IsNullOrEmpty() ? "0" : str[0] == '0' ? str : '0' + str;
         }
