@@ -1,4 +1,4 @@
-﻿namespace TAF.MVC
+﻿namespace TAF.Mvc
 {
     using System.Web.Mvc;
     using System.Web.Routing;

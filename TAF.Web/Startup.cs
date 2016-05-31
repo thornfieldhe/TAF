@@ -5,6 +5,7 @@ namespace TAF.Web
 {
     using Owin;
 
+    using TAF.Mvc;
     using TAF.MVC;
 
     public class Startup

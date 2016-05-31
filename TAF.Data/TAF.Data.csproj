@@ -90,15 +90,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dapper\Dapper.cs" />
-    <Compile Include="Dapper\DapperBusiness.cs" />
-    <Compile Include="Dapper\DapperCollectionBase.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\ExpressionVisitor.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\ExpressionWriterSql.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\PartialEvaluator.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\ReflectionExtensions.cs" />
-    <Compile Include="Dapper\ExpressionTurn\Base\TypeHelper.cs" />
-    <Compile Include="Dapper\ExpressionTurn\ExpConditions.cs" />
     <Compile Include="EF\BaseEntityTypeConfigurationMap.cs" />
     <Compile Include="EF\EFProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

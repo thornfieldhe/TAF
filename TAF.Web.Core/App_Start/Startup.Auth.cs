@@ -1,4 +1,4 @@
-﻿namespace TAF.MVC
+﻿namespace TAF.Mvc
 {
     using System;
 
@@ -9,8 +9,8 @@
 
     using Owin;
 
-    using TAF.MVC.Businesses;
-    using TAF.MVC.Models;
+    using TAF.Mvc.Businesses;
+    using TAF.Mvc.Model;
 
     public class TAFStartup
     {

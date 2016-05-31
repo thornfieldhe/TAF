@@ -2,7 +2,7 @@
 {
     using System.Data.Entity;
 
-    using TAF.MVC.Businesses;
+    using TAF.Mvc.Businesses;
     using TAF.Web.Models;
 
     public class WebDbContext : TAFDbContext

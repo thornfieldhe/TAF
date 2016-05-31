@@ -5,6 +5,7 @@
     using Autofac;
 
     using TAF.Core;
+    using TAF.Mvc.Businesses;
 
     /// <summary>
     /// 依赖注入配置

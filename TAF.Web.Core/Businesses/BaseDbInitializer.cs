@@ -7,25 +7,27 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    using TAF.MVC.Models;
+    using TAF.Mvc;
+    using TAF.Mvc.Businesses;
+    using TAF.Mvc.Model;
 
     /// <summary>
     /// 
     /// </summary>
     public class BaseDbInitializer : CreateDatabaseIfNotExists<TAFDbContext>
     {
-        public const string _saUserId = "76edf148-3e31-4e9e-8cf8-f17d3c96f05f";
-        public const string _saUserName = "sa";
-        public const string _saPassword = "11111111";
-        public const string _admins = "系统管理员组";
-        public const string _users = "用户组";
+        private const string SaUserId = "76edf148-3e31-4e9e-8cf8-f17d3c96f05f";
+        private const string SaUserName = "sa";
+        private const string SaPassword = "11111111";
+        private const string Admins = "系统管理员组";
+        private const string Users = "用户组";
 
 
         protected override void Seed(TAFDbContext context)
         {
             base.Seed(context);
-            const string fullName = "系统管理员";
-            var roleNames = new string[] { _admins, _users };
+            var fullName = "系统管理员";
+            var roleNames = new string[] { Admins, Users };
             using (var roleManager = ApplicationRoleManager.CreateForEF(context))
             {
                 var applicationRoleManager = roleManager;
@@ -43,25 +45,25 @@
 
             using (var userManager = ApplicationUserManager.CreateForEF(context))
             {
-                var user = userManager.FindByName(_saUserName);
+                var user = userManager.FindByName(SaUserName);
                 if (user == null)
                 {
                     user = new ApplicationUser
                     {
-                        Id = _saUserId,
-                        UserName = _saUserName,
+                        Id = SaUserId,
+                        UserName = SaUserName,
                         EmailConfirmed = false,
                         FullName = fullName,
                         TwoFactorEnabled = true,
                     };
-                    userManager.Create(user, _saPassword);
+                    userManager.Create(user, SaPassword);
                     userManager.SetLockoutEnabled(user.Id, true);
                 }
 
                 var rolesForUser = userManager.GetRoles(user.Id);
-                if (!rolesForUser.Contains(_admins))
+                if (!rolesForUser.Contains(Admins))
                 {
-                    userManager.AddToRole(user.Id, _admins);
+                    userManager.AddToRole(user.Id, Admins);
                 }
             }
         }

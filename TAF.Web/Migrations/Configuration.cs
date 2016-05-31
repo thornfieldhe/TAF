@@ -7,8 +7,8 @@ namespace TAF.Web.Migrations
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    using TAF.MVC;
-    using TAF.MVC.Models;
+    using TAF.Mvc;
+    using TAF.Mvc.Model;
     using TAF.Web.Businesses;
 
     internal sealed class Configuration : DbMigrationsConfiguration<WebDbContext>

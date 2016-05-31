@@ -1,6 +1,5 @@
-﻿namespace TAF.MVC.Models
+﻿namespace TAF.MVC.View
 {
-    using System;
     using System.Collections.Generic;
 
     public class LoginUser

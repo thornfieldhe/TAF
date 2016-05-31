@@ -10,7 +10,8 @@
 namespace TAF.Web.Controllers
 {
     using System.Web.Mvc;
-    using TAF.MVC;
+
+    using TAF.Mvc;
 
     /// <summary>
     /// The HomeController controller.
