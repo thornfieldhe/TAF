@@ -88,8 +88,6 @@ namespace TAF.DI
             {
                 action(builder);
             }
-            builder.RegisterControllers(Assembly.GetExecutingAssembly());
-            builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly()).AsImplementedInterfaces();
 
             foreach (var module in modules)
             {
@@ -156,7 +154,7 @@ namespace TAF.DI
         /// <summary>
         /// 为Mvc注册依赖
         /// </summary>
-        /// <param name="mvcAssembly">
+        /// <param name="mvcAssemblies">
         /// mvc项目所在的程序集
         /// </param>
         /// <param name="action">
@@ -165,7 +163,7 @@ namespace TAF.DI
         /// <param name="modules">
         /// 依赖配置
         /// </param>
-        public static void RegisterMvc(Action<ContainerBuilder> action, params IModule[] modules)
+        public static void Register( Action<ContainerBuilder> action, params IModule[] modules)
         {
             var builder = CreateBuilder(action, modules);
             _container = builder.Build();

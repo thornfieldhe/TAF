@@ -114,15 +114,15 @@ namespace TAF
         }
 
         /// <summary>
-        /// 为Mvc注册依赖
+        /// 注册依赖
         /// </summary>
         /// <param name="modules">
         /// 依赖配置
         /// </param>
-        public static void RegisterMvc(params IModule[] modules)
+        public static void Register(params IModule[] modules)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            Container.RegisterMvc(builder => RegisterTypes(assemblies, builder), modules);
+            Container.Register(builder => RegisterTypes(assemblies, builder), modules);
         }
     }
 }

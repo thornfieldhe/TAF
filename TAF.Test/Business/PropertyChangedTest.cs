@@ -14,6 +14,7 @@
         [TestMethod]
         public void PropertyChangedTest()
         {
+            Ioc.Register(new IocConfig());
             var product = new Product { Name = "xxx" };
             Assert.AreEqual(product.CurrentValues["Name"], "xxx");
             Assert.IsFalse(product.OriginalValues.ContainsKey("Name"));

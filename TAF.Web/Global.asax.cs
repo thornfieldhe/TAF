@@ -4,12 +4,9 @@ using System.Web.Routing;
 namespace TAF.Web
 {
     using System.Data.Entity;
-    using System.Reflection;
     using System.Web.Optimization;
 
     using AutoMapper;
-
-    using TAF.MVC.Businesses;
     using TAF.Utility;
     using TAF.Web.Businesses;
     using TAF.Web.Models;
@@ -23,7 +20,7 @@ namespace TAF.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<WebDbContext, Migrations.Configuration>());
-            Ioc.RegisterMvc(new IocConfig());
+            Ioc.Register(new IocConfig());
             InitMap();
         }
 

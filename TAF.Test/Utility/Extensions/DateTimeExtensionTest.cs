@@ -27,8 +27,9 @@ namespace TAF.Test
         public void TestToDateTimeString()
         {
             var date = "2012-01-02 11:11:11";
-            Assert.AreEqual(date, date.ToDate().ToDateTimeString());
+            Assert.AreEqual("201201021111", date.ToDate().ToDateTimeString());
             Assert.AreEqual("2012-01-02 11:11", date.ToDate().ToDateTimeString(true));
+            Assert.AreEqual("2012-01-02 11:11:11", date.ToDate().ToDateTimeString(false));
         }
 
         /// <summary>

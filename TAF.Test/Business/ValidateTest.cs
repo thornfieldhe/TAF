@@ -31,7 +31,7 @@ namespace TAF.Test
         [TestInitialize]
         public void TestInit()
         {
-            Ioc.RegisterMvc(new IocConfig());
+            Ioc.Register(new IocConfig());
             this.user = new User2();
         }
 

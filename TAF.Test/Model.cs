@@ -9,8 +9,11 @@
 namespace TAF.Test
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq.Expressions;
+
     using TAF.Core;
     using TAF.Utility;
     using Validation;
@@ -268,5 +271,68 @@ namespace TAF.Test
         }
 
 
+    }
+
+    public class DefaultDbProvder : IDbProvider
+    {
+        public List<K> Get<K>(Expression<Func<K, bool>> query, bool useCache = false) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public K Find<K>(Expression<Func<K, bool>> func, bool useCache = false) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Pager<T> Pages<K, R, T>(Pager<T> pager, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc = true, bool useCache = false) where K : BaseBusiness<K>, new() where R : new() where T : new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Pager<K> Pages<K, R>(Pager<K> pager, Func<K, bool> whereFunc, Func<K, R> orderByFunc, bool isAsc = true, bool useCache = false) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Exist<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Count<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete<K>(Guid id, bool allowCommit = true) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Delete<K>(K item, bool allowCommit) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Update<K>(Expression<Func<K, bool>> func, Expression<Func<K, K>> update) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Add<K>(K item, bool commit) where K : BaseBusiness<K>, new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Commit()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
