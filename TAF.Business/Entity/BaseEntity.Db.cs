@@ -116,7 +116,7 @@ namespace TAF
             Func<T, bool> whereFunc,
             Func<T, R> orderByFunc,
             bool isAsc = true,
-            bool useCache = false) where T : BaseBusiness<T>, new() 
+            bool useCache = false) where T : BaseBusiness<T>, new()
         {
             return Ioc.Create<IDbProvider>().Pages<T, R>(pager, whereFunc, orderByFunc, isAsc, useCache);
         }

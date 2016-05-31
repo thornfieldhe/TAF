@@ -28,9 +28,8 @@ namespace TAF.Test
                                        };
 
             var comparer = TAF.Utility.Comparison<TestInfo>.CreateComparer(m => m.Name);
-            
+
             list1.Sort(comparer);
-            list1.OrderBy(r => r.Id).AsQueryable();
             Assert.AreEqual(list1[0].Name, "a");
         }
 
