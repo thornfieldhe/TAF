@@ -22,7 +22,7 @@ namespace TAF.DI
         {
             base.Load(builder);
             builder.RegisterType<Validator>().As<IValidator>();
-            builder.RegisterType<ValidationHandler>().As<IValidationHandler>();
+            builder.RegisterType<NothingValidationHandler>().As<IValidationHandler>();
         }
     }
 }

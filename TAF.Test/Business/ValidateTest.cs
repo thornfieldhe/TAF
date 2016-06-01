@@ -9,13 +9,11 @@
 
 namespace TAF.Test
 {
-    using System;
     using System.Linq;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TAF;
     using TAF.Utility;
-    using TAF.Validation;
 
     /// <summary>
     /// 验证测试
@@ -55,19 +53,13 @@ namespace TAF.Test
         /// 外部调用方法AddValidationRule增加验证条件
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void TestAddValidationRule()
         {
-            try
+            user = new User2 { Name = "123" };
+            user.AddValidationRule(new ContainsHXHValidationRule(this.user.Name));
+            if (this.user.IsValidated.Not())
             {
-                user = new User2 { Name = "123" };
-                user.AddValidationRule(new ContainsHXHValidationRule(this.user.Name));
-                user.Validate();
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("姓名必须包含HXH", ex.Message);
-                throw;
+                Assert.AreEqual("姓名必须包含HXH", user.ValidationResult.First().ErrorMessage);
             }
         }
 
@@ -75,31 +67,25 @@ namespace TAF.Test
         /// 重载方法Validate(ValidationResultCollection results)增加验证条件
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void TestSetValidationHandler()
         {
-            try
+            this.user = new User2 { Name = "3" };
+            if (this.user.IsValidated.Not())
             {
-                this.user = new User2 { Name = "3" };
-                this.user.Validate();
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("姓名长度不能小于2", ex.Message);
-                throw;
+                Assert.AreEqual("姓名长度不能小于2", user.ValidationResult.First().ErrorMessage);
             }
         }
 
-        /// <summary>
-        /// 设置验证处理器,不进行任何操作，所以不会抛出异常
-        /// </summary>
-        [TestMethod]
-        public void TestSetValidationHandler_NotThow()
-        {
-            this.user = new User2();
-            this.user.SetValidationHandler(new NothingValidationHandler());
-            this.user.Validate();
-        }
+        //        /// <summary>
+        //        /// 设置验证处理器,不进行任何操作，所以不会抛出异常
+        //        /// </summary>
+        //        [TestMethod]
+        //        public void TestSetValidationHandler_NotThow()
+        //        {
+        //            this.user = new User2();
+        //            this.user.SetValidationHandler(new NothingValidationHandler());
+        //            this.user.Validate();
+        //        }
 
         /// <summary>
         /// 继承同一个接口的多个类

@@ -321,26 +321,6 @@ namespace TAF
 
         #endregion
 
-        #region SetValidationHandler(设置验证处理器)
-
-        /// <summary>
-        /// 设置验证处理器
-        /// </summary>
-        /// <param name="handler">
-        /// 验证处理器
-        /// </param>
-        public void SetValidationHandler(IValidationHandler handler)
-        {
-            if (handler == null)
-            {
-                return;
-            }
-
-            this.validateionHandler = handler;
-        }
-
-        #endregion
-
         #region AddValidationRule(添加验证规则)
 
         /// <summary>

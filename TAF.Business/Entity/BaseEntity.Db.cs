@@ -270,8 +270,13 @@ namespace TAF
             var result = 0;
             PreInsert();
             Validate();
-            result += Insert(commit);
-            PostInsert();
+            if(!this.IsValidated)
+            {
+                return -1;
+            }
+
+            result += this.Insert(commit);
+            this.PostInsert();
             return result;
         }
 
@@ -288,7 +293,11 @@ namespace TAF
         {
             var result = 0;
             PreUpdate();
-            Validate();
+            if (!this.IsValidated)
+            {
+                return -1;
+            }
+
             result += Update(commit);
             PostUpdate();
             return result;

@@ -20,7 +20,7 @@ namespace TAF.Test
         {
             base.Load(builder);
             builder.RegisterType<Validator2>().As<IValidator>();
-            builder.RegisterType<ValidationHandler>().As<IValidationHandler>();
+            builder.RegisterType<NothingValidationHandler>().As<IValidationHandler>();
             builder.RegisterType<DefaultDbProvder>().As<IDbProvider>();
             builder.Register<IModel>(
                                  (c, p) =>
