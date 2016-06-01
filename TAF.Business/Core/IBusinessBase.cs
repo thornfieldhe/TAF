@@ -17,8 +17,8 @@ namespace TAF.Core
     /// </summary>
     public interface IBusinessBase : IEntityBase, IBaseStatus
     {
-           
-            DateTime CreatedDate
+
+        DateTime CreatedDate
         {
             get;
         }
@@ -34,6 +34,16 @@ namespace TAF.Core
         }
 
         int Status
+        {
+            get; set;
+        }
+
+        string CreatedBy
+        {
+            get; set;
+        }
+
+        string ModifyBy
         {
             get; set;
         }

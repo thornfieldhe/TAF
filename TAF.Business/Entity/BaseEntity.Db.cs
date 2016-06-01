@@ -11,6 +11,7 @@ namespace TAF
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq.Expressions;
 
     using TAF.Core;
@@ -27,6 +28,7 @@ namespace TAF
             this.DbProvider = dbProvider;
         }
 
+        [NotMapped]
         public IDbProvider DbProvider
         {
             get; set;
@@ -369,6 +371,7 @@ namespace TAF
             {
                 this.Id = Guid.NewGuid();
             }
+
             this.CreatedDate = DateTime.Now;
             this.ChangedDate = DateTime.Now;
             this.MarkNew();

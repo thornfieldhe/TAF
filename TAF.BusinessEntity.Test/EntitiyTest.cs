@@ -27,9 +27,10 @@ namespace TAF.BusinessEntity.Test
         [TestMethod]
         public void TestDelete()
         {
+            Assert.AreEqual(1, User.GetAll().Count);
             var user = User.Find(r => r.Name == "n1");
-            var result = user.SoftDelete();
-            Assert.AreEqual(1, result);
+            user.SoftDelete();
+            Assert.AreEqual(0, User.GetAll().Count);
         }
 
         /// <summary>

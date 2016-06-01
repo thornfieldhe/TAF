@@ -1,11 +1,7 @@
 ﻿namespace TAF.MVC.Businesses
 {
-    using System.Data.Entity;
 
     using Autofac;
-
-    using TAF.Core;
-    using TAF.Mvc.Businesses;
 
     /// <summary>
     /// 依赖注入配置
@@ -21,12 +17,6 @@
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-            LoadDb(builder);
-        }
-
-        protected virtual void LoadDb(ContainerBuilder builder)
-        {
-            builder.RegisterType<TAFDbContext>().As<DbContext>();
         }
     }
 }

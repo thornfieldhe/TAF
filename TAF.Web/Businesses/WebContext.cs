@@ -5,7 +5,7 @@
     using TAF.Mvc.Businesses;
     using TAF.Web.Models;
 
-    public class WebDbContext : TAFDbContext
+    public class WebDbContext : AccountDbContext
     {
         public DbSet<SystemDictionary> Dictionaries
         {

@@ -47,6 +47,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework.DynamicFilters, Version=1.4.10.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.DynamicFilters.1.4.10.2\lib\net40\EntityFramework.DynamicFilters.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
@@ -147,19 +155,23 @@
     <Compile Include="Account\Business\AccountManager.cs" />
     <Compile Include="Account\Model\AccountConfig.cs" />
     <Compile Include="Account\Model\ApplicationRole.cs" />
+    <Compile Include="Account\View\LoginUserView.cs" />
+    <Compile Include="Account\View\UserInfoView.cs" />
+    <Compile Include="Account\View\UserListView.cs" />
+    <Compile Include="Account\View\UserQueryView.cs" />
     <Compile Include="App_Start\IndentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Businesses\BaseDbInitializer.cs" />
     <Compile Include="Businesses\IocConfig.cs" />
-    <Compile Include="Businesses\TAFContext.cs" />
+    <Compile Include="Businesses\AccountDbContext.cs" />
     <Compile Include="Common\Interface\IContextSeeder.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BaseTAFController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Account\Model\ApplicationUser.cs" />
-    <Compile Include="Models\ApplicationUser\UserViews.cs" />
-    <Compile Include="Models\KeyValueEntity.cs" />
+    <Compile Include="Account\View\ChangedPasswordView.cs" />
+    <Compile Include="Common\Model\KeyValueEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateMigration\Models\UpdateMigration.cs" />
   </ItemGroup>
@@ -178,7 +190,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Common\Model\" />
     <Folder Include="Templates\" />
     <Folder Include="UpdateMigration\Businesses\" />
   </ItemGroup>

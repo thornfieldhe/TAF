@@ -13,6 +13,7 @@ namespace TAF
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
 
@@ -133,6 +134,40 @@ namespace TAF
             }
         }
 
+        private string createdBy;
+        /// <summary>
+        /// Gets or sets the changed date.
+        /// </summary>
+        [Description("创建者")]
+        public string CreatedBy
+        {
+            get
+            {
+                return this.createdBy;
+            }
+            set
+            {
+                SetProperty(ref this.createdBy, value);
+            }
+        }
+
+        private string modifyBy;
+        /// <summary>
+        /// Gets or sets the changed date.
+        /// </summary>
+        [Description("更新者")]
+        public string ModifyBy
+        {
+            get
+            {
+                return this.modifyBy;
+            }
+            set
+            {
+                SetProperty(ref this.modifyBy, value);
+            }
+        }
+
         private byte[] version;
         /// <summary>
         /// Gets or sets the version.
@@ -202,6 +237,7 @@ namespace TAF
         /// <summary>
         /// 当前属性值列表
         /// </summary>
+        [NotMapped]
         public Dictionary<string, string> CurrentValues
         {
             get; private set;
@@ -210,6 +246,7 @@ namespace TAF
         /// <summary>
         /// 初始属性值列表
         /// </summary>
+        [NotMapped]
         public Dictionary<string, string> OriginalValues
         {
             get; private set;
@@ -219,6 +256,7 @@ namespace TAF
         /// 已改变属性值列表
         /// </summary>
         /// <remarks>键，原值，现值</remarks>
+        [NotMapped]
         public List<Tuple<string, string, string>> ChangedValues
         {
             get

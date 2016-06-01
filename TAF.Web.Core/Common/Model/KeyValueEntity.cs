@@ -9,17 +9,14 @@
 
 namespace TAF.Mvc
 {
-    using System;
-    using TAF.Core;
-
-    public class KeyValueEntity : IEntityBase
+    public class KeyValueEntity<T, K>
     {
-        public Guid Id
+        public T Id
         {
             get; set;
         }
 
-        public string Name
+        public K Name
         {
             get; set;
         }

@@ -10,8 +10,11 @@
 namespace TAF.Test
 {
     using System;
+    using System.Linq;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TAF;
+    using TAF.Utility;
     using TAF.Validation;
 
     /// <summary>
@@ -39,18 +42,12 @@ namespace TAF.Test
         /// 基本验证
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void TestSetValidationHandler2()
         {
-            try
+            user = new User2();
+            if (user.IsValidated.Not())
             {
-                user = new User2();
-                this.user.Validate();
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("姓名不能为空", ex.Message);
-                throw;
+                Assert.AreEqual("姓名不能为空", this.user.ValidationResult.First().ErrorMessage);
             }
         }
 

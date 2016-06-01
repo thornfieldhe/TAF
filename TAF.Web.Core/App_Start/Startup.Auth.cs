@@ -16,7 +16,7 @@
     {
         public void ConfigureAuth(IAppBuilder app)
         {
-            app.CreatePerOwinContext(TAFDbContext.Create);
+            app.CreatePerOwinContext(AccountDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 

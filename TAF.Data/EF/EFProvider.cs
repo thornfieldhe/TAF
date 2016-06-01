@@ -5,13 +5,10 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
-
     using AutoMapper;
-
     using EntityFramework.Caching;
     using EntityFramework.Extensions;
     using EntityFramework.Future;
-
     /// <summary>
     /// EF数据提供者
     /// </summary>
@@ -25,6 +22,10 @@
         public EFProvider()
         {
             this.DbContext = Ioc.Create<DbContext>();
+            //            this.DbContext.EnableFilter("Status");
+            //            this.DbContext.SetFilterScopedParameterValue("Status", -1);
+            //            this.DbContext.EnableFilter("CreatedBy").SetParameter("userId", "1");
+            //            this.DbContext.EnableFilter("ModifyBy").SetParameter("userId", "1");
         }
 
         #endregion
@@ -68,7 +69,7 @@
             bool useCache = false) where K : BaseBusiness<K>, new() where T : new() where R : new()
         {
             var set = this.DbContext.Set<K>();
-            var query = useCache ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().Where(r => !r.IsDelete) : set;
+            var query = useCache ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable() : set;
             return Load<R, K, T>(pager, query, whereFunc, orderByFunc, isAsc);
         }
 
@@ -104,7 +105,6 @@
             var query = useCache
                             ? set.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1)))
                                   .AsQueryable()
-                                  .Where(r => !r.IsDelete)
                             : set;
             return Load<K, R>(pager, query.AsEnumerable(), whereFunc, orderByFunc, isAsc);
         }
@@ -245,8 +245,8 @@
         {
             var query = this.DbContext.Set<K>();
             var item = useCache
-                ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().Where(r => !r.IsDelete).FirstOrDefault(func)
-                : query.Where(r => !r.IsDelete).FirstOrDefault(func);
+                ? query.FromCache(CachePolicy.WithDurationExpiration(TimeSpan.FromDays(1))).AsQueryable().FirstOrDefault(func)
+                : query.FirstOrDefault(func);
             return item;
         }
 
@@ -265,7 +265,7 @@
         /// </returns>
         public bool Exist<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new()
         {
-            return this.DbContext.Set<K>().Where(r => !r.IsDelete).Any(func);
+            return this.DbContext.Set<K>().Any(func);
         }
 
         /// <summary>
@@ -281,7 +281,7 @@
         /// </returns>
         public int Count<K>(Expression<Func<K, bool>> func) where K : BaseBusiness<K>, new()
         {
-            return this.DbContext.Set<K>().Where(r => !r.IsDelete).Count(func);
+            return this.DbContext.Set<K>().Count(func);
         }
 
         /// <summary>

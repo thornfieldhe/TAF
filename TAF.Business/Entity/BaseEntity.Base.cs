@@ -12,7 +12,6 @@ namespace TAF
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Runtime.Serialization;
 
     using TAF.Core;
     using TAF.Entity;
@@ -40,7 +39,7 @@ namespace TAF
         /// <summary>
         /// 新建数据，未录入数据库
         /// </summary>
-        [IgnoreDataMember]
+        [NotMapped]
         public bool IsNew
         {
             get
@@ -76,6 +75,7 @@ namespace TAF
         /// <summary>
         /// 数据从获取开始，已被修改
         /// </summary>
+        [NotMapped]
         public bool IsDirty
         {
             get
@@ -373,6 +373,16 @@ namespace TAF
         }
 
         /// <summary>
+        /// 验证结果
+        /// </summary>
+        public ValidationResultCollection ValidationResult
+        {
+            get; private set;
+        }
+
+
+
+        /// <summary>
         /// The is validated.
         /// </summary>
         /// <returns>
@@ -382,7 +392,8 @@ namespace TAF
         {
             get
             {
-                return GetValidationResult().IsValid;
+                this.ValidationResult = GetValidationResult();
+                return this.ValidationResult.IsValid;
             }
         }
 

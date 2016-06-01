@@ -11,8 +11,6 @@ namespace TAF.Data
 {
     using System.Data.Entity.ModelConfiguration;
 
-    using EntityFramework.Filters;
-
     using TAF.Core;
 
 
@@ -32,7 +30,6 @@ namespace TAF.Data
             this.Property(i => i.Version).IsRowVersion();
             this.Property(i => i.CreatedDate).IsRequired();
             this.Property(i => i.ChangedDate).IsRequired();
-            this.Filter("Status", i => i.Condition(l => l.Status != -1));
         }
     }
 }

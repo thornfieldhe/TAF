@@ -13,7 +13,7 @@ namespace TAF.BusinessEntity.Test.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201510310503489_init"; }
+            get { return "201606011404449_init"; }
         }
         
         string IMigrationMetadata.Source

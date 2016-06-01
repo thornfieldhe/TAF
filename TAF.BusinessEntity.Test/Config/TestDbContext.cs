@@ -2,11 +2,13 @@
 
 namespace TAF.BusinessEntity.Test
 {
-    using System.Data.Entity.Infrastructure.Interception;
 
-    using EntityFramework.Filters;
+    using EntityFramework.DynamicFilters;
 
-    public class TestDbContext : DbContext
+    using TAF.Core;
+    using TAF.Data;
+
+    public class TestDbContext : BaseDbContext
     {
         public TestDbContext(string connectiion)
             : base(connectiion)
@@ -22,9 +24,13 @@ namespace TAF.BusinessEntity.Test
             get; set;
         }
 
+        public DbSet<User> Users
+        {
+            get; set;
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            DbInterception.Add(new FilterInterceptor());
             modelBuilder.Configurations.Add(new UserMap());
             base.OnModelCreating(modelBuilder);
         }

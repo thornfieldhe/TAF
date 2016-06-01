@@ -9,8 +9,6 @@
 
 namespace TAF.Validation
 {
-    using System;
-    using System.Linq;
 
     using TAF.Core;
 
@@ -27,12 +25,11 @@ namespace TAF.Validation
         /// </param>
         public void Handle(ValidationResultCollection results)
         {
-            if (results.IsValid)
-            {
-                return;
-            }
-
-            throw new Exception(results.First().ErrorMessage);
+            //不处理
+            //            if (results.IsValid)
+            //            {
+            //                return;
+            //            }
         }
     }
 }

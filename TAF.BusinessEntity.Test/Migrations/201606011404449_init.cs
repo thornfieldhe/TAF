@@ -19,9 +19,15 @@ namespace TAF.BusinessEntity.Test.Migrations
                         Status = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         ChangedDate = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                        ModifyBy = c.String(),
                         Version = c.Binary(),
                         Note = c.String(),
-                    })
+                    },
+                annotations: new Dictionary<string, object>
+                {
+                    { "DynamicFilter_Student_Status", "EntityFramework.DynamicFilters.DynamicFilterDefinition" },
+                })
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
@@ -33,12 +39,14 @@ namespace TAF.BusinessEntity.Test.Migrations
                         Status = c.Int(nullable: false),
                         CreatedDate = c.DateTime(nullable: false),
                         ChangedDate = c.DateTime(nullable: false),
+                        CreatedBy = c.String(),
+                        ModifyBy = c.String(),
                         Version = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                         Note = c.String(),
                     },
                 annotations: new Dictionary<string, object>
                 {
-                    { "globalFilter_Status", "EntityFramework.Filters.FilterDefinition" },
+                    { "DynamicFilter_User_Status", "EntityFramework.DynamicFilters.DynamicFilterDefinition" },
                 })
                 .PrimaryKey(t => t.Id);
             
@@ -49,9 +57,13 @@ namespace TAF.BusinessEntity.Test.Migrations
             DropTable("dbo.Users",
                 removedAnnotations: new Dictionary<string, object>
                 {
-                    { "globalFilter_Status", "EntityFramework.Filters.FilterDefinition" },
+                    { "DynamicFilter_User_Status", "EntityFramework.DynamicFilters.DynamicFilterDefinition" },
                 });
-            DropTable("dbo.Students");
+            DropTable("dbo.Students",
+                removedAnnotations: new Dictionary<string, object>
+                {
+                    { "DynamicFilter_Student_Status", "EntityFramework.DynamicFilters.DynamicFilterDefinition" },
+                });
         }
     }
 }

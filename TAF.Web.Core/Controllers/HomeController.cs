@@ -26,7 +26,7 @@ namespace TAF.Mvc
 
     using TAF.Business;
     using TAF.Mvc.Model;
-    using TAF.MVC.View;
+    using TAF.Mvc.View;
     using TAF.Utility;
 
     /// <summary>
@@ -147,7 +147,7 @@ namespace TAF.Mvc
         /// </returns>
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> Login(LoginUser user)
+        public async Task<ActionResult> Login(LoginUserView user)
         {
             var result =
                 await SignInManager.PasswordSignInAsync(user.Name, user.Password, true, shouldLockout: false);
