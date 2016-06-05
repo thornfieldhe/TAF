@@ -3,7 +3,6 @@ using System.Web.Routing;
 
 namespace TAF.Web
 {
-    using System.Data.Entity;
     using System.Web.Optimization;
 
     using AutoMapper;
@@ -19,7 +18,7 @@ namespace TAF.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<WebDbContext, Migrations.Configuration>());
+            //            Database.SetInitializer(new MigrateDatabaseToLatestVersion<WebDbContext, Migrations.Configuration>());
             Ioc.Register(new IocConfig());
             InitMap();
         }

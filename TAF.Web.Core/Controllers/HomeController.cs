@@ -150,7 +150,7 @@ namespace TAF.Mvc
         public async Task<ActionResult> Login(LoginUserView user)
         {
             var result =
-                await SignInManager.PasswordSignInAsync(user.Name, user.Password, true, shouldLockout: false);
+                await SignInManager.PasswordSignInAsync(user.Name, user.Password, true, false);
 
             switch (result)
             {

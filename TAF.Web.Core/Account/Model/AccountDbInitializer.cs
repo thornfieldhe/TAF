@@ -1,4 +1,13 @@
-﻿namespace TAF.MVC.Businesses
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AccountDbInitializer.cs" company="" author="何翔华">
+//   
+// </copyright>
+// <summary>
+//   AccountDbInitializer
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace TAF.Mvc.Model
 {
     using System;
     using System.Data.Entity;
@@ -7,28 +16,25 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    using TAF.Mvc;
-    using TAF.Mvc.Businesses;
-    using TAF.Mvc.Model;
-
     /// <summary>
-    /// 
+    /// 账号初始化
     /// </summary>
-    public class BaseDbInitializer : CreateDatabaseIfNotExists<AccountDbContext>
+    public class AccountDbInitializer : CommonContextSeeder
     {
         private const string SaUserId = "76edf148-3e31-4e9e-8cf8-f17d3c96f05f";
         private const string SaUserName = "sa";
         private const string SaPassword = "11111111";
-        private const string Admins = "系统管理员组";
-        private const string Users = "用户组";
+        private const string Admins = "Admins";
+        private const string Users = "Users";
 
+        public AccountDbInitializer(DbContext context, string key)
+            : base(context, key) { }
 
-        protected override void Seed(AccountDbContext context)
+        public override void UpdateData()
         {
-            base.Seed(context);
             var fullName = "系统管理员";
             var roleNames = new string[] { Admins, Users };
-            using (var roleManager = ApplicationRoleManager.CreateForEF(context))
+            using (var roleManager = ApplicationRoleManager.CreateForEF(this.Context))
             {
                 var applicationRoleManager = roleManager;
                 if ((from item in roleNames
@@ -43,7 +49,7 @@
                 }
             }
 
-            using (var userManager = ApplicationUserManager.CreateForEF(context))
+            using (var userManager = ApplicationUserManager.CreateForEF(this.Context))
             {
                 var user = userManager.FindByName(SaUserName);
                 if (user == null)

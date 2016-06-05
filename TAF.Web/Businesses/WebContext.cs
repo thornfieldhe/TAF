@@ -2,10 +2,10 @@
 {
     using System.Data.Entity;
 
-    using TAF.Mvc.Businesses;
+    using TAF.Mvc.Business;
     using TAF.Web.Models;
 
-    public class WebDbContext : AccountDbContext
+    public class WebDbContext : AccountContext
     {
         public DbSet<SystemDictionary> Dictionaries
         {

@@ -130,6 +130,7 @@
     <Compile Include="Entity\ActionResult\ActionStatuses.cs" />
     <Compile Include="Entity\ActionResult\InventoryAccess.cs" />
     <Compile Include="Entity\BaseEntity.Base.cs" />
+    <Compile Include="Entity\KeyValueEntity.cs" />
     <Compile Include="Entity\Pager.cs" />
     <Compile Include="Entity\IDbProvider.cs" />
     <Compile Include="Logs\LogManager.cs" />

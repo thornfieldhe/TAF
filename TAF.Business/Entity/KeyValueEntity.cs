@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF.Mvc.Model
+namespace TAF
 {
     public class KeyValueEntity<T, K>
     {

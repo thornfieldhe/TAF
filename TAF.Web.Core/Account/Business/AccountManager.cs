@@ -1,4 +1,4 @@
-﻿namespace TAF.MVC.Business
+﻿namespace TAF.Mvc.Business
 {
     using System;
 

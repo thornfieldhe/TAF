@@ -7,7 +7,6 @@
     /// </summary>
     public class AccountConfig : SingletonBase<AccountConfig>
     {
-
         /// <summary>
         /// 验证邮箱地址
         /// </summary>

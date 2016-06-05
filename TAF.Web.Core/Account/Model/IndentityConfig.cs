@@ -10,7 +10,7 @@
     using Microsoft.Owin;
     using Microsoft.Owin.Security;
 
-    using TAF.Mvc.Businesses;
+    using TAF.Mvc.Business;
     using TAF.Mvc.Model;
 
     public class ApplicationRoleManager : RoleManager<IdentityRole>
@@ -24,7 +24,7 @@
         {
             if (db == null)
             {
-                db = AccountDbContext.Create();
+                db = AccountContext.Create();
             }
 
             var manager = new ApplicationRoleManager(new RoleStore<IdentityRole>(db));
@@ -34,7 +34,7 @@
 
         public static ApplicationRoleManager CreateForOwin(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
         {
-            var db = context?.Get<AccountDbContext>();
+            var db = context?.Get<AccountContext>();
             return CreateForEF(db);
         }
     }
@@ -51,7 +51,7 @@
         public static ApplicationUserManager CreateForEF(DbContext db)
         {
             if (db == null)
-                db = AccountDbContext.Create();
+                db = AccountContext.Create();
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
             return manager;
         }
@@ -63,7 +63,7 @@
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<AccountDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<AccountContext>()));
             // 配置用户名的验证逻辑
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {

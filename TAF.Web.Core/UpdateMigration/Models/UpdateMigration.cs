@@ -1,7 +1,5 @@
 ﻿namespace TAF.Mvc.Model
 {
-    using System.ComponentModel.DataAnnotations.Schema;
-
     /// <summary>
     /// 数据库更新操作
     /// </summary>

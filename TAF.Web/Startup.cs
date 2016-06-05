@@ -4,15 +4,13 @@
 namespace TAF.Web
 {
     using Owin;
-
-    using TAF.Mvc;
-    using TAF.MVC;
+    using TAF.Mvc.Business;
 
     public class Startup
     {
         public void Configuration(IAppBuilder app)
         {
-            new TAFStartup().ConfigureAuth(app);
+            app.ConfigureAuth();
         }
     }
 }

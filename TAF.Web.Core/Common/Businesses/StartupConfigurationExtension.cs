@@ -1,4 +1,4 @@
-﻿namespace TAF.Mvc
+﻿namespace TAF.Mvc.Business
 {
     using System;
 
@@ -8,15 +8,13 @@
     using Microsoft.Owin.Security.Cookies;
 
     using Owin;
-
-    using TAF.Mvc.Businesses;
     using TAF.Mvc.Model;
 
-    public class TAFStartup
+    public static class StartupConfigurationExtension
     {
-        public void ConfigureAuth(IAppBuilder app)
+        public static void ConfigureAuth(this IAppBuilder app)
         {
-            app.CreatePerOwinContext(AccountDbContext.Create);
+            app.CreatePerOwinContext(AccountContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
