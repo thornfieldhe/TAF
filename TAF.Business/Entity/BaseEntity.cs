@@ -46,6 +46,7 @@ namespace TAF
             Status = 0;
             CreatedDate = DateTime.Now;
             ChangedDate = DateTime.Now;
+            createdBy = ModifyBy;
             InitProperties();
 
             rules = new List<IValidationRule>();

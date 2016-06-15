@@ -13,7 +13,7 @@ namespace TAF.Mvc.Business
         
         string IMigrationMetadata.Id
         {
-            get { return "201606021520246_initAccount"; }
+            get { return "201606151312011_initAccount"; }
         }
         
         string IMigrationMetadata.Source

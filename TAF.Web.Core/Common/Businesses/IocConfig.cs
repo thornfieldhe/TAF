@@ -9,7 +9,14 @@
 
 namespace TAF.MVC.Business
 {
+    using System.Data.Entity;
+
     using Autofac;
+
+    using CacheManager.Core;
+
+    using TAF.Data;
+    using TAF.Mvc.Business;
 
     /// <summary>
     /// 依赖注入配置
@@ -25,6 +32,17 @@ namespace TAF.MVC.Business
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
+            var cache = CacheFactory.Build(
+                "getStartedCache",
+                settings =>
+                    {
+                        settings.WithSystemRuntimeCacheHandle("handleName")
+                .And
+                .WithRetryTimeout(7200000);
+                    });
+            builder.RegisterInstance(cache);
+            builder.RegisterType<TAFContext>().As<DbContext>();
+            builder.RegisterType<EFProvider>().As<IDbProvider>();
         }
     }
 }

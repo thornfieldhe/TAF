@@ -355,6 +355,7 @@ namespace TAF
         /// <summary>
         /// 验证结果
         /// </summary>
+        [NotMapped]
         public ValidationResultCollection ValidationResult
         {
             get; private set;

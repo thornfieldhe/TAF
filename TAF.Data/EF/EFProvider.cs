@@ -28,6 +28,11 @@
             //            this.DbContext.EnableFilter("ModifyBy").SetParameter("userId", "1");
         }
 
+        public EFProvider(DbContext context)
+        {
+            this.DbContext = context;
+        }
+
         #endregion
 
         #region 查询

@@ -13,25 +13,25 @@
     /// <summary>
     /// 用户管理器
     /// </summary>
-    public class AccountManager : UserManager<ApplicationUser>
+    public class AccountUserManager : UserManager<ApplicationUser>
     {
-        public AccountManager(IUserStore<ApplicationUser> store) : base(store)
+        public AccountUserManager(IUserStore<ApplicationUser> store) : base(store)
         {
         }
 
-        public static AccountManager GetFromOwinContext(IOwinContext context)
+        public static AccountUserManager GetFromOwinContext(IOwinContext context)
         {
-            return context.GetUserManager<AccountManager>();
+            return context.GetUserManager<AccountUserManager>();
         }
 
-        public static AccountManager CreateForAccount(AccountContext db)
+        public static AccountUserManager CreateForAccount(TAFContext db)
         {
             if (db == null)
             {
-                db = AccountContext.Create();
+                db = TAFContext.Create();
             }
 
-            var manager = new AccountManager(new UserStore<ApplicationUser>(db));
+            var manager = new AccountUserManager(new UserStore<ApplicationUser>(db));
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,

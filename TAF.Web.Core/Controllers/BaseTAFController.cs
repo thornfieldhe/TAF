@@ -10,29 +10,20 @@
 namespace TAF.Mvc
 {
     using System.Linq;
-    using System.Web.Mvc;
-    using System.Web.Mvc.Filters;
+    using System.Web.Http;
+    using System.Web.Http.ExceptionHandling;
+    using System.Web.Http.Results;
 
     using TAF.Business;
 
     /// <summary>
     /// The BasicAuthorizeController controller.
     /// </summary>
-    public class BaseTAFController : Controller
+    public class BaseTAFController : ApiController
     {
-        protected override void OnAuthentication(AuthenticationContext filterContext)
+        public void T()
         {
-            var allowAnonymous = filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), false).Any();
-            if (!allowAnonymous && !this.User.Identity.IsAuthenticated)
-            {
-                filterContext.HttpContext.Response.Redirect("/Home/Login");
-            }
-        }
-
-        protected override void OnException(ExceptionContext filterContext)
-        {
-            LogManager.Instance.Logger.Error(filterContext.Exception);
-            filterContext.Result = new JsonResult { Data = new ActionResultStatus(0, filterContext.Exception), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            
         }
     }
 }

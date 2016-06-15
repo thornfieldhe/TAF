@@ -6,6 +6,7 @@
     /// <summary>
     /// 
     /// </summary>
+    [Authorize]
     public class BugsController : ApiController
     {
 

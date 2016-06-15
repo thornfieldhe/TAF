@@ -13,7 +13,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class BaseDbInitializer : CreateDatabaseIfNotExists<AccountContext>
+    public class BaseDbInitializer : CreateDatabaseIfNotExists<TAFContext>
     {
         private const string SaUserId = "76edf148-3e31-4e9e-8cf8-f17d3c96f05f";
         private const string SaUserName = "sa";
@@ -22,7 +22,7 @@
         private const string Users = "用户组";
 
 
-        protected override void Seed(AccountContext context)
+        protected override void Seed(TAFContext context)
         {
             base.Seed(context);
             var fullName = "系统管理员";

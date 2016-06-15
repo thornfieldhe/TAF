@@ -2,9 +2,9 @@ namespace TAF.Mvc.Business
 {
     using System.Data.Entity.Migrations;
 
-    internal sealed class AccountConfiguration : DbMigrationsConfiguration<AccountContext>
+    internal sealed class DefaultConfiguration : DbMigrationsConfiguration<TAFContext>
     {
-        public AccountConfiguration()
+        public DefaultConfiguration()
         {
             AutomaticMigrationsEnabled = false;
         }

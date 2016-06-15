@@ -41,6 +41,18 @@
         /// </summary>
         /// <param name="authority">
         /// </param>
+        public ActionResultStatus(int authority = 7)
+        {
+            this.Status = ActionStatuses.OK;
+            this.Authority = authority;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActionResultStatus"/> class. 
+        /// 异常初始化函数
+        /// </summary>
+        /// <param name="authority">
+        /// </param>
         /// <param name="ex">
         /// 异常
         /// </param>
@@ -52,7 +64,7 @@
                 this.Message = "401";
                 this.Status = ActionStatuses.Error;
             }
-            else if (ex != null)
+            if (ex != null)
             {
                 Status = ActionStatuses.Error;
                 Message = ex.Message;
@@ -60,7 +72,9 @@
             }
             else
             {
-                this.Status = ActionStatuses.OK;
+                Status = ActionStatuses.Error;
+                Message = "未指定异常";
+                ErrorCode = 500;
             }
 
             Authority = authority;

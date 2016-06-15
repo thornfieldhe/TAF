@@ -15,16 +15,16 @@
     /// <summary>
     /// 
     /// </summary>
-    public class AccountContext : IdentityDbContext<ApplicationUser>
+    public class TAFContext : IdentityDbContext<ApplicationUser>
     {
-        public AccountContext() : base("AccountConnection", false)
+        public TAFContext() : base("AccountConnection", false)
         {
             OtherSeeders = new List<IContextSeeder>();
         }
 
-        public static AccountContext Create()
+        public static TAFContext Create()
         {
-            return new AccountContext();
+            return new TAFContext();
         }
 
 

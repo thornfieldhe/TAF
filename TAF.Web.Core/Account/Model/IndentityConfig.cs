@@ -24,7 +24,7 @@
         {
             if (db == null)
             {
-                db = AccountContext.Create();
+                db = TAFContext.Create();
             }
 
             var manager = new ApplicationRoleManager(new RoleStore<IdentityRole>(db));
@@ -34,7 +34,7 @@
 
         public static ApplicationRoleManager CreateForOwin(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
         {
-            var db = context?.Get<AccountContext>();
+            var db = context?.Get<TAFContext>();
             return CreateForEF(db);
         }
     }
@@ -51,7 +51,7 @@
         public static ApplicationUserManager CreateForEF(DbContext db)
         {
             if (db == null)
-                db = AccountContext.Create();
+                db = TAFContext.Create();
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
             return manager;
         }
@@ -63,7 +63,7 @@
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<AccountContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<TAFContext>()));
             // 配置用户名的验证逻辑
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {

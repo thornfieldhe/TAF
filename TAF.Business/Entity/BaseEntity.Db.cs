@@ -23,7 +23,7 @@ namespace TAF
     /// </typeparam>
     public abstract partial class BaseBusiness<T> : IDbAction
     {
-        protected BaseBusiness(IDbProvider dbProvider)
+        protected BaseBusiness(IDbProvider dbProvider) : this()
         {
             this.DbProvider = dbProvider;
         }
@@ -269,12 +269,6 @@ namespace TAF
         {
             var result = 0;
             PreInsert();
-            Validate();
-            if(!this.IsValidated)
-            {
-                return -1;
-            }
-
             result += this.Insert(commit);
             this.PostInsert();
             return result;
@@ -293,11 +287,6 @@ namespace TAF
         {
             var result = 0;
             PreUpdate();
-            if (!this.IsValidated)
-            {
-                return -1;
-            }
-
             result += Update(commit);
             PostUpdate();
             return result;
