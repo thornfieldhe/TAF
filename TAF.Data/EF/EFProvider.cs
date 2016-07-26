@@ -304,12 +304,13 @@
         public int Add<K>(K item, bool commit) where K : BaseBusiness<K>, new()
         {
             this.DbContext.Set<K>().Add(item);
-            if (commit)
-            {
-                return this.DbContext.SaveChanges();
-            }
+            return commit ? this.DbContext.SaveChanges() : 0;
+        }
 
-            return 0;
+        public int AddRange<K>(IEnumerable<K> items, bool commit) where K : BaseBusiness<K>, new()
+        {
+            this.DbContext.Set<K>().AddRange(items);
+            return commit ? this.DbContext.SaveChanges() : 0;
         }
 
         /// <summary>
@@ -341,11 +342,7 @@
         public int Delete<K>(K item, bool allowCommit = true) where K : BaseBusiness<K>, new()
         {
             this.DbContext.Set<K>().Remove(item);
-            if (allowCommit)
-            {
-                return this.DbContext.SaveChanges();
-            }
-            return 0;
+            return allowCommit ? this.DbContext.SaveChanges() : 0;
         }
 
         /// <summary>

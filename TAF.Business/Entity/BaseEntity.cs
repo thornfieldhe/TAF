@@ -135,12 +135,12 @@ namespace TAF
             }
         }
 
-        private string createdBy;
+        private Guid createdBy;
         /// <summary>
         /// Gets or sets the changed date.
         /// </summary>
         [Description("创建者")]
-        public string CreatedBy
+        public Guid CreatedBy
         {
             get
             {
@@ -152,12 +152,12 @@ namespace TAF
             }
         }
 
-        private string modifyBy;
+        private Guid modifyBy;
         /// <summary>
         /// Gets or sets the changed date.
         /// </summary>
         [Description("更新者")]
-        public string ModifyBy
+        public Guid ModifyBy
         {
             get
             {

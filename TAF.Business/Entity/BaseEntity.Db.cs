@@ -14,6 +14,8 @@ namespace TAF
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq.Expressions;
 
+    using AutoMapper;
+
     using TAF.Core;
 
     /// <summary>
@@ -28,12 +30,26 @@ namespace TAF
             this.DbProvider = dbProvider;
         }
 
+        private static IDbProvider provider;
+
+        public static IDbProvider Provider
+        {
+            get
+            {
+                return provider ?? (provider = Ioc.Create<IDbProvider>());
+            }
+
+            set
+            {
+                provider = value ?? Ioc.Create<IDbProvider>();
+            }
+        }
+
         [NotMapped]
         public IDbProvider DbProvider
         {
             get; set;
         }
-
 
         #region 静态方法
 
@@ -50,15 +66,32 @@ namespace TAF
         /// </returns>
         public static List<T> GetAll(bool useCache = false)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            var result = provider.Get<T>(r => true, useCache);
+            var result = Provider.Get<T>(r => true, useCache);
             result.ForEach(
                 r =>
                 {
                     r.MarkClean();
-                    r.DbProvider = provider;
+                    r.DbProvider = Provider;
                 });
             return result;
+        }
+
+        /// <summary>
+        /// 查询所有数据
+        /// </summary>
+        /// <typeparam name="K">
+        /// 对象视图
+        /// </typeparam>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// The <see cref="List{T}"/>.
+        /// </returns>
+        public static List<K> GetAll<K>(bool useCache = false) where K : IEntityBase
+        {
+            var result = GetAll(useCache);
+            return result != null ? Mapper.Map<List<T>, List<K>>(result) : new List<K>();
         }
 
         /// <summary>
@@ -74,15 +107,33 @@ namespace TAF
         /// </returns>
         public static List<T> Get(Expression<Func<T, bool>> func, bool useCache = false)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            var result = provider.Get(func, useCache);
+            var result = Provider.Get(func, useCache);
             result.ForEach(
                 r =>
                     {
                         r.MarkClean();
-                        r.DbProvider = provider;
+                        r.DbProvider = Provider;
                     });
             return result;
+        }
+
+        /// <summary>
+        /// 条件查询数据
+        /// </summary>
+        /// <typeparam name="K"/>
+        /// 对象列表视图
+        /// <param name="func">
+        /// 过滤条件
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// </returns>
+        public static List<K> Get<K>(Expression<Func<T, bool>> func, bool useCache = false) where K : IEntityBase
+        {
+            var result = Get(func, useCache);
+            return result != null ? Mapper.Map<List<T>, List<K>>(result) : new List<K>();
         }
 
         /// <summary>
@@ -120,7 +171,66 @@ namespace TAF
             bool isAsc = true,
             bool useCache = false) where T : BaseBusiness<T>, new()
         {
-            return Ioc.Create<IDbProvider>().Pages<T, R>(pager, whereFunc, orderByFunc, isAsc, useCache);
+            return Provider.Pages<T, R>(pager, whereFunc, orderByFunc, isAsc, useCache);
+        }
+
+        /// <summary>
+        /// 分页查询数据
+        /// 转换成对象T的列表
+        /// </summary>
+        /// <param name="pager">
+        /// 分页对象
+        /// </param>
+        /// <param name="whereFunc">
+        /// 过滤条件
+        /// </param>
+        /// <param name="orderByFunc">
+        /// 排序属性
+        /// </param>
+        /// <param name="isAsc">
+        /// 是否是顺序
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <typeparam name="R">
+        /// 排序对象
+        /// </typeparam>
+        /// <typeparam name="T">
+        /// 结果转换为List<T>输出
+        /// </typeparam>
+        /// <typeparam name="K">
+        /// 对象列表视图
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="pager"/>.
+        /// </returns>
+        public static Pager<K> Pages<R, T, K>(
+            Pager<T> pager,
+            Func<T, bool> whereFunc,
+            Func<T, R> orderByFunc,
+            bool isAsc = true,
+            bool useCache = false) where T : BaseBusiness<T>, new() where K : IEntityBase, new()
+        {
+            var result = Pages(pager, whereFunc, orderByFunc, isAsc, useCache);
+            var newPager = new Pager<K>()
+            {
+                Datas = new List<K>(),
+                PageIndex = 1,
+                PageSize = 1,
+                ShowIndex = new List<int>() { 1 },
+                Total = 1
+            };
+
+            if (result == null)
+                return newPager;
+
+            newPager.Datas = Mapper.Map<List<T>, List<K>>(result.Datas);
+            newPager.PageIndex = result.PageIndex;
+            newPager.PageSize = result.PageSize;
+            newPager.ShowIndex = result.ShowIndex;
+            newPager.Total = result.Total;
+            return newPager;
         }
 
         /// <summary>
@@ -137,16 +247,36 @@ namespace TAF
         /// </returns>
         public static T Find(Guid id, bool useCache = false)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            var item = provider.Find<T>(r => r.Id == id, useCache);
+            var item = Provider.Find<T>(r => r.Id == id, useCache);
             if (item == null)
             {
                 return null;
             }
 
-            item.DbProvider = provider;
+            item.DbProvider = Provider;
             item.MarkClean();
             return item;
+        }
+
+        /// <summary>
+        /// 根据主键查询单条数据
+        /// </summary>
+        /// <typeparam name="K">
+        /// 对象视图
+        /// </typeparam>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// The <see cref="T"/>.
+        /// </returns>
+        public static K Find<K>(Guid id, bool useCache = false) where K : class, IEntityBase
+        {
+            var result = Find(id, useCache);
+            return result != null ? Mapper.Map<T, K>(result) : null;
         }
 
         /// <summary>
@@ -163,18 +293,37 @@ namespace TAF
         /// </returns>
         public static T Find(Expression<Func<T, bool>> func, bool useCache = false)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            var item = provider.Find(func, useCache);
+            var item = Provider.Find(func, useCache);
             if (item == null)
             {
                 return null;
             }
 
-            item.DbProvider = provider;
+            item.DbProvider = Provider;
             item.MarkClean();
             return item;
         }
 
+        /// <summary>
+        /// 条件查询单条数据
+        /// </summary>
+        /// <typeparam name="K">
+        /// 对象视图
+        /// </typeparam>
+        /// <param name="func">
+        /// The id.
+        /// </param>
+        /// <param name="useCache">
+        /// 是否使用缓存
+        /// </param>
+        /// <returns>
+        /// The <see cref="T"/>.
+        /// </returns>
+        public static K Find<K>(Expression<Func<T, bool>> func, bool useCache = false) where K : class, IEntityBase
+        {
+            var result = Find(func, useCache);
+            return result != null ? Mapper.Map<T, K>(result) : null;
+        }
         #endregion
 
         /// <summary>
@@ -188,8 +337,7 @@ namespace TAF
         /// </returns>
         public static bool Exist(Expression<Func<T, bool>> func)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            return provider.Exist(func);
+            return Provider.Exist(func);
         }
 
         /// <summary>
@@ -203,8 +351,38 @@ namespace TAF
         /// </returns>
         public static int Count(Expression<Func<T, bool>> func)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            return provider.Count(func);
+            return Provider.Count(func);
+        }
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="t">
+        /// The t.
+        /// </param>
+        /// <param name="commit"></param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public static int Add(T t, bool commit = true)
+        {
+            return Provider.Add(t, commit);
+        }
+
+        /// <summary>
+        /// 批量新增
+        /// </summary>
+        /// <param name="ts">
+        /// The ts.
+        /// </param>
+        /// <param name="commit">
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        public static int AddRange(IEnumerable<T> ts, bool commit)
+        {
+            return Provider.AddRange(ts, commit);
         }
 
         /// <summary>
@@ -216,10 +394,9 @@ namespace TAF
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public static int Delete(Guid id, bool commit)
+        public static int DeleteById(Guid id, bool commit)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            return provider.Delete<T>(id, commit);
+            return Provider.Delete<T>(id, commit);
         }
 
         /// <summary>
@@ -232,8 +409,7 @@ namespace TAF
         /// </returns>
         public static int Delete(Expression<Func<T, bool>> func)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            return provider.Delete(func);
+            return Provider.Delete(func);
         }
 
         /// <summary>
@@ -248,8 +424,7 @@ namespace TAF
         /// </returns>
         public static int Update(Expression<Func<T, bool>> func, Expression<Func<T, T>> update)
         {
-            var provider = Ioc.Create<IDbProvider>();
-            return provider.Update(func, update);
+            return Provider.Update(func, update);
         }
 
         #endregion
@@ -259,16 +434,19 @@ namespace TAF
         /// <summary>
         /// 创建一个对象
         /// </summary>
+        /// <param name="userId">
+        /// The user Id.
+        /// </param>
         /// <param name="commit">
         /// The commit.
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Create(bool commit = true)
+        public int Create(Guid userId, bool commit = true)
         {
             var result = 0;
-            PreInsert();
+            PreInsert(userId);
             result += this.Insert(commit);
             this.PostInsert();
             return result;
@@ -277,16 +455,19 @@ namespace TAF
         /// <summary>
         /// 更新一个对象
         /// </summary>
+        /// <param name="userId">
+        /// The user Id.
+        /// </param>
         /// <param name="commit">
         /// The commit.
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Save(bool commit = true)
+        public int Save(Guid userId, bool commit = true)
         {
             var result = 0;
-            PreUpdate();
+            PreUpdate(userId);
             result += Update(commit);
             PostUpdate();
             return result;
@@ -295,16 +476,19 @@ namespace TAF
         /// <summary>
         /// 删除一个对象
         /// </summary>
+        /// <param name="userId">
+        /// The user Id.
+        /// </param>
         /// <param name="commit">
         /// The commit.
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int SoftDelete(bool commit = true)
+        public int SoftDelete(Guid userId, bool commit = true)
         {
             var result = 0;
-            PreRemove();
+            PreRemove(userId);
             result += SoftRemove(commit);
             PostRemove();
             return result;
@@ -313,16 +497,19 @@ namespace TAF
         /// <summary>
         /// 删除一个对象
         /// </summary>
+        /// <param name="userId">
+        /// The user Id.
+        /// </param>
         /// <param name="commit">
         /// The commit.
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Delete(bool commit = true)
+        public int Delete(Guid userId, bool commit = true)
         {
             var result = 0;
-            PreRemove();
+            PreRemove(userId);
             result += Remove(commit);
             PostRemove();
             return result;
@@ -331,25 +518,28 @@ namespace TAF
         /// <summary>
         /// 直接提交一个对象，不用考虑是新增还是更新还是删除
         /// </summary>
+        /// <param name="userId">
+        /// The user Id.
+        /// </param>
         /// <param name="commit">
         /// The commit.
         /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
-        public int Submit(bool commit = true)
+        public int Submit(Guid userId, bool commit = true)
         {
             if (this.IsNew)
             {
-                Create(commit);
+                return Create(userId, commit);
             }
             else if (this.IsDirty)
             {
-                Update(commit);
+                return Save(userId, commit);
             }
             else if (IsDelete)
             {
-                SoftDelete(commit);
+                return SoftDelete(userId, commit);
             }
 
             return 0;
@@ -363,13 +553,18 @@ namespace TAF
         /// <summary>
         /// 在插入之前给对象赋值
         /// </summary>
-        protected virtual void PreInsert()
+        /// <param name="userId">
+        /// The user Id.
+        /// </param>
+        protected virtual void PreInsert(Guid userId)
         {
             if (this.Id == Guid.Empty)
             {
                 this.Id = Guid.NewGuid();
             }
 
+            this.CreatedBy = userId;
+            this.ModifyBy = userId;
             this.CreatedDate = DateTime.Now;
             this.ChangedDate = DateTime.Now;
             this.MarkNew();
@@ -404,15 +599,20 @@ namespace TAF
         /// <summary>
         /// 更新之前给对象赋值
         /// </summary>
-        protected virtual void PreUpdate()
+        /// <param name="userId">
+        /// The user Id.
+        /// </param>
+        protected virtual void PreUpdate(Guid userId)
         {
             ChangedDate = DateTime.Now;
+            ModifyBy = userId;
         }
 
         /// <summary>
         /// 更新对象到数据库
         /// </summary>
-        /// <param name="commit"></param>
+        /// <param name="commit">
+        /// </param>
         /// <returns>
         /// The <see cref="int"/>.
         /// </returns>
@@ -435,8 +635,12 @@ namespace TAF
         /// <summary>
         /// 数据库移除对象前执行操作
         /// </summary>
-        protected virtual void PreRemove()
+        /// <param name="userId">
+        /// The user Id.
+        /// </param>
+        protected virtual void PreRemove(Guid userId)
         {
+            this.ModifyBy = userId;
         }
 
         /// <summary>

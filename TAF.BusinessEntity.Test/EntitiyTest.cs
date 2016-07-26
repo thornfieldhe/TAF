@@ -2,6 +2,8 @@
 
 namespace TAF.BusinessEntity.Test
 {
+    using System;
+
     [TestClass]
     public class EntitiyTest
     {
@@ -10,7 +12,7 @@ namespace TAF.BusinessEntity.Test
         {
             var user = new User() { Name = "n1" };
 
-            var result = user.Create();
+            var result = user.Create(Guid.Empty);
             Assert.AreEqual(1, result);
             Assert.AreEqual(1, result);
         }
@@ -20,7 +22,7 @@ namespace TAF.BusinessEntity.Test
         {
             var user = User.Find(r => r.Name == "n1");
             user.Note = "pp";
-            var result = user.Save();
+            var result = user.Save(Guid.Empty);
             Assert.AreEqual(1, result);
         }
 
@@ -29,7 +31,7 @@ namespace TAF.BusinessEntity.Test
         {
             Assert.AreEqual(1, User.GetAll().Count);
             var user = User.Find(r => r.Name == "n1");
-            user.SoftDelete();
+            user.SoftDelete(Guid.Empty);
             Assert.AreEqual(0, User.GetAll().Count);
         }
 

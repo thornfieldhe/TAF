@@ -1,34 +1,53 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Log.cs" company="" author="何翔华">
+// <copyright file="Role.cs" company="" author="何翔华">
 //   
 // </copyright>
 // <summary>
-//   Log
+//   Role
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace TAF.Mvc.Model
 {
+    using System;
+
     using TAF.Utility;
 
     /// <summary>
-    /// 操作日志
+    /// 角色
     /// </summary>
-    public class Log : BaseBusiness<Log>
+    public class Role : BaseBusiness<Role>
     {
-        /// <summary>
-        /// 操作
-        /// </summary>
-        public string Action
+        public Role()
         {
-            get; set;
         }
+
+        public Role(Guid id) : base(id) { }
+
+        #region 属性
+        private string name;
+
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
+
+            set
+            {
+                SetProperty(ref this.name, value);
+            }
+        }
+
+        #endregion
+
         #region 覆写基类方法
 
         protected override void AddDescriptions()
         {
             base.AddDescriptions();
-            AddDescription(nameof(Action), Action.ToStr());
+            AddDescription(nameof(Name), Name.ToStr());
         }
         #endregion
     }

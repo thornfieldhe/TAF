@@ -9,7 +9,6 @@
 
 namespace TAF.Mvc.Model
 {
-    using System.Data.Entity;
     using System.Linq;
     using TAF.MVC.Interface;
 
@@ -18,9 +17,9 @@ namespace TAF.Mvc.Model
     /// </summary>
     public abstract class CommonContextSeeder : IContextSeeder
     {
-        protected CommonContextSeeder(DbContext context, string key)
+        protected CommonContextSeeder(IDbProvider provider, string key)
         {
-            this.Context = context;
+            this.Provider = provider;
             this.Key = key;
         }
 
@@ -29,7 +28,7 @@ namespace TAF.Mvc.Model
             get; protected set;
         }
 
-        public DbContext Context
+        public IDbProvider Provider
         {
             get; protected set;
         }
@@ -38,11 +37,10 @@ namespace TAF.Mvc.Model
 
         public void Update()
         {
-            if (!this.Context.Set<UpdateMigration>().Any(r => r.Key == this.Key.Trim().ToLower()))
+            if (UpdateMigration.Exist(r => r.Key == this.Key.Trim().ToLower()))
             {
                 UpdateData();
-                this.Context.Set<UpdateMigration>().Add(new UpdateMigration { Key = this.Key });
-                this.Context.SaveChanges();
+                UpdateMigration.Add(new UpdateMigration { Key = this.Key });
             }
         }
     }

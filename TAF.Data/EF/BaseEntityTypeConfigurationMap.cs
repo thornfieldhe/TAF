@@ -23,7 +23,7 @@ namespace TAF.Data
         where T : class, IBusinessBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseEntityTypeConfigurationMap"/> class.
+        /// 初始化上下文对象配置
         /// </summary>
         public BaseEntityTypeConfigurationMap()
         {

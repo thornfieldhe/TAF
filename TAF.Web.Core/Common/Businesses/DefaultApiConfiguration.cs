@@ -11,7 +11,7 @@ namespace TAF.Mvc.Business
 {
     using System.Web.Http;
 
-    using TAF.Mvc.Model;
+    using TAF.Mvc.Businesses;
 
     /// <summary>
     /// 
@@ -20,16 +20,16 @@ namespace TAF.Mvc.Business
     {
         public DefaultApiConfiguration()
         {
-            //            this.MapHttpAttributeRoutes();
-            //            this.Routes.MapHttpRoute("default", "{Controller}");
-            //            this.Filters.Add(new AuthenticationFilterAttribute());
-            //            this.Filters.Add(new ExceptionFilterAttribute());
-
-            this.EnableCors(
-                new System.Web.Http.Cors.EnableCorsAttribute(
-                    string.Join(",", CfgLoader.Instance.GetArraryConfig<string>("Csrf", "Address")),
-                    "*",
-                    "GET,POST,OPTIONS"));
+            this.MapHttpAttributeRoutes();
+            this.Routes.MapHttpRoute("api", "api/{Controller}");
+            this.Filters.Add(new AuthenticationFilterAttribute());
+            this.Filters.Add(new ExceptionFilterAttribute());
+            //
+            //            this.EnableCors(
+            //                new System.Web.Http.Cors.EnableCorsAttribute(
+            //                    string.Join(",", CfgLoader.Instance.GetArraryConfig<string>("Csrf", "Address")),
+            //                    "*",
+            //                    "GET,POST,OPTIONS"));
         }
     }
 }

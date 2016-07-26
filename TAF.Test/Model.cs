@@ -330,6 +330,8 @@ namespace TAF.Test
             throw new NotImplementedException();
         }
 
+        public int AddRange<K>(IEnumerable<K> items, bool commit) where K : BaseBusiness<K>, new() { throw new NotImplementedException(); }
+
         public int Commit()
         {
             throw new NotImplementedException();

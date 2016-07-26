@@ -7,10 +7,9 @@
     /// 
     /// </summary>
     [Authorize]
-    public class BugsController : ApiController
+    public class AccountController : ApiController
     {
-
-        public IEnumerable<Bug> Get()
+        public IEnumerable<Bug> LoginIn()
         {
             return new List<Bug> { new Bug() { Id = 0, Name = "bug1" } };
         }

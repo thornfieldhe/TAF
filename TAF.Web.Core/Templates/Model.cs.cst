@@ -11,7 +11,7 @@ Description:
 <%@ Assembly Name="SchemaExplorer" %>
 <%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
 <%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
-<%@ Assembly Name="TAF.Web"  Path="d:\WorkStation\TAF\TAF.Web\bin"%>
+
 <%@ Assembly Src="Common.cs" %>
 <%@ Import Namespace="TAF.Utility" %>  
 <%@ Import Namespace="TAF" %>  
@@ -43,8 +43,41 @@ namespace <%=ClassNamespace %>.Models
     /// <summary>
     /// <%=Description%>
     /// </summary>
-    public partial class <%=Common.GetClassName(SourceTable)%> : EfBusiness<<%=Common.GetClassName(SourceTable)%>>
+    public class <%=Common.GetClassName(SourceTable)%> : EfBusiness<<%=Common.GetClassName(SourceTable)%>>
     {
+        public <%=Common.GetClassName(SourceTable)%>()
+        {
+        }
+
+        public <%=Common.GetClassName(SourceTable)%>(Guid id) : base(id) { }
+        
+        #region 属性
+        <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+        <%  ColumnSchema  column=SourceTable.NonPrimaryKeyColumns[i];%>
+        <% if(!Common.IsSystemProperty(column) ) {%>
+        private <%=GetCSharpVariableType(column)%> <%=column.Name.ToCamel()%>;
+
+        <% }} %>
+
+        <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+        <%  ColumnSchema  column=SourceTable.NonPrimaryKeyColumns[i];%>
+        <% if(!Common.IsSystemProperty(column) ) {%>
+        public string <%=column.Name%>
+        {
+            get
+            {
+                return this.<%=column.Name.ToCamel()%>;
+            }
+
+            set
+            {
+                SetProperty(ref this.<%=column.Name.ToCamel()%>, value);
+            }
+        }
+        
+        <% }} %>
+        #endregion
+                
         #region 覆写基类方法
 
         protected override void AddDescriptions()
@@ -53,7 +86,7 @@ namespace <%=ClassNamespace %>.Models
             <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
                 <%  ColumnSchema  column=SourceTable.NonPrimaryKeyColumns[i];%>
                 <% if(!Common.IsSystemProperty(column) ) {%>
-            AddDescription("<%=column.Name%>:" + <%=column.Name%>.ToStr());
+            AddDescription(nameof(<%=column.Name%>) + <%=column.Name%>.ToStr());
             <% }} %>
         }
         #endregion

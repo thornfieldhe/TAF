@@ -187,6 +187,21 @@
         int Add<K>(K item, bool commit) where K : BaseBusiness<K>, new();
 
         /// <summary>
+        /// 新增数据
+        /// </summary>
+        /// <typeparam name="K">
+        /// </typeparam>
+        /// <param name="items">
+        /// 对象
+        /// </param>
+        /// <param name="commit">
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// </returns>
+        int AddRange<K>(IEnumerable<K> items, bool commit) where K : BaseBusiness<K>, new();
+
+        /// <summary>
         /// 提交更新
         /// </summary>
         /// <returns></returns>

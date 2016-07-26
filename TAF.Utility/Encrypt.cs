@@ -13,7 +13,7 @@ namespace TAF.Utility
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
-    using Utility;
+    using System.Web.Security;
 
     /// <summary>
     /// The encrypt.
@@ -46,6 +46,16 @@ namespace TAF.Utility
             }
 
             return tmpstr;
+        }
+
+        /// <summary> 
+        /// SHA1加密字符串 
+        /// </summary> 
+        /// <param name="source">源字符串</param> 
+        /// <returns>加密后的字符串</returns> 
+        public static string SHA1(string source)
+        {
+            return FormsAuthentication.HashPasswordForStoringInConfigFile(source, "SHA1");
         }
 
         /// <summary>

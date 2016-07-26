@@ -45,6 +45,10 @@
       <HintPath>..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="CacheManager.Core, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CacheManager.Core.0.8.0\lib\net45\CacheManager.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Castle.Core, Version=1.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.1.2.0\lib\Castle.Core.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +82,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -133,6 +138,7 @@
     <Compile Include="Entity\KeyValueEntity.cs" />
     <Compile Include="Entity\Pager.cs" />
     <Compile Include="Entity\IDbProvider.cs" />
+    <Compile Include="Entity\PermissionBase.cs" />
     <Compile Include="Logs\LogManager.cs" />
     <Compile Include="Entity\BaseEntity.Db.cs" />
     <Compile Include="Entity\BaseEntity.cs" />

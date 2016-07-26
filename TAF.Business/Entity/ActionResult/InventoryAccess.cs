@@ -7,10 +7,10 @@
     public enum InventoryAccess
     {
         /// <summary>
-        /// 未授权
+        /// 拒绝
         /// </summary>
-        [Description("未授权")]
-        None = 0,
+        [Description("拒绝")]
+        Forbid = 0,
 
         /// <summary>
         /// 读

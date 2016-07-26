@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace TAF.Mvc.Model
+namespace TAF.Mvc.AccountModel
 {
     using TAF.Utility;
 

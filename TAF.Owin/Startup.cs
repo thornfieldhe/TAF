@@ -1,8 +1,8 @@
 ﻿namespace TAF.Owin
 {
-    using System.Web.Http;
 
     using global::Owin;
+
     using TAF.Mvc.Business;
     using TAF.MVC.Business;
 
@@ -16,13 +16,11 @@
             Ioc.Register(new BaseWebIocConfig());
 
             //初始化数据
-             InitData.Instance.DatabaseMigrate();
-            app.UseMyApp();
-            app.UseMyApp2();
+            InitData.Instance.DatabaseMigrate();
+
+            //            app.UseMyApp();
+            //            app.UseMyApp2();
             var config = new DefaultApiConfiguration();
-            config.MapHttpAttributeRoutes();
-            config.Routes.MapHttpRoute("api", "api/{Controller}");
-            app.ConfigureAuth();
             app.UseWebApi(config);
             app.UseNancy();
         }

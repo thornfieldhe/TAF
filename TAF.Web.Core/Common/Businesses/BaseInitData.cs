@@ -13,6 +13,7 @@ namespace TAF.MVC.Common.Businesses
     using System.Data.Entity;
 
     using TAF.Mvc.Business;
+    using TAF.Mvc.Businesses;
     using TAF.Mvc.Model;
     using TAF.Utility;
 
@@ -26,13 +27,9 @@ namespace TAF.MVC.Common.Businesses
         /// </summary>
         public void DatabaseMigrate()
         {
-            using (var context = new TAFContext())
-            {
-                CfgLoader.Instance.Load(AppDomain.CurrentDomain.BaseDirectory + "App_Data", "config.cfg");
-                Database.SetInitializer(new MigrateDatabaseToLatestVersion<TAFContext, DefaultConfiguration>());
-                this.CustumerContextMigrate(context);
-                context.UpdateData();
-            }
+            CfgLoader.Instance.Load(AppDomain.CurrentDomain.BaseDirectory + "App_Data", "config.cfg");
+            this.CustumerContextMigrate(Ioc.Create<IDbProvider>());
+            DataSeeder.Instance.UpdateData();
         }
 
 
@@ -40,12 +37,12 @@ namespace TAF.MVC.Common.Businesses
         /// <summary>
         /// 自定义数据迁移代码
         /// </summary>
-        /// <param name="context">
+        /// <param name="provider">
         /// The context.
         /// </param>
-        protected virtual void CustumerContextMigrate(TAFContext context)
+        protected virtual void CustumerContextMigrate(IDbProvider provider)
         {
-            context.OtherSeeders.Add(new AccountDbInitializer(context, "AccountInit"));
+            DataSeeder.Instance.OtherSeeders.Add(new AccountInitializer(provider, "AccountInit"));
         }
     }
 }

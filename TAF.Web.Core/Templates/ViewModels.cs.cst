@@ -11,7 +11,6 @@ Description:
 <%@ Assembly Name="SchemaExplorer" %>
 <%@ Assembly Name="TAF.Utility"  Path="d:\WorkStation\TAF\TAF.Utility\bin\Release"%>
 <%@ Assembly Name="TAF.Business"  Path="d:\WorkStation\TAF\TAF.Business\bin\Release"%>
-<%@ Assembly Name="TAF.Web"  Path="d:\WorkStation\TAF\TAF.Web\bin"%>
 <%@ Assembly Src="Common.cs" %>
 <%@ Import Namespace="TAF.Utility" %>  
 <%@ Import Namespace="TAF" %>  

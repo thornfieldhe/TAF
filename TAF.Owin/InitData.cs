@@ -18,10 +18,9 @@ namespace TAF.Owin
     /// </summary>
     public class InitData : BaseInitData
     {
-        protected override void CustumerContextMigrate(TAFContext context)
+        protected override void CustumerContextMigrate(IDbProvider provider)
         {
-            base.CustumerContextMigrate(context);
-            
+            base.CustumerContextMigrate(provider);
         }
     }
 }

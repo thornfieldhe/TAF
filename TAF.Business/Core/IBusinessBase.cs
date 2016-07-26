@@ -38,12 +38,12 @@ namespace TAF.Core
             get; set;
         }
 
-        string CreatedBy
+        Guid CreatedBy
         {
             get; set;
         }
 
-        string ModifyBy
+        Guid ModifyBy
         {
             get; set;
         }

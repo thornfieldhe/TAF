@@ -7,7 +7,7 @@
     /// </summary>
     /// <typeparam name="T">
     /// </typeparam>
-    public class ActionResultData<T> : ActionResultStatus where T : class
+    public class ActionResultData<T> : ActionResultStatus
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionResultData{T}"/> class. 
@@ -18,7 +18,7 @@
         /// <param name="result">
         /// 结果
         /// </param>
-        public ActionResultData(int authority, T result = null) : base(authority, null)
+        public ActionResultData(int authority, T result) : base(authority, null)
         {
             Data = result;
         }

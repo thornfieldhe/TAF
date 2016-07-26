@@ -124,8 +124,13 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Cors, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.2\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -144,6 +149,26 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -152,27 +177,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\Business\AccountBusiness.cs" />
+    <Compile Include="Common\Businesses\AuthorizeFilterAttribute.cs" />
+    <Compile Include="Common\Businesses\DataSeeder.cs" />
+    <Compile Include="Common\Businesses\DefaultApiConfiguration.cs" />
+    <Compile Include="Common\Businesses\ExceptionFilterAttribute.cs" />
+    <Compile Include="User\Model\Role.cs" />
+    <Compile Include="User\Model\User.cs" />
     <Compile Include="Common\Businesses\TAFContext.cs" />
-    <Compile Include="Account\Business\AccountRoleManager.cs" />
-    <Compile Include="Account\Business\AccountUserManager.cs" />
-    <Compile Include="Account\Controller\AccountController.cs" />
-    <Compile Include="Account\Model\AccountConfig.cs" />
-    <Compile Include="Account\Model\AccountDbInitializer.cs" />
-    <Compile Include="Account\Model\ApplicationRole.cs" />
-    <Compile Include="Account\Model\BasicAuthenticationAttribute.cs" />
-    <Compile Include="Account\View\LoginUserView.cs" />
-    <Compile Include="Account\View\RegionInfoView.cs" />
-    <Compile Include="Account\View\UserInfoView.cs" />
-    <Compile Include="Account\View\UserListView.cs" />
-    <Compile Include="Account\View\UserQueryView.cs" />
-    <Compile Include="Account\Model\IndentityConfig.cs" />
+    <Compile Include="User\Business\UserController.cs" />
     <Compile Include="Common\Businesses\AuthenticationFilterAttribute.cs" />
     <Compile Include="Common\Businesses\BaseInitData.cs" />
-    <Compile Include="Common\Businesses\DefaultApiConfiguration.cs" />
-    <Compile Include="Common\Businesses\SimpleAuthorizationServerProvider.cs" />
-    <Compile Include="Common\Businesses\StartupConfiguration.cs" />
-    <Compile Include="Account\Business\BaseDbInitializer.cs" />
+    <Compile Include="User\Business\AccountInitializer.cs" />
     <Compile Include="Common\Businesses\IocConfig.cs" />
     <Compile Include="Common\Interface\IContextSeeder.cs" />
     <Compile Include="Common\Model\BaseLoader.cs" />
@@ -180,20 +195,13 @@
     <Compile Include="Common\Model\CfgLoader.cs" />
     <Compile Include="Common\Model\CommonContextSeeder.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\BaseTAFController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Account\Model\ApplicationUser.cs" />
-    <Compile Include="Account\View\ChangedPasswordView.cs" />
+    <Compile Include="User\Model\UserRoles.cs" />
     <Compile Include="Common\Model\KeyValueEntity.cs" />
-    <Compile Include="Log\Business\LogBusiness.cs" />
     <Compile Include="Log\Model\Log.cs" />
-    <Compile Include="Migrations\201606151312011_initAccount.cs" />
-    <Compile Include="Migrations\201606151312011_initAccount.Designer.cs">
-      <DependentUpon>201606151312011_initAccount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\DefaultConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UpdateMigration\Models\UpdateMigration.cs" />
+    <Compile Include="UpdateMigration\Model\UpdateMigration.cs" />
+    <Compile Include="User\View\AuthorisedUserView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -215,11 +223,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Templates\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606151312011_initAccount.resx">
-      <DependentUpon>201606151312011_initAccount.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
