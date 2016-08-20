@@ -25,7 +25,7 @@ namespace TAF.Mvc.Controller
     /// <summary>
     /// 
     /// </summary>
-    public class UserController : BaseController<Account, Account, Account>
+    public class UserController : BaseController
     {
         public class DataController : ApiController
         {

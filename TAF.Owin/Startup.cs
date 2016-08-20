@@ -22,7 +22,7 @@
             //            app.UseMyApp2();
             var config = new DefaultApiConfiguration();
             app.UseWebApi(config);
-            app.UseNancy();
+            // app.UseNancy();
         }
     }
 

@@ -110,8 +110,8 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpConfig, Version=1.5.5.0, Culture=neutral, PublicKeyToken=c1deedac91bd7724, processorArchitecture=MSIL">
-      <HintPath>..\packages\sharpconfig.1.5.5\lib\net20\SharpConfig.dll</HintPath>
+    <Reference Include="SharpConfig, Version=1.5.6.0, Culture=neutral, PublicKeyToken=c1deedac91bd7724, processorArchitecture=MSIL">
+      <HintPath>..\packages\sharpconfig.1.5.6\lib\net20\SharpConfig.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -177,6 +177,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Businesses\AnonymousAllowedFilterAttribute.cs" />
     <Compile Include="Common\Businesses\AuthorizeFilterAttribute.cs" />
     <Compile Include="Common\Businesses\DataSeeder.cs" />
     <Compile Include="Common\Businesses\DefaultApiConfiguration.cs" />
@@ -196,7 +197,7 @@
     <Compile Include="Common\Model\CommonContextSeeder.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="User\Model\UserRoles.cs" />
+    <Compile Include="User\Model\UserRole.cs" />
     <Compile Include="Common\Model\KeyValueEntity.cs" />
     <Compile Include="Log\Model\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

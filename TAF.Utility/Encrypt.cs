@@ -13,7 +13,6 @@ namespace TAF.Utility
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
-    using System.Web.Security;
 
     /// <summary>
     /// The encrypt.
@@ -46,16 +45,6 @@ namespace TAF.Utility
             }
 
             return tmpstr;
-        }
-
-        /// <summary> 
-        /// SHA1加密字符串 
-        /// </summary> 
-        /// <param name="source">源字符串</param> 
-        /// <returns>加密后的字符串</returns> 
-        public static string SHA1(string source)
-        {
-            return FormsAuthentication.HashPasswordForStoringInConfigFile(source, "SHA1");
         }
 
         /// <summary>
@@ -241,6 +230,24 @@ namespace TAF.Utility
         public static string Md5By32(string text, Encoding encoding)
         {
             return Md5(text, encoding, null, null);
+        }
+
+        /// <summary> 
+        /// SHA1加密字符串 
+        /// </summary> 
+        /// <param name="text">源字符串</param> 
+        /// <returns>加密后的字符串</returns> 
+        public static string SHA1(string text)
+        {
+            var StrRes = Encoding.Default.GetBytes(text);
+            HashAlgorithm iSHA = new SHA1CryptoServiceProvider();
+            StrRes = iSHA.ComputeHash(StrRes);
+            var EnText = new StringBuilder();
+            foreach (var iByte in StrRes)
+            {
+                EnText.Append($"{iByte:x2}");
+            }
+            return EnText.ToString();
         }
     }
 }

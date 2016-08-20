@@ -9,7 +9,7 @@
     {
         public HomeModule()
         {
-            Get["/"] = _ =>
+            Get["/weixin/a"] = _ =>
                            {
                                return Response.AsJson(new Bug() { Id = 1, Name = "zhangsan " });
                            };

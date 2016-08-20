@@ -38,8 +38,8 @@
             roleAdmin.Create(Guid.Empty, false);
             roleUser.Create(Guid.Empty, false);
 
-            var userRoleAdmin = new UserRoles() { DbProvider = this.Provider, UserId = user.Id, RoleId = roleAdmin.Id };
-            var userRoleUser = new UserRoles() { DbProvider = this.Provider, UserId = user.Id, RoleId = roleUser.Id };
+            var userRoleAdmin = new UserRole() { DbProvider = this.Provider, UserId = user.Id, RoleId = roleAdmin.Id };
+            var userRoleUser = new UserRole() { DbProvider = this.Provider, UserId = user.Id, RoleId = roleUser.Id };
             userRoleAdmin.Create(Guid.Empty, false);
             userRoleUser.Create(Guid.Empty, false);
         }

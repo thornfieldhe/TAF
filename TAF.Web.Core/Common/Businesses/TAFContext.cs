@@ -13,7 +13,11 @@
     /// </summary>
     public class TAFContext : DbContext
     {
-        public TAFContext() : base("main")
+        public TAFContext() : this("main")
+        {
+        }
+
+        public TAFContext(string connection) : base(connection)
         {
         }
 
@@ -29,6 +33,21 @@
         }
 
         public DbSet<UpdateMigration> UpdateMigrations
+        {
+            get; set;
+        }
+
+        public DbSet<User> Users
+        {
+            get; set;
+        }
+
+        public DbSet<Role> Roles
+        {
+            get; set;
+        }
+
+        public DbSet<UserRole> UserRoles
         {
             get; set;
         }

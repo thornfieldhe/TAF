@@ -28,6 +28,7 @@ namespace TAF.Mvc.Businesses
     /// </summary>
     public class AuthenticationFilterAttribute : ActionFilterAttribute
     {
+
         /// <summary>
         /// 检查用户是否有该Action执行的操作权限
         /// </summary>
@@ -41,17 +42,23 @@ namespace TAF.Mvc.Businesses
                 Note = GetText(actionContext.ActionArguments)
             };
 
-            //验证请求是否来自授权地址
             var b = actionContext.Request.Headers.Referrer;
-
-            if (b != null && CfgLoader.Instance.GetArraryConfig<string>("Csrf", "Address").Any(r => b.ToString().StartsWith(r)))
+            var attr = actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>();
+            if (attr.Any(a => a != null))//判断是否允许匿名调用
+            {
+                base.OnActionExecuting(actionContext);
+            }
+            else if (b != null && CfgLoader.Instance.GetArraryConfig<string>("Csrf", "Address").Any(r => b.ToString().StartsWith(r)))
             {
                 AuthFrom(actionContext, ref log);
             }
-            else
+            else if (b == null)
             {
                 actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
+
+            base.OnActionExecuting(actionContext);
+
             log.Save(Guid.Empty);
         }
 

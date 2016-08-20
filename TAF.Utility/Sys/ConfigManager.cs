@@ -27,7 +27,7 @@
         {
             if (Cfg == null)
             {
-                var file = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\config.ini";
+                var file = AppDomain.CurrentDomain.BaseDirectory + "App_Data\\config.cfg";
                 Cfg = SharpConfig.Configuration.LoadFromFile(file);
             }
 

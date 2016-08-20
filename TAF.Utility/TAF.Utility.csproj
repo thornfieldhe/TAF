@@ -37,8 +37,8 @@
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpConfig, Version=1.4.8.0, Culture=neutral, PublicKeyToken=c1deedac91bd7724, processorArchitecture=MSIL">
-      <HintPath>..\packages\sharpconfig.1.4.8\lib\net20\SharpConfig.dll</HintPath>
+    <Reference Include="SharpConfig, Version=1.5.6.0, Culture=neutral, PublicKeyToken=c1deedac91bd7724, processorArchitecture=MSIL">
+      <HintPath>..\packages\sharpconfig.1.5.6\lib\net20\SharpConfig.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UserRoles.cs" company="" author="何翔华">
+// <copyright file="UserRole.cs" company="" author="何翔华">
 //   
 // </copyright>
 // <summary>
-//   UserRoles
+//   UserRole
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,13 +16,13 @@ namespace TAF.Mvc.Model
     /// <summary>
     /// 用户角色
     /// </summary>
-    public class UserRoles : BaseBusiness<UserRoles>
+    public class UserRole : BaseBusiness<UserRole>
     {
-        public UserRoles()
+        public UserRole()
         {
         }
 
-        public UserRoles(Guid id) : base(id)
+        public UserRole(Guid id) : base(id)
         {
         }
 

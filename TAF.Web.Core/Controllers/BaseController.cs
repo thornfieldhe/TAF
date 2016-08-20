@@ -19,24 +19,13 @@ namespace TAF.Mvc
     using TAF;
     using TAF.Business;
     using TAF.Business.Entity;
-    using TAF.Core;
     using TAF.Mvc.View;
 
     /// <summary>
     /// 控制层基类
     /// </summary>
-    /// <typeparam name="K">
-    /// 实体对象
-    /// </typeparam>
-    /// <typeparam name="T">
-    /// 对象列表视图
-    /// </typeparam>
-    /// <typeparam name="L">
-    /// 对象视图
-    /// </typeparam>
     [Authorize]
-    public class BaseController<K, T, L> : ApiController
-        where K : BaseBusiness<K>, new() where T : class, IEntityBase, new() where L : new()
+    public class BaseController : ApiController
     {
         private string token;
         private AuthorisedUserView userInfo;

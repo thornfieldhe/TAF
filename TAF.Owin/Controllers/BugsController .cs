@@ -6,10 +6,10 @@
     /// <summary>
     /// 
     /// </summary>
-    [Authorize]
     public class AccountController : ApiController
     {
-        public IEnumerable<Bug> LoginIn()
+        [AllowAnonymous]
+        public IEnumerable<Bug> Get()
         {
             return new List<Bug> { new Bug() { Id = 0, Name = "bug1" } };
         }
