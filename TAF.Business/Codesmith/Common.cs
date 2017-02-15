@@ -11,6 +11,7 @@ using SchemaExplorer;
 using SchemaMapper;
 using TAF;
 using TAF.Utility;
+using SchemaExplorer;
 
 namespace SchemaMapper
 {
@@ -28,7 +29,39 @@ namespace SchemaMapper
             return column.Name.In(systemProperties);            
         }
         
+        /// <summary>
+        /// 获取C#类型
+        /// </summary>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static string GetCSharpVariableType(ColumnSchema column)
+        {
+            if (column.Name.EndsWith("TypeCode")) return column.Name;
+            return DbTypeCSharp[column.DataType.ToString()];
+        }
+
+        /// <summary>
+        /// 列是否是Guid
+        /// </summary>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static bool ColumnIsGuid(ColumnSchema column)
+        {
+           string type= GetCSharpVariableType(column) ;
+            return type=="Guid" ;
+        }
         
+        /// <summary>
+        /// 是否是数字
+        /// </summary>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static bool ColumnIsNumber(ColumnSchema column)
+        {
+           string type= GetCSharpVariableType(column) ;
+            return type=="int" ||type=="double"||type=="decimal";
+        }
+
         /// <summary>
         /// 通过数据表获得类名
         /// </summary>

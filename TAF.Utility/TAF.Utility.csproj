@@ -62,6 +62,7 @@
     <Compile Include="Extensions\Ectensions.SwichCaseExtension.cs" />
     <Compile Include="Extensions\Extensions.Type.cs" />
     <Compile Include="Extensions\PathFileSerializer.cs" />
+    <Compile Include="KeyValue.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>

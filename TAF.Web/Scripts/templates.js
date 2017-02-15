@@ -69,7 +69,6 @@ Vue.component('form-edit', {
 //删除对话框
 Vue.component('dialog-delete', {
     template: '#dialogDelete',
-    props: ['id', 'name', 'deleteUrl'],
     events: {
         'onDeleteItem': function (name, id) {
             $("#deleteItemDialog").modal("show");

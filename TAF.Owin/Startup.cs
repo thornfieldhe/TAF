@@ -18,11 +18,11 @@
             //初始化数据
             InitData.Instance.DatabaseMigrate();
 
-            //            app.UseMyApp();
-            //            app.UseMyApp2();
+            app.UseMyApp();
+            app.UseMyApp2();
             var config = new DefaultApiConfiguration();
             app.UseWebApi(config);
-            // app.UseNancy();
+            app.UseNancy();
         }
     }
 

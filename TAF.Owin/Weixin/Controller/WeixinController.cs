@@ -18,6 +18,7 @@ namespace TAF.Owin.Controller
 {
     using System.Linq;
     using System.Net;
+    using System.Text.RegularExpressions;
     using System.Web.Http.Controllers;
 
     using TAF.Owin.Model;
@@ -47,6 +48,44 @@ namespace TAF.Owin.Controller
 
             return new HttpResponseMessage() { StatusCode = HttpStatusCode.Forbidden };
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public void Oath(string code, string state)
+        {
+            try
+            {
+                LogManager.Instance.Logger.Error($"code:{code},state:{state}");
+
+                var wc = new WebClient();
+                var authUrl = string.Format(
+                    ConfigManager.Instance.GetConfig<string>("Weixin", "Oauth2"),
+                    ConfigManager.Instance.GetConfig<string>("Weixin", "AppId"),
+                    ConfigManager.Instance.GetConfig<string>("Weixin", "Secret"),
+                    code);
+                LogManager.Instance.Logger.Error($"authhtml:{authUrl}");
+                var bHtml = wc.DownloadData(authUrl);
+                var strHtml = Encoding.GetEncoding("utf-8").GetString(bHtml);
+                LogManager.Instance.Logger.Error($"authResponse:{strHtml}");
+                var reg = new Regex(@"(.*?)""access_token"":""(.*?)""(.*?)""openid"":""(.*?)""");
+                var match = reg.Match(strHtml);
+                var access_token = match.Groups[2].Value;
+                var openid = match.Groups[4].Value;
+
+                var userInfoUrl = string.Format(
+                    ConfigManager.Instance.GetConfig<string>("Weixin", "UserInfo"),
+                    access_token,
+                    openid);
+                var bHtml2 = wc.DownloadData(userInfoUrl);
+                var strHtml2 = Encoding.GetEncoding("utf-8").GetString(bHtml2);
+                LogManager.Instance.Logger.Error($"userInfo:{strHtml2}");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
 
         private static bool Validate(HttpRequestContext context)
         {
