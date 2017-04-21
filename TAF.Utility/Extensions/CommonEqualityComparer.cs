@@ -5,8 +5,8 @@
 
     public class CommonEqualityComparer<T, V> : IEqualityComparer<T>
     {
-        private Func<T, V> keySelector;
-        private IEqualityComparer<V> comparer;
+        private readonly Func<T, V> keySelector;
+        private readonly IEqualityComparer<V> comparer;
 
         public CommonEqualityComparer(Func<T, V> keySelector, IEqualityComparer<V> comparer)
         {

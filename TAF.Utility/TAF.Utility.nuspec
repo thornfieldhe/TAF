@@ -2,13 +2,16 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>何翔华</authors>
-    <owners>何翔华</owners>
+    <version>1.0.0.5</version>
+    <title>TAF工具包</title>
+    <authors>thornfield.he</authors>
+    <owners>thornfield.he</owners>
+    <licenseUrl>https://github.com/thornfieldhe/TAF</licenseUrl>
+    <projectUrl>https://github.com/thornfieldhe/TAF</projectUrl>
+    <iconUrl>https://github.com/thornfieldhe/TAF</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>自己用的工具类</description>
-    <copyright>Copyright 2016</copyright>
-    <tags>工具类</tags>
+    <description>常用扩展方法</description>
+    <releaseNotes>常用扩展方法</releaseNotes>
+    <copyright>Copyright 2017</copyright>
   </metadata>
 </package>
