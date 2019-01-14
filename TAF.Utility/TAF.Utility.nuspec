@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.0.0.5</version>
+    <version>1.0.0.9</version>
     <title>TAF工具包</title>
     <authors>thornfield.he</authors>
     <owners>thornfield.he</owners>
@@ -12,6 +12,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>常用扩展方法</description>
     <releaseNotes>常用扩展方法</releaseNotes>
-    <copyright>Copyright 2017</copyright>
+    <copyright>Copyright 2019</copyright>
   </metadata>
 </package>
